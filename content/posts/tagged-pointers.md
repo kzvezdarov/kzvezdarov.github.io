@@ -1,0 +1,48 @@
++++
+title = "Pointer tagging with multiple tags"
+slug = "multi-pointer-tagging"
+date = "2016-12-18"
+authors = ["Kiril Zvezdarov"]
+
+[taxonomies]
+tags = ["rust"]
++++
+
+
+This is a short overview of [pointer tagging](https://en.wikipedia.org/wiki/Tagged_pointer) in situations where more than one tags or multibit tags are needed. The implementation is in [Rust](https://www.rust-lang.org/), but it should be easy to understand even without knowledge of the language.
+
+The snippet below is part of my attempt to implement a lockfree linked list, as described by [Harris](https://timharris.uk/papers/2001-disc.pdf), with the additional optimizations by [Fomitchev, Ruppert](http://www.cse.yorku.ca/~ruppert/papers/lfll.pdf). The original Harris algorithm uses the least significant bit of the "successor" pointer in each node of the linked list as a deletion mark, to achieve a two phase removal - first, a node is logically deleted by tagging its successor pointer with the mark, and at a later point it is unlinked completely. The optimizations by Fomitchev and Ruppert add a second possible tag at the next least significant bit, as well as a backlink to a previous node, in order to shorten the length and amount of traversals of the linked list a process has to make. The new tag "flags" that the node after the current one is being deleted, and that the flagged node should not be marked until after the deletion of its successor is fully completed.
+
+The two tags need to be manipulated individually when the algorithm is setting the metadata of a node, and (for convenience) as one chunk for when the actual pointer, clear of tags, is needed:
+```rust
+const MARK_BIT: usize = 1 << 0;
+
+const FLAG_BIT: usize = 1 << 1;
+
+const ALL_TAGS: usize = MARK_BIT + FLAG_BIT;
+
+fn tag_at<T>(ptr: *const T, tag: usize, value: bool) -> *const T {
+    (ptr as usize & !tag | (tag * value as usize)) as *const T
+}
+
+fn is_tagged<T>(ptr: *const T, tag: usize) -> bool {
+    (ptr as usize & tag) == tag
+}
+```
+
+The constants define the tag locations for the mark and flag, as well as the "mask" (for a lack of a better term) which covers all tags, so that they can be cleared in one go. The mask is just the sum of the tags that it needs to cover - since each tag bit is just an integer with only one of the bits set, e.g. `0b01c`= for the least significant and `0b10` for the next least significant, their sum produces an integer whose set bits correspond to the location of all tags. This can be used for things more interesting than clearing the pointer - for example, it allows for multibit tags or storing (small) integer values, all in one function call.
+
+The tagging logic is only slightly different from how it is usually implemented. First, the pointer and the inverse of the tag bit are `and`-ed, which results in an integer whose tag bit is unset. This in a sense isolates that specific tag, as the integer now is in a "clean" state with respect to it. The result is `or`-ed with the tag bit value, which will either set the tag bit or keep it unset (the tag value is just the tag bit or 0).
+
+To illustrate, here is a contrived example:
+
+1. Initially, `let ptr = 1010101100001011`, `let tag = 1 << 1`, and `let value = false`. Both tags are set.
+
+2. `ptr & !tag = 1010101100001011 & 1111111111111101 = 1010101100001001`. Note that only the targeted tag is unset, otherwise the pointer is the same. It is clean with respect to the target tag.
+
+3. `(ptr & !tag) | 0 = 1010101100001001 | 0 = 1010101100001001`
+
+Checking if a tag is set is done just by =and=-ing the pointer and the tag bits and checking that that results in the tag bits. Lastly, since the tag can be multiple bits, clearing the pointer for regular usage can be done by just `tag_at(ptr, ALL_TAGS, false)`.
+
+Note that working with tagged pointers is tricky and dangerous, as accidentally dereferencing an unclean pointer will lead to [Fun](http://dwarffortresswiki.org/index.php/DF2014:Losing). In Rust, taking the raw pointer produced by the tagging function and dereferencing it would be an `unsafe` operation, which forces the implementor to take special note of where and how it is used.
+
