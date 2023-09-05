@@ -1,0 +1,14 @@
+project:
+  type: website
+
+website:
+  title: "kzvezdarov.github.io"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/kzvezdarov
+format:
+  html:
+    theme: simplex
+    css: styles.css
