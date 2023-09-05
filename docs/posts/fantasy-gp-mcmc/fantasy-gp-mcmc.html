@@ -809,7 +809,11 @@ Disclaimer
 </section>
 <section id="fantasy-points" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="fantasy-points"><span class="header-section-number">2</span> Fantasy points</h2>
-<p>Fantasy GP points per team/driver are <a href="https://fantasygp.com/about/guide/">calculated in the following way</a>: * drivers earn the points scored during the grand prix, 10pts for taking pole position, 2pts per position gained on Sunday, and 5 points each for beating their teammate during qualifying and the race itself. * constructors earn the points scored by each of their drivers during the grand prix, 1pt per position gained per driver, 5 points if both cars finish, 2 if only one car finishes.</p>
+<p>Fantasy GP points per team/driver are <a href="https://fantasygp.com/about/guide/">calculated in the following way</a>:</p>
+<ul>
+<li>drivers earn the points scored during the grand prix, 10pts for taking pole position, 2pts per position gained on Sunday, and 5 points each for beating their teammate during qualifying and the race itself.</li>
+<li>constructors earn the points scored by each of their drivers during the grand prix, 1pt per position gained per driver, 5 points if both cars finish, 2 if only one car finishes.</li>
+</ul>
 <p>To simplify the problem, we completely ignore sprint races (as should everyone).</p>
 <p>The race finish status classification has several detailed categories:</p>
 <div class="cell">
@@ -1016,7 +1020,14 @@ Disclaimer
 </div>
 </div>
 </div>
-<p>Finally, we can score the Fantasy GP points; we define the scoring function for the driver to be the sum of: - WDC points - 10 for gaining pole position - 5 for outqualifying their teammate - 5 for outracing their teammate - 2 per position gained at the end of the race</p>
+<p>Finally, we can score the Fantasy GP points; we define the scoring function for the driver to be the sum of:</p>
+<ul>
+<li>WDC points</li>
+<li>10 for gaining pole position</li>
+<li>5 for outqualifying their teammate</li>
+<li>5 for outracing their teammate</li>
+<li>2 per position gained at the end of the race</li>
+</ul>
 <p>Note that a driver who did not finish the race on Sunday can still earn points from the qualifying session.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> score_driver(x):</span>
@@ -1029,7 +1040,12 @@ Disclaimer
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>        x[<span class="st">"status"</span>].isin(STATUS_FINISHED), <span class="dv">0</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Scoring for the constructors is defined as: - WDC points - 5 points if both cars finished, 2 if only one did - 1 point per position gained at the end of the race per car</p>
+<p>Scoring for the constructors is defined as:</p>
+<ul>
+<li>WDC points</li>
+<li>5 points if both cars finished, 2 if only one did</li>
+<li>1 point per position gained at the end of the race per car</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> score_constructor(x):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    finished <span class="op">=</span> x[<span class="st">"status"</span>].isin(STATUS_FINISHED)</span>
@@ -1200,7 +1216,12 @@ Note
 <span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Driver Fantasy GP points 2023"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+<div id="fig-driver-points" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-driver-points-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;1: Fantasy points earned by each driver in 2023</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>For convenience, we create a constructor-specific dataframe by taking the first row for each constructor for each race. This gets rid of the duplicate data (as constructor points were duplicated across both drivers):</p>
@@ -1236,7 +1257,12 @@ Note
 <span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Constructor Fantasy GP points 2023"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+<div id="fig-constructor-points" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructor-points-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;2: Fantasy points earned by each constructor in 2023</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>These look quite similar and expose the brutal reality of Red Bull’s total dominance over the field. Matching our intuition from the rules definition, drivers appear to earn more and have wider variance in points scored, comapred to teams, with the exception of Max Verstappen and his absurd consistency.</p>
@@ -1256,7 +1282,12 @@ Note
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>g.set_axis_labels(<span class="st">"points"</span>, <span class="st">"density"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+<div id="fig-driver-points-kde" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-driver-points-kde-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;3: Kernel density estimates for fantasy points earned by each driver in 2023</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -1277,7 +1308,12 @@ Note
 <span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>g.set_axis_labels(<span class="st">"points"</span>, <span class="st">"density"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+<div id="fig-constructor-points-kde" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructor-points-kde-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;4: Kernel density estimates for fantasy points earned by each constructor in 2023</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>The distribution of points is spread and somewhat multi-peaked in both cases; again, constructors appear score in a much more consistent range compared to drivers. The pooled observed points distributions are:</p>
@@ -1297,7 +1333,12 @@ Note
 <span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>f.tight_layout()<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-24-output-1.png" class="img-fluid"></p>
+<div id="fig-grouped-points-kde" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-grouped-points-kde-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;5: Grouped kernel density estimates for fantasy points by drivers/constructors in 2023</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>Given that the point distributions between drivers and constructors appear very similar, we’ll focus on constructing models of the driver points, which we can later fit to the constructor data with minor adjustments.</p>
@@ -1307,7 +1348,12 @@ Note
 <p>Our first model will be the simplest possible - we just directly estimate the mean points for each driver individually (an intercept-only, unpooled linear model).</p>
 <section id="picking-the-likelihood" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="picking-the-likelihood"><span class="header-section-number">4.1</span> Picking the likelihood</h3>
-<p>The points data has several properties that stem from the Fantasy GP ruleset: - points are discrete - points are strictly bound between 0 and 84 (25 for p1 + 1 for fastest lap + 10 for pole position + 10 for beating teammate + 19 * 2 for maximum possible positions gained) - most drivers have a few 0 point finishes, but overall it’s very unlikely for a driver to score 0 points consistently.</p>
+<p>The points data has several properties that stem from the Fantasy GP ruleset:</p>
+<ul>
+<li>points are discrete</li>
+<li>points are strictly bound between 0 and 84 (25 for p1 + 1 for fastest lap + 10 for pole position + 10 for beating teammate + 19 * 2 for maximum possible positions gained)</li>
+<li>most drivers have a few 0 point finishes, but overall it’s very unlikely for a driver to score 0 points consistently.</li>
+</ul>
 <p>Because we are modeling discrete, strictly positive points, one of the count distributions is likely an appropriate choice for the likelihood. The <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Poisson.html">Poisson</a> distribution could be a good choice, but the observations appear overdispersed, as measured by the <a href="https://en.wikipedia.org/wiki/Index_of_dispersion">coefficient of dispersion</a>:</p>
 <div class="cell">
 <details>
@@ -1362,7 +1408,12 @@ Name: driver_points, dtype: float64</code></pre>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mu_dist <span class="op">=</span> pz.Normal()</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>pz.maxent(mu_dist, np.log(<span class="dv">5</span>), np.log(<span class="dv">30</span>), <span class="fl">0.90</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-26-output-1.png" class="img-fluid"></p>
+<div id="fig-mu-prior" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-mu-prior-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;6: PDF of the prior chosen for μ</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>The shape parameter α is also strictly positive. Its effect on the likelihood can be best understood by plotting a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html">Negative Binomial</a> for a few different values, while keeping the mean fixed:</p>
@@ -1384,7 +1435,12 @@ Name: driver_points, dtype: float64</code></pre>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>, <span class="dv">1</span>].set_title(<span class="ss">f"Negative Binomial with μ: 15, α: 500"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
+<div id="fig-nb-shape" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-nb-shape-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;7: Negative binomial distributions with a fixed mean at different shape parameters</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>As α increases, the tails shrink. We don’t want very high values, as that will restrict the tails too much, but very small values result in absurdly long tails. To handle that, we use a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Gamma.html">Gamma</a> distribution, with mass strongly concentrated between 1 and 20:</p>
@@ -1392,7 +1448,12 @@ Name: driver_points, dtype: float64</code></pre>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>alpha_dist <span class="op">=</span> pz.Gamma()</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>pz.maxent(alpha_dist, <span class="dv">1</span>, <span class="dv">20</span>, <span class="fl">.9</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+<div id="fig-alpha-prior" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-alpha-prior-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;8: PDF of the prior chosen for α</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>Finally, we prepare the data for use within the model. We factorize the <code>driver</code> column into labels and an index:</p>
@@ -1478,7 +1539,12 @@ Name: driver_points, Length: 260, dtype: float64</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(unpooled_prior_samples, group<span class="op">=</span><span class="st">"prior"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-35-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-prior-predictive" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-prior-predictive-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;9: Prior predictive distribution of the unpooled model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>The prior predictive is quite wide, with a very long and somewhat fat tail, but overall the data could be plausibly seen as coming from it.</p>
@@ -1495,7 +1561,7 @@ Name: driver_points, Length: 260, dtype: float64</code></pre>
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [μ, α]
-Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 5 seconds.
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 4 seconds.
 Sampling: [y]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -1520,7 +1586,7 @@ Sampling: [y]</code></pre>
 
     <div>
       <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
-      100.00% [8000/8000 00:04&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [8000/8000 00:03&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     
 </div>
@@ -1556,7 +1622,12 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ"</span>], compact<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-37-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-traceplots" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-traceplots-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;10: Traceplots of the inferred parameter μ for the unpooled model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>There are a few kinks here and there (see RIC), but overall these look good.</p>
@@ -1568,10 +1639,20 @@ Sampling: [y]</code></pre>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Energy Plot"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-38-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-energy" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-energy-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;11: Energy plot for the unpooled model</figcaption>
+</figure>
 </div>
 </div>
-<p>Finally, we check the summary statistics for the μ parameter: - bulk and tail effective sample size (<code>ess_bulk</code> and <code>ess_tail</code> respectively) should be &gt; 400, otherwise the estimation of the rest of the summary statistics is considered unreliable <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> - <code>r_hat</code> should ideally equal 1, with values over 1.01 convergence issues <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> - <code>mcse_{mean, sd}</code> is the Monte Carlo Standard Error, or the error introduced by approximating the posterior with a finite number of samples; lower = better <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+</div>
+<p>Finally, we check the summary statistics for the μ parameter:</p>
+<ul>
+<li>bulk and tail effective sample size (<code>ess_bulk</code> and <code>ess_tail</code> respectively) should be &gt; 400, otherwise the estimation of the rest of the summary statistics is considered unreliable <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+<li><code>r_hat</code> should ideally equal 1, with values over 1.01 convergence issues <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
+<li><code>mcse_{mean, sd}</code> is the Monte Carlo Standard Error, or the error introduced by approximating the posterior with a finite number of samples; lower = better <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>az.summary(unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
@@ -1596,254 +1677,254 @@ Sampling: [y]</code></pre>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[ALB]</td>
-<td>2.536</td>
+<td>2.540</td>
 <td>0.117</td>
-<td>2.330</td>
-<td>2.761</td>
+<td>2.315</td>
+<td>2.766</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>4320.0</td>
-<td>2693.0</td>
+<td>4820.0</td>
+<td>2814.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[ALO]</td>
-<td>3.153</td>
-<td>0.102</td>
-<td>2.959</td>
-<td>3.339</td>
+<td>3.150</td>
+<td>0.100</td>
+<td>2.964</td>
+<td>3.336</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>4155.0</td>
-<td>2788.0</td>
+<td>4437.0</td>
+<td>2644.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[BOT]</td>
-<td>2.476</td>
+<td>2.484</td>
 <td>0.195</td>
-<td>2.127</td>
-<td>2.876</td>
+<td>2.142</td>
+<td>2.877</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>3924.0</td>
-<td>2310.0</td>
+<td>4326.0</td>
+<td>2388.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[DEV]</td>
-<td>1.761</td>
-<td>0.214</td>
-<td>1.347</td>
-<td>2.150</td>
+<td>1.756</td>
+<td>0.216</td>
+<td>1.384</td>
+<td>2.210</td>
+<td>0.004</td>
 <td>0.003</td>
-<td>0.002</td>
-<td>4724.0</td>
-<td>2339.0</td>
+<td>3618.0</td>
+<td>2383.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[GAS]</td>
-<td>2.448</td>
-<td>0.243</td>
-<td>2.000</td>
-<td>2.917</td>
-<td>0.004</td>
+<td>2.444</td>
+<td>0.231</td>
+<td>1.977</td>
+<td>2.848</td>
 <td>0.003</td>
-<td>4174.0</td>
-<td>2716.0</td>
+<td>0.002</td>
+<td>5514.0</td>
+<td>2962.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[HAM]</td>
-<td>3.119</td>
-<td>0.097</td>
-<td>2.936</td>
-<td>3.303</td>
+<td>3.118</td>
+<td>0.099</td>
+<td>2.927</td>
+<td>3.299</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>4028.0</td>
-<td>2484.0</td>
+<td>4304.0</td>
+<td>2729.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[HUL]</td>
-<td>2.156</td>
-<td>0.163</td>
-<td>1.842</td>
-<td>2.461</td>
-<td>0.003</td>
+<td>2.149</td>
+<td>0.155</td>
+<td>1.866</td>
+<td>2.439</td>
 <td>0.002</td>
-<td>3949.0</td>
-<td>2420.0</td>
+<td>0.002</td>
+<td>4272.0</td>
+<td>2824.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[LEC]</td>
-<td>2.732</td>
+<td>2.736</td>
 <td>0.216</td>
-<td>2.339</td>
-<td>3.152</td>
+<td>2.324</td>
+<td>3.138</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>4608.0</td>
-<td>3103.0</td>
+<td>4111.0</td>
+<td>2447.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[MAG]</td>
-<td>2.082</td>
-<td>0.272</td>
-<td>1.568</td>
-<td>2.578</td>
-<td>0.005</td>
+<td>2.090</td>
+<td>0.270</td>
+<td>1.603</td>
+<td>2.614</td>
 <td>0.004</td>
-<td>3401.0</td>
-<td>2402.0</td>
+<td>0.003</td>
+<td>3817.0</td>
+<td>2615.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[NOR]</td>
 <td>2.716</td>
-<td>0.155</td>
-<td>2.430</td>
-<td>3.027</td>
+<td>0.156</td>
+<td>2.420</td>
+<td>2.999</td>
 <td>0.002</td>
 <td>0.002</td>
-<td>4446.0</td>
-<td>2606.0</td>
+<td>4364.0</td>
+<td>2633.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[OCO]</td>
-<td>2.329</td>
-<td>0.254</td>
-<td>1.873</td>
-<td>2.814</td>
+<td>2.320</td>
+<td>0.253</td>
+<td>1.885</td>
+<td>2.844</td>
 <td>0.004</td>
 <td>0.003</td>
-<td>3931.0</td>
+<td>5080.0</td>
 <td>2496.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[PER]</td>
-<td>3.288</td>
+<td>3.290</td>
 <td>0.108</td>
-<td>3.090</td>
-<td>3.497</td>
+<td>3.082</td>
+<td>3.485</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>4118.0</td>
-<td>2353.0</td>
+<td>4054.0</td>
+<td>2744.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[PIA]</td>
-<td>1.940</td>
-<td>0.296</td>
-<td>1.358</td>
-<td>2.476</td>
+<td>1.945</td>
+<td>0.305</td>
+<td>1.424</td>
+<td>2.545</td>
 <td>0.005</td>
 <td>0.004</td>
-<td>4082.0</td>
-<td>2374.0</td>
+<td>3890.0</td>
+<td>2452.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[RIC]</td>
-<td>2.421</td>
-<td>0.259</td>
-<td>1.960</td>
-<td>2.920</td>
+<td>2.426</td>
+<td>0.250</td>
+<td>1.942</td>
+<td>2.869</td>
 <td>0.004</td>
 <td>0.003</td>
-<td>3907.0</td>
-<td>2528.0</td>
+<td>4692.0</td>
+<td>2709.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[RUS]</td>
-<td>2.753</td>
-<td>0.174</td>
-<td>2.437</td>
-<td>3.092</td>
+<td>2.763</td>
+<td>0.182</td>
+<td>2.400</td>
+<td>3.097</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>4625.0</td>
-<td>2669.0</td>
+<td>4262.0</td>
+<td>2571.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[SAI]</td>
-<td>2.554</td>
+<td>2.555</td>
 <td>0.173</td>
-<td>2.228</td>
-<td>2.865</td>
+<td>2.226</td>
+<td>2.881</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>4475.0</td>
-<td>2856.0</td>
+<td>4753.0</td>
+<td>2850.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[SAR]</td>
-<td>1.917</td>
-<td>0.472</td>
-<td>1.040</td>
-<td>2.794</td>
+<td>1.904</td>
+<td>0.470</td>
+<td>1.066</td>
+<td>2.829</td>
 <td>0.007</td>
 <td>0.005</td>
-<td>4408.0</td>
-<td>3437.0</td>
+<td>4711.0</td>
+<td>3213.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[STR]</td>
-<td>2.203</td>
-<td>0.280</td>
-<td>1.707</td>
-<td>2.748</td>
-<td>0.005</td>
+<td>2.208</td>
+<td>0.274</td>
+<td>1.709</td>
+<td>2.726</td>
 <td>0.004</td>
-<td>3535.0</td>
-<td>2543.0</td>
+<td>0.003</td>
+<td>3922.0</td>
+<td>2403.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[TSU]</td>
-<td>2.455</td>
-<td>0.120</td>
-<td>2.220</td>
-<td>2.671</td>
+<td>2.457</td>
+<td>0.125</td>
+<td>2.223</td>
+<td>2.696</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>4800.0</td>
-<td>3020.0</td>
+<td>4361.0</td>
+<td>2834.0</td>
 <td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[VER]</td>
-<td>3.747</td>
+<td>3.751</td>
 <td>0.076</td>
-<td>3.599</td>
-<td>3.892</td>
+<td>3.610</td>
+<td>3.898</td>
 <td>0.001</td>
 <td>0.001</td>
-<td>4629.0</td>
-<td>2855.0</td>
+<td>4973.0</td>
+<td>2994.0</td>
 <td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[ZHO]</td>
-<td>2.290</td>
-<td>0.239</td>
-<td>1.839</td>
-<td>2.736</td>
+<td>2.301</td>
+<td>0.248</td>
+<td>1.832</td>
+<td>2.780</td>
 <td>0.004</td>
 <td>0.003</td>
-<td>4797.0</td>
-<td>2443.0</td>
+<td>4305.0</td>
+<td>2409.0</td>
 <td>1.0</td>
 </tr>
 </tbody>
@@ -1856,7 +1937,12 @@ Sampling: [y]</code></pre>
 </section>
 <section id="posterior-predictive-checks" class="level3" data-number="4.6">
 <h3 data-number="4.6" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">4.6</span> Posterior predictive checks</h3>
-<p>Next we examine the posterior predictive distribution, which will help validate that the predictions the model is making make sense given the data. Below we plot several posterior graphs (from top to bottom, left to right): - the (grouped) posterior predictive distribution should closely replicate the pattern seen in the observed data <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> - the Bayesian p-value is the probability of the predicted data being equal to or less than the observed data. The ideal/expected outcome is represented by the dashed line (0.5), with the solid line being the KDE of the predicted data; the u-value represents the same idea as the p-value, but per observation - it should be roughly uniform <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> - LOO-PIT is the probability integral transform checed with LOO-CV; this should be close to uniform; difference between LOO-PIT empirical cumulative distribution function and the uniform cdf <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>Next we examine the posterior predictive distribution, which will help validate that the predictions the model is making make sense given the data. Below we plot several posterior graphs (from top to bottom, left to right):</p>
+<ul>
+<li>the (grouped) posterior predictive distribution should closely replicate the pattern seen in the observed data <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
+<li>the Bayesian p-value is the probability of the predicted data being equal to or less than the observed data. The ideal/expected outcome is represented by the dashed line (0.5), with the solid line being the KDE of the predicted data; the u-value represents the same idea as the p-value, but per observation - it should be roughly uniform <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></li>
+<li>LOO-PIT is the probability integral transform checed with LOO-CV; this should be close to uniform; difference between LOO-PIT empirical cumulative distribution function and the uniform cdf <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></li>
+</ul>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -1891,10 +1977,20 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>plot_posterior_predictive_checks(unpooled_idata)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-41-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-ppc" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;12: Posterior predictive checks, u/p-value, and LOO for the unpooled model</figcaption>
+</figure>
 </div>
 </div>
-<p>From the posterior predictive plots it seems that: - the posterior predictive samples roughly look like tha observed data, but the fit around the right tail isn’t the best. - the p-value plot shows that the model’s predictions are somewhat shifted to the right and the u-value plot indicates that the model is missing observations in the left tail <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> - LOO-PIT shows the model is likely biased, which agrees with the p/u-value plots.</p>
+</div>
+<p>From the posterior predictive plots it seems that:</p>
+<ul>
+<li>the posterior predictive samples roughly look like tha observed data, but the fit around the right tail isn’t the best.</li>
+<li>the p-value plot shows that the model’s predictions are somewhat shifted to the right and the u-value plot indicates that the model is missing observations in the left tail <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></li>
+<li>LOO-PIT shows the model is likely biased, which agrees with the p/u-value plots.</li>
+</ul>
 <p>Lastly, let’s plot the posterior predictive distributions for a few individual drivers:</p>
 <div class="cell">
 <details>
@@ -1916,7 +2012,12 @@ Sampling: [y]</code></pre>
 <span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>, <span class="dv">1</span>].set_title(<span class="st">"HAM"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-42-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-ppc-individual" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-individual-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;13: Posterior predictive plots of individual drivers for the unpooled model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1926,14 +2027,24 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>az.plot_posterior(unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ"</span>])<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-43-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-posterior-mean" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-mean-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;14: Posterior distributions of the μ parameter for the unpooled model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>The estimates look well formed; to make comparing the parameter value between drivers easier, we plot a forest of the 94% HDI <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ"</span>], combined<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-44-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-posterior-forest-log" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-log-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;15: Forest of the posterior distributions of μ for the unpooled model (log scale)</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>The probability distributions for the means broadly agree with our informal observations throughout the season - VER is scoring high above the rest, in an extremely consistent range, with HAM, ALO, and PER close to eachother for second place, a mixed, variable set of results for the midfield, and a few clear backmarker drivers.</p>
@@ -1941,7 +2052,12 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ_"</span>], combined<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-45-output-1.png" class="img-fluid"></p>
+<div id="fig-unpooled-posterior-forest" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;16: Forest of the posterior distributions of μ for the unpooled model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1954,15 +2070,17 @@ Sampling: [y]</code></pre>
 <pre><code>Computed from 4000 posterior samples and 260 observations log-likelihood matrix.
 
          Estimate       SE
-elpd_loo  -889.76    14.58
-p_loo       43.98        -
+elpd_loo  -890.07    14.57
+p_loo       44.35        -
+
+There has been a warning during the calculation. Please check the results.
 ------
 
 Pareto k diagnostic values:
                          Count   Pct.
-(-Inf, 0.5]   (good)      254   97.7%
- (0.5, 0.7]   (ok)          6    2.3%
-   (0.7, 1]   (bad)         0    0.0%
+(-Inf, 0.5]   (good)      251   96.5%
+ (0.5, 0.7]   (ok)          8    3.1%
+   (0.7, 1]   (bad)         1    0.4%
    (1, Inf)   (very bad)    0    0.0%</code></pre>
 </div>
 </div>
@@ -1979,7 +2097,12 @@ Pareto k diagnostic values:
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>psi_dist <span class="op">=</span> pz.Beta()</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>pz.maxent(psi_dist, <span class="fl">0.8</span>, <span class="fl">0.99</span>, <span class="fl">0.9</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-47-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-psi-prior" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-psi-prior-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;17: Prior distribution for the ψ parameter (probability of a non-zero value)</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -2018,7 +2141,12 @@ Pareto k diagnostic values:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(zi_unpooled_prior_samples, group<span class="op">=</span><span class="st">"prior"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-50-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-prior-predictive" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-prior-predictive-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;18: Prior predictive distribution for the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -2036,7 +2164,7 @@ Pareto k diagnostic values:
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [μ, α, ψ]
-Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 10 seconds.
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 7 seconds.
 Sampling: [y]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -2061,7 +2189,7 @@ Sampling: [y]</code></pre>
 
     <div>
       <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
-      100.00% [8000/8000 00:09&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [8000/8000 00:06&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     
 </div>
@@ -2087,7 +2215,7 @@ Sampling: [y]</code></pre>
 
     <div>
       <progress value="4000" class="" max="4000" style="width:300px; height:20px; vertical-align: middle;"></progress>
-      100.00% [4000/4000 00:05&lt;00:00]
+      100.00% [4000/4000 00:03&lt;00:00]
     </div>
     
 </div>
@@ -2096,7 +2224,12 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(zi_unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ"</span>], compact<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-52-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-traceplots" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-traceplots-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;19: Traceplots of the μ parameter for the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>BFMI and energy are reasonable:</p>
@@ -2107,7 +2240,12 @@ Sampling: [y]</code></pre>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"Energy Plot"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-53-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-energy" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-energy-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;20: Energy plot for the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p><code>r_hat</code> and ESS look good as well:</p>
@@ -2135,255 +2273,255 @@ Sampling: [y]</code></pre>
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[ALB]</td>
-<td>2.541</td>
-<td>0.115</td>
-<td>2.325</td>
+<td>2.543</td>
+<td>0.117</td>
+<td>2.313</td>
 <td>2.755</td>
 <td>0.001</td>
 <td>0.001</td>
-<td>6059.0</td>
-<td>2698.0</td>
-<td>1.00</td>
+<td>6935.0</td>
+<td>2916.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[ALO]</td>
-<td>3.153</td>
-<td>0.100</td>
-<td>2.952</td>
-<td>3.332</td>
+<td>3.150</td>
+<td>0.103</td>
+<td>2.964</td>
+<td>3.352</td>
 <td>0.001</td>
 <td>0.001</td>
-<td>6387.0</td>
-<td>2362.0</td>
-<td>1.00</td>
+<td>6889.0</td>
+<td>2785.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[BOT]</td>
-<td>2.626</td>
-<td>0.132</td>
-<td>2.364</td>
-<td>2.856</td>
+<td>2.628</td>
+<td>0.136</td>
+<td>2.367</td>
+<td>2.882</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>6166.0</td>
-<td>2553.0</td>
-<td>1.00</td>
+<td>7210.0</td>
+<td>3036.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[DEV]</td>
-<td>1.905</td>
-<td>0.182</td>
-<td>1.574</td>
-<td>2.251</td>
+<td>1.907</td>
+<td>0.187</td>
+<td>1.552</td>
+<td>2.247</td>
 <td>0.002</td>
 <td>0.002</td>
-<td>6665.0</td>
-<td>3017.0</td>
-<td>1.00</td>
+<td>6303.0</td>
+<td>2947.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[GAS]</td>
-<td>2.487</td>
-<td>0.226</td>
-<td>2.071</td>
-<td>2.920</td>
+<td>2.488</td>
+<td>0.223</td>
+<td>2.061</td>
+<td>2.903</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>6241.0</td>
-<td>2819.0</td>
-<td>1.00</td>
+<td>6542.0</td>
+<td>2615.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[HAM]</td>
-<td>3.118</td>
-<td>0.095</td>
-<td>2.927</td>
-<td>3.285</td>
+<td>3.116</td>
+<td>0.098</td>
+<td>2.919</td>
+<td>3.288</td>
 <td>0.001</td>
 <td>0.001</td>
-<td>5974.0</td>
-<td>2642.0</td>
-<td>1.00</td>
+<td>7676.0</td>
+<td>2780.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[HUL]</td>
-<td>2.214</td>
-<td>0.145</td>
-<td>1.928</td>
-<td>2.476</td>
+<td>2.215</td>
+<td>0.142</td>
+<td>1.950</td>
+<td>2.485</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>6685.0</td>
-<td>2551.0</td>
-<td>1.00</td>
+<td>7132.0</td>
+<td>2852.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[LEC]</td>
-<td>2.900</td>
-<td>0.152</td>
-<td>2.615</td>
-<td>3.188</td>
+<td>2.902</td>
+<td>0.150</td>
+<td>2.616</td>
+<td>3.186</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>5683.0</td>
-<td>2455.0</td>
-<td>1.00</td>
+<td>6608.0</td>
+<td>2743.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[MAG]</td>
-<td>2.314</td>
-<td>0.148</td>
-<td>2.040</td>
-<td>2.608</td>
+<td>2.310</td>
+<td>0.144</td>
+<td>2.043</td>
+<td>2.574</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>6671.0</td>
-<td>2811.0</td>
-<td>1.00</td>
+<td>6878.0</td>
+<td>2735.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[NOR]</td>
-<td>2.718</td>
-<td>0.155</td>
-<td>2.430</td>
-<td>3.012</td>
+<td>2.720</td>
+<td>0.152</td>
+<td>2.437</td>
+<td>3.014</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>7077.0</td>
-<td>3085.0</td>
-<td>1.00</td>
+<td>7287.0</td>
+<td>2621.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[OCO]</td>
-<td>2.507</td>
-<td>0.167</td>
-<td>2.194</td>
-<td>2.832</td>
+<td>2.502</td>
+<td>0.179</td>
+<td>2.156</td>
+<td>2.841</td>
 <td>0.002</td>
 <td>0.002</td>
-<td>4580.0</td>
-<td>2620.0</td>
-<td>1.00</td>
+<td>7008.0</td>
+<td>2607.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[PER]</td>
-<td>3.286</td>
-<td>0.108</td>
-<td>3.076</td>
-<td>3.481</td>
+<td>3.288</td>
+<td>0.106</td>
+<td>3.099</td>
+<td>3.489</td>
 <td>0.001</td>
 <td>0.001</td>
-<td>6277.0</td>
-<td>3305.0</td>
-<td>1.00</td>
+<td>6229.0</td>
+<td>2924.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[PIA]</td>
-<td>2.108</td>
-<td>0.209</td>
-<td>1.678</td>
-<td>2.471</td>
+<td>2.109</td>
+<td>0.198</td>
+<td>1.749</td>
+<td>2.486</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>6063.0</td>
-<td>2942.0</td>
-<td>1.00</td>
+<td>5975.0</td>
+<td>2605.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[RIC]</td>
-<td>2.424</td>
+<td>2.422</td>
 <td>0.251</td>
-<td>1.986</td>
-<td>2.922</td>
+<td>1.949</td>
+<td>2.907</td>
 <td>0.003</td>
 <td>0.002</td>
-<td>6185.0</td>
-<td>2844.0</td>
-<td>1.00</td>
+<td>6146.0</td>
+<td>2356.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[RUS]</td>
-<td>2.838</td>
-<td>0.149</td>
-<td>2.552</td>
-<td>3.110</td>
+<td>2.835</td>
+<td>0.144</td>
+<td>2.563</td>
+<td>3.104</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>6603.0</td>
-<td>2818.0</td>
-<td>1.00</td>
+<td>6627.0</td>
+<td>2795.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[SAI]</td>
-<td>2.626</td>
-<td>0.145</td>
-<td>2.366</td>
-<td>2.909</td>
+<td>2.628</td>
+<td>0.144</td>
+<td>2.360</td>
+<td>2.907</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>5862.0</td>
-<td>2395.0</td>
-<td>1.00</td>
+<td>6007.0</td>
+<td>2820.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[SAR]</td>
 <td>2.095</td>
-<td>0.250</td>
-<td>1.583</td>
-<td>2.540</td>
-<td>0.004</td>
+<td>0.252</td>
+<td>1.645</td>
+<td>2.594</td>
 <td>0.003</td>
-<td>4158.0</td>
-<td>2271.0</td>
-<td>1.00</td>
+<td>0.002</td>
+<td>5879.0</td>
+<td>2691.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[STR]</td>
-<td>2.450</td>
-<td>0.141</td>
-<td>2.191</td>
-<td>2.723</td>
+<td>2.448</td>
+<td>0.147</td>
+<td>2.185</td>
+<td>2.733</td>
 <td>0.002</td>
 <td>0.001</td>
-<td>6987.0</td>
-<td>2586.0</td>
-<td>1.00</td>
+<td>6496.0</td>
+<td>2851.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[TSU]</td>
-<td>2.457</td>
-<td>0.121</td>
-<td>2.233</td>
+<td>2.456</td>
+<td>0.122</td>
+<td>2.219</td>
 <td>2.682</td>
-<td>0.002</td>
 <td>0.001</td>
-<td>6605.0</td>
-<td>2735.0</td>
-<td>1.01</td>
+<td>0.001</td>
+<td>7460.0</td>
+<td>2687.0</td>
+<td>1.0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">μ[VER]</td>
-<td>3.751</td>
-<td>0.076</td>
-<td>3.610</td>
-<td>3.896</td>
+<td>3.750</td>
+<td>0.078</td>
+<td>3.597</td>
+<td>3.892</td>
 <td>0.001</td>
 <td>0.001</td>
-<td>6206.0</td>
-<td>2875.0</td>
-<td>1.00</td>
+<td>7493.0</td>
+<td>2837.0</td>
+<td>1.0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">μ[ZHO]</td>
-<td>2.484</td>
-<td>0.156</td>
-<td>2.193</td>
-<td>2.781</td>
+<td>2.485</td>
+<td>0.160</td>
+<td>2.183</td>
+<td>2.779</td>
 <td>0.002</td>
-<td>0.002</td>
-<td>5348.0</td>
-<td>2711.0</td>
-<td>1.00</td>
+<td>0.001</td>
+<td>5912.0</td>
+<td>2686.0</td>
+<td>1.0</td>
 </tr>
 </tbody>
 </table>
@@ -2394,11 +2532,22 @@ Sampling: [y]</code></pre>
 </section>
 <section id="posterior-predictive-checks-1" class="level3" data-number="5.5">
 <h3 data-number="5.5" class="anchored" data-anchor-id="posterior-predictive-checks-1"><span class="header-section-number">5.5</span> Posterior predictive checks</h3>
-<p>Posterior predictive checks look somewhat better: - the posterior predictive fits about as well, with a slightly thinner tail - p-value is still shifted - u-value is much closer to uniform - LOO-PIT still suggests bias, but it looks slightly better overall; the right tail of the posterior predictive still looks too fat and goes well above the maximum points possible in the ruleset, likely causing the bias and shifted predictions.</p>
+<p>Posterior predictive checks look somewhat better:</p>
+<ul>
+<li>the posterior predictive fits about as well, with a slightly thinner tail</li>
+<li>p-value is still shifted</li>
+<li>u-value is much closer to uniform</li>
+<li>LOO-PIT still suggests bias, but it looks slightly better overall; the right tail of the posterior predictive still looks too fat and goes well above the maximum points possible in the ruleset, likely causing the bias and shifted predictions.</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>plot_posterior_predictive_checks(zi_unpooled_idata)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-55-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-ppc" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-ppc-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;21: Posterior predictive checks, p/u-value, and LOO for the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -2408,7 +2557,12 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(zi_unpooled_idata, var_names<span class="op">=</span>[<span class="st">"μ_"</span>], combined<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-56-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-mu-forest" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-mu-forest-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;22: Forest plot of the posterior distribution of the exponentiated μ parameter for the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>As expected, compared to the basic model, the means have been pulled towards zero slightly and the HDIs have shrunk.</p>
@@ -2447,25 +2601,25 @@ Sampling: [y]</code></pre>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">zero inflated unpooled</td>
 <td>0</td>
-<td>-857.195803</td>
-<td>37.556046</td>
+<td>-857.315342</td>
+<td>37.602844</td>
 <td>0.000000</td>
-<td>0.860765</td>
-<td>15.440698</td>
-<td>0.000000</td>
-<td>False</td>
+<td>0.860751</td>
+<td>15.433125</td>
+<td>0.00000</td>
+<td>True</td>
 <td>log</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">unpooled</td>
 <td>1</td>
-<td>-889.761483</td>
-<td>43.984838</td>
-<td>32.565679</td>
-<td>0.139235</td>
-<td>14.581579</td>
-<td>10.665155</td>
-<td>False</td>
+<td>-890.073682</td>
+<td>44.352860</td>
+<td>32.758341</td>
+<td>0.139249</td>
+<td>14.570539</td>
+<td>10.71031</td>
+<td>True</td>
 <td>log</td>
 </tr>
 </tbody>
@@ -2477,7 +2631,12 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>az.plot_compare(comparison)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-58-output-1.png" class="img-fluid"></p>
+<div id="fig-zi-comparison" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-zi-comparison-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;23: Comparison of the performance of the unpooled and zero-inflated models</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <p>The zero-inflated model clearly seems to perform better <a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a>.</p>
@@ -2486,7 +2645,12 @@ Sampling: [y]</code></pre>
 <section id="driver-estimates" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="driver-estimates"><span class="header-section-number">6</span> Driver estimates</h2>
 <p>We have a reasonable looking, if a bit biased model for driver points, which we’ll now use to inform fantasy team construction.</p>
-<p>When picking drivers, we consider the following: - how many points per race is the driver expected to bring and how reliably - how likely is it that a given driver will outperform another driver, and by what magnitude - how underpriced/overpriced is a a driver given their performance</p>
+<p>When picking drivers, we consider the following:</p>
+<ul>
+<li>how many points per race is the driver expected to bring and how reliably</li>
+<li>how likely is it that a given driver will outperform another driver, and by what magnitude</li>
+<li>how underpriced/overpriced is a a driver given their performance</li>
+</ul>
 <p>While price analysis is out of the scope of this notebook, the points estimation model can help us with the first two questions.</p>
 <p>Below, we compare each driver to their rivals, using the difference of predicted points per race. To do so, we take the predictions generated from the posterior predictive distribution for each driver, subtract the two vectors, and take the mean. This reduces the posterior distributions to a point estimate, but still incorporates the uncertainty of the model, as we work directly with values generated from the posterior. The value can be seen both as confidence driver x is better than driver y - higher is better, and as the points we expect driver x to earn over driver y on average.</p>
 <div class="callout callout-style-default callout-caution callout-titled">
@@ -2550,7 +2714,12 @@ Caution
 <span id="cb68-17"><a href="#cb68-17" aria-hidden="true" tabindex="-1"></a>).<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Driver points expected over rival"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-61-output-1.png" class="img-fluid"></p>
+<div id="fig-drivers-comparison" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-drivers-comparison-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;24: Expected points earned by driver x over driver y using the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -2567,21 +2736,36 @@ Caution
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>mu_const_dist <span class="op">=</span> pz.Normal()</span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>pz.maxent(mu_const_dist, np.log(<span class="dv">2</span>), np.log(<span class="dv">30</span>), <span class="fl">0.9</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-63-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-mu-prior" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-mu-prior-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;25: Prior for the μ parameter for fitting the zero inflated model to the constructor data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>alpha_const_dist <span class="op">=</span> pz.Gamma()</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>pz.maxent(alpha_const_dist, <span class="dv">1</span>, <span class="dv">10</span>, <span class="fl">.9</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-64-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-alpha-prior" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-alpha-prior-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;26: Prior for the α parameter for fitting the zero inflated model to the constructor data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>psi_const_dist <span class="op">=</span> pz.Beta()</span>
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>pz.maxent(psi_const_dist, <span class="fl">.9</span>, <span class="fl">.99</span>, <span class="fl">.9</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-65-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-psi-prior" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-psi-prior-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;27: Prior for the ψ parameter for fitting the zero inflated model to the constructor data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -2614,7 +2798,12 @@ Caution
 <div class="cell">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>az.plot_ppc(const_prior_pred, group<span class="op">=</span><span class="st">"prior"</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-68-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-prior-predictive" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-prior-predictive-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;28: Prior predictive distribution for the zero-inflated model when fitted to the constructors data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -2626,7 +2815,7 @@ Caution
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
 NUTS: [μ, α, ψ]
-Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 6 seconds.
+Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 4 seconds.
 Sampling: [y]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -2651,7 +2840,7 @@ Sampling: [y]</code></pre>
 
     <div>
       <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
-      100.00% [8000/8000 00:05&lt;00:00 Sampling 4 chains, 0 divergences]
+      100.00% [8000/8000 00:03&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     
 </div>
@@ -2677,7 +2866,7 @@ Sampling: [y]</code></pre>
 
     <div>
       <progress value="4000" class="" max="4000" style="width:300px; height:20px; vertical-align: middle;"></progress>
-      100.00% [4000/4000 00:03&lt;00:00]
+      100.00% [4000/4000 00:02&lt;00:00]
     </div>
     
 </div>
@@ -2685,13 +2874,23 @@ Sampling: [y]</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>az.plot_trace(const_idata, var_names<span class="op">=</span>[<span class="st">"μ"</span>], compact<span class="op">=</span><span class="va">False</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-70-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-traceplots" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-traceplots-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;29: Traceplots of the μ parameter for the zero-inflated model when fitted to the constructors data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>plot_posterior_predictive_checks(const_idata)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-71-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-ppc" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-ppc-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;30: Posterior predictive checks, p/u-value, and LOO for the zero-inflated model when fitted to the constructors data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -2700,8 +2899,8 @@ Sampling: [y]</code></pre>
 <pre><code>Computed from 4000 posterior samples and 130 observations log-likelihood matrix.
 
          Estimate       SE
-elpd_loo  -439.75     9.32
-p_loo       11.94        -
+elpd_loo  -439.55     9.30
+p_loo       11.80        -
 ------
 
 Pareto k diagnostic values:
@@ -2715,7 +2914,12 @@ Pareto k diagnostic values:
 <div class="cell">
 <div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>az.plot_forest(const_idata, var_names<span class="op">=</span>[<span class="st">"μ_"</span>], combined<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-73-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-forest-mu" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-forest-mu-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;31: Forest of the posterior distribution of the μ parameter for the zero-inflated model when fitted to the constructors data</figcaption>
+</figure>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -2742,7 +2946,12 @@ Pareto k diagnostic values:
 <span id="cb84-19"><a href="#cb84-19" aria-hidden="true" tabindex="-1"></a>).<span class="bu">set</span>(title<span class="op">=</span><span class="st">"Constructor points expected over rival"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<p><img src="fantasy-gp-mcmc_files/figure-html/cell-74-output-1.png" class="img-fluid"></p>
+<div id="fig-constructors-comparison" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="fantasy-gp-mcmc_files/figure-html/fig-constructors-comparison-output-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;32: Expected points earned by constructor x over constructor y using the zero-inflated model</figcaption>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -2753,26 +2962,24 @@ Pareto k diagnostic values:
 <div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext watermark</span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>watermark <span class="op">-</span>n <span class="op">-</span>u <span class="op">-</span>v <span class="op">-</span>iv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>The watermark extension is already loaded. To reload it, use:
-  %reload_ext watermark
-Last updated: Mon Sep 04 2023
+<pre><code>Last updated: Tue Sep 05 2023
 
 Python implementation: CPython
 Python version       : 3.11.4
 IPython version      : 8.14.0
 
-sys       : 3.11.4 (main, Jun 28 2023, 19:51:46) [GCC]
-scipy     : 1.10.1
-requests  : 2.31.0
-numpy     : 1.25.2
-pandas    : 2.1.0
 arviz     : 0.16.1
 preliz    : 0.3.2
-pymc      : 5.7.2
-seaborn   : 0.12.2
-matplotlib: 3.7.2
-json      : 2.0.9
+scipy     : 1.10.1
 tqdm      : 4.66.1
+matplotlib: 3.7.2
+sys       : 3.11.4 (main, Jun 28 2023, 19:51:46) [GCC]
+requests  : 2.31.0
+pandas    : 2.1.0
+pymc      : 5.7.2
+numpy     : 1.25.2
+json      : 2.0.9
+seaborn   : 0.12.2
 </code></pre>
 </div>
 </div>
