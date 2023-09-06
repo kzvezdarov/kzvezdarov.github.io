@@ -3,12 +3,16 @@ project:
   output-dir: docs
 
 website:
-  title: "kzvezdarov.github.io"
+  title: "Kiril Zvezdarov's Blog"
+  site-url: https://kirilzvezdarov.com
+  description: "Kiril Zvezdarov's Blog"
   navbar:
     right:
       - about.qmd
       - icon: github
         href: https://github.com/kzvezdarov
+      - icon: rss
+        href: index.xml
 format:
   html:
     theme: simplex
