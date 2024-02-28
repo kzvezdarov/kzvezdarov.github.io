@@ -6,10 +6,10 @@
       version="2.0">
 <channel>
 <title>Kiril Zvezdarov&#39;s Blog</title>
-<link>https://kirilzvezdarov.com/index.html</link>
+<link>https://kirilzvezdarov.com/</link>
 <atom:link href="https://kirilzvezdarov.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Kiril Zvezdarov&#39;s Blog</description>
-<generator>quarto-1.3.361</generator>
+<generator>quarto-1.4.550</generator>
 <lastBuildDate>Thu, 31 Aug 2023 04:00:00 GMT</lastBuildDate>
 <item>
   <title>Modeling Formula 1 Fantasy GP points with PyMC</title>
@@ -20,8 +20,11 @@
 
 
 
-<div class="cell">
-<details>
+
+<section id="modeling-formula-1-fantasy-gp-points-with-pymc" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Modeling Formula 1 Fantasy GP points with PyMC</h1>
+<div id="11dd86a5-e957-4822-af94-42309cfdb83d" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -174,19 +177,19 @@ Disclaimer
 <p>I have a fairly limited knowledge of Bayesian statistics and modeling; this notebook shouldn’t be considered authoritative of prescriptive in any way. It is mostly a collection of notes, reflecting ongoing learning.</p>
 </div>
 </div>
-<section id="data-acquisition" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="data-acquisition"><span class="header-section-number">1</span> Data acquisition</h2>
+<section id="data-acquisition" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="data-acquisition"><span class="header-section-number">1.1</span> Data acquisition</h2>
 <p>We start by acquiring data for the 2023 season. The <a href="http://ergast.com/mrd/">Ergast API</a> hosts statistics for Formula 1 races from the 1950s to the present day and exposes convenient endpoints for querying both <a href="http://ergast.com/mrd/methods/qualifying/">qualifying</a> and <a href="http://ergast.com/mrd/methods/results/">grand prix results</a>.</p>
 <p>First, we define some convenience functions to query the raw json data:</p>
-<div class="cell">
+<div id="0bd7f0a2-e72f-4dad-bec6-1df50ad66617" class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">API <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"http://ergast.com/api/f1"</span></span></code></pre></div>
 </div>
-<div class="cell">
-<details>
+<div id="96e95017-4888-4cf2-b9bd-6fdfed9d8b97" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">DATASET_PATH <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -337,7 +340,7 @@ background-color: null;
 font-style: inherit;">return</span> results</span></code></pre></div>
 </details>
 </div>
-<div class="cell">
+<div id="3ae984ed-297a-400b-944a-2b27b9038953" class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">gp_data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> load_dataset(<span class="st" style="color: #20794D;
@@ -354,8 +357,8 @@ background-color: null;
 font-style: inherit;">2023</span>)</span></code></pre></div>
 </div>
 <p>Next, we unnest it into a row-wise format and load it as a Pandas dataframe for ease of use:</p>
-<div class="cell">
-<details>
+<div id="5713c8b1-22a6-4baf-ae55-9791515dce97" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -601,12 +604,13 @@ font-style: inherit;">"driver"</span>])</span>
 <span id="cb6-64">    )</span></code></pre></div>
 </details>
 </div>
-<div class="cell">
+<div id="5de8cadd-8494-4211-b405-cc36346375aa" class="cell">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">gp_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <span id="cb7-2">gp_df</span></code></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -756,12 +760,14 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 </div>
 </div>
 </div>
-<div class="cell">
+</div>
+<div id="eb2865ed-2cff-4dd9-a10b-93b7e6e90c39" class="cell">
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">quali_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> quali_results_to_dataframe(quali_data)</span>
 <span id="cb8-2">quali_df</span></code></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -859,8 +865,9 @@ font-style: inherit;">=</span> quali_results_to_dataframe(quali_data)</span>
 </div>
 </div>
 </div>
+</div>
 <p>Finally, we join the grand prix and qualifying dataframes together, forming the base dataset for our analysis; we also rename all entries credited to Liam Lawson (LAW) to Daniel Ricciardio (RIC), as Fantasy GP credits points from the temporary reserve driver to the driver they replace:</p>
-<div class="cell">
+<div id="25a5d343-64c0-4d69-87c9-73dff02e0791" class="cell">
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> gp_df.join(quali_df[[<span class="st" style="color: #20794D;
@@ -880,6 +887,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <span id="cb9-3">)</span>
 <span id="cb9-4">data_df</span></code></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -1042,9 +1050,10 @@ font-style: inherit;">"RIC"</span>}</span>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="fantasy-points" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="fantasy-points"><span class="header-section-number">2</span> Fantasy points</h2>
+<section id="fantasy-points" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="fantasy-points"><span class="header-section-number">1.2</span> Fantasy points</h2>
 <p>Fantasy GP points per team/driver are <a href="https://fantasygp.com/about/guide/">calculated in the following way</a>:</p>
 <ul>
 <li>drivers earn the points scored during the grand prix, 10pts for taking pole position, 2pts per position gained on Sunday, and 5 points each for beating their teammate during qualifying and the race itself.</li>
@@ -1052,7 +1061,7 @@ font-style: inherit;">"RIC"</span>}</span>
 </ul>
 <p>To simplify the problem, we completely ignore sprint races (as should everyone).</p>
 <p>The race finish status classification has several detailed categories:</p>
-<div class="cell">
+<div id="e0f66f62-f8c8-4d68-a172-8ab8515a759c" class="cell">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">data_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"status"</span>].dtype</span></code></pre></div>
@@ -1065,7 +1074,7 @@ font-style: inherit;">"status"</span>].dtype</span></code></pre></div>
 </div>
 </div>
 <p>Fantasy GP scoring only cares whether a car finished or not, so we define the following set of categories to indiciate a finish:</p>
-<div class="cell">
+<div id="ea99e41d-d5fe-4a26-bde7-856c4f54e256" class="cell">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">STATUS_FINISHED <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
@@ -1077,7 +1086,7 @@ background-color: null;
 font-style: inherit;">"+2 Laps"</span>]</span></code></pre></div>
 </div>
 <p>While our dataset has the WDC points scored per driver/constructor already, positions gained and performance vs.&nbsp;teammate need to be added in:</p>
-<div class="cell">
+<div id="b2acaa5d-151b-4a75-87ad-86f28f8c73c2" class="cell">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">def</span> add_scoring_cols(df: pd.DataFrame) <span class="op" style="color: #5E5E5E;
@@ -1247,8 +1256,8 @@ background-color: null;
 font-style: inherit;">=</span> add_scoring_cols(data_df)</span></code></pre></div>
 </div>
 <p>This leaves us with the following dataframe:</p>
-<div class="cell">
-<details>
+<div id="416d15a4-d6df-4852-914d-cdd246fcac6d" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">data_df[</span>
 <span id="cb14-2">    [</span>
@@ -1274,6 +1283,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <span id="cb14-10">]</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -1410,6 +1420,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 </div>
 </div>
 </div>
+</div>
 <p>Finally, we can score the Fantasy GP points; we define the scoring function for the driver to be the sum of:</p>
 <ul>
 <li>WDC points</li>
@@ -1419,7 +1430,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <li>2 per position gained at the end of the race</li>
 </ul>
 <p>Note that a driver who did not finish the race on Sunday can still earn points from the qualifying session.</p>
-<div class="cell">
+<div id="1ab83315-fec2-484d-9c8f-f108172f1c02" class="cell">
 <div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">def</span> score_driver(x):</span>
@@ -1486,7 +1497,7 @@ font-style: inherit;">0</span></span>
 <li>5 points if both cars finished, 2 if only one did</li>
 <li>1 point per position gained at the end of the race per car</li>
 </ul>
-<div class="cell">
+<div id="27c01794-fd9f-478c-acc7-496e62044295" class="cell">
 <div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">def</span> score_constructor(x):</span>
@@ -1546,8 +1557,8 @@ background-color: null;
 font-style: inherit;">+</span> finish_bonus</span></code></pre></div>
 </div>
 <p>Just from the rules definition it is clear that drivers have a higher points earnign ceiling but much higher variance, whereas constructors are more consistent but earn fewer points.</p>
-<div class="cell">
-<details>
+<div id="b2a56557-1733-4346-b888-288543b4e375" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -1599,8 +1610,8 @@ font-style: inherit;">"constructor_points"</span>],</span>
 </details>
 </div>
 <p>The scored dataframe looks like this:</p>
-<div class="cell">
-<details>
+<div id="a1ecc81b-1e0c-4949-9eac-4056687fb096" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1612,6 +1623,7 @@ background-color: null;
 font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -1696,6 +1708,7 @@ font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div>
 </div>
 </div>
 </div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1710,11 +1723,11 @@ Note
 </div>
 </div>
 </section>
-<section id="data-exploration" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="data-exploration"><span class="header-section-number">3</span> Data exploration</h2>
+<section id="data-exploration" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="data-exploration"><span class="header-section-number">1.3</span> Data exploration</h2>
 <p>Now we visualize the data to get a better idea of its properties. First, some basic box plots for each driver/constructor:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-driver-points" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1816,16 +1829,20 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-driver-points" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-driver-points-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;1: Fantasy points earned by each driver in 2023</figcaption>
+<div id="fig-driver-points" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-driver-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-driver-points-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-driver-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Fantasy points earned by each driver in 2023
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>For convenience, we create a constructor-specific dataframe by taking the first row for each constructor for each race. This gets rid of the duplicate data (as constructor points were duplicated across both drivers):</p>
-<div class="cell">
+<div id="e9969bc2-6af1-45f3-9c68-4670505efe17" class="cell">
 <div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">const_data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> data_df.groupby([<span class="st" style="color: #20794D;
@@ -1834,8 +1851,8 @@ font-style: inherit;">"circuit"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor"</span>]).first().reset_index()</span></code></pre></div>
 </div>
-<div class="cell">
-<details>
+<div id="cell-fig-constructor-points" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1937,18 +1954,22 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-constructor-points" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructor-points-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;2: Fantasy points earned by each constructor in 2023</figcaption>
+<div id="fig-constructor-points" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructor-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructor-points-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructor-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Fantasy points earned by each constructor in 2023
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>These look quite similar and expose the brutal reality of Red Bull’s total dominance over the field. Matching our intuition from the rules definition, drivers appear to earn more and have wider variance in points scored, comapred to teams, with the exception of Max Verstappen and his absurd consistency.</p>
 <p>Next, we plot the kernel density estimate of the driver points to gain a better idea of the overall distribution:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-driver-points-kde" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">g <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1994,16 +2015,20 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-driver-points-kde" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-driver-points-kde-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;3: Kernel density estimates for fantasy points earned by each driver in 2023</figcaption>
+<div id="fig-driver-points-kde" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-driver-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-driver-points-kde-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-driver-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Kernel density estimates for fantasy points earned by each driver in 2023
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<details>
+<div id="cell-fig-constructor-points-kde" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">g <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2056,17 +2081,21 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-constructor-points-kde" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructor-points-kde-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;4: Kernel density estimates for fantasy points earned by each constructor in 2023</figcaption>
+<div id="fig-constructor-points-kde" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructor-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructor-points-kde-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructor-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Kernel density estimates for fantasy points earned by each constructor in 2023
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>The distribution of points is spread and somewhat multi-peaked in both cases; again, constructors appear score in a much more consistent range compared to drivers. The pooled observed points distributions are:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-grouped-points-kde" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">f, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2147,21 +2176,25 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-grouped-points-kde" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-grouped-points-kde-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;5: Grouped kernel density estimates for fantasy points by drivers/constructors in 2023</figcaption>
+<div id="fig-grouped-points-kde" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grouped-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-grouped-points-kde-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grouped-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Grouped kernel density estimates for fantasy points by drivers/constructors in 2023
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>Given that the point distributions between drivers and constructors appear very similar, we’ll focus on constructing models of the driver points, which we can later fit to the constructor data with minor adjustments.</p>
 </section>
-<section id="unpooled-model" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="unpooled-model"><span class="header-section-number">4</span> Unpooled model</h2>
+<section id="unpooled-model" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="unpooled-model"><span class="header-section-number">1.4</span> Unpooled model</h2>
 <p>Our first model will be the simplest possible - we just directly estimate the mean points for each driver individually (an intercept-only, unpooled linear model).</p>
-<section id="picking-the-likelihood" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="picking-the-likelihood"><span class="header-section-number">4.1</span> Picking the likelihood</h3>
+<section id="picking-the-likelihood" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="picking-the-likelihood"><span class="header-section-number">1.4.1</span> Picking the likelihood</h3>
 <p>The points data has several properties that stem from the Fantasy GP ruleset:</p>
 <ul>
 <li>points are discrete</li>
@@ -2169,8 +2202,8 @@ font-style: inherit;">;</span></span></code></pre></div>
 <li>most drivers have a few 0 point finishes, but overall it’s very unlikely for a driver to score 0 points consistently.</li>
 </ul>
 <p>Because we are modeling discrete, strictly positive points, one of the count distributions is likely an appropriate choice for the likelihood. The <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Poisson.html">Poisson</a> distribution could be a good choice, but the observations appear overdispersed, as measured by the <a href="https://en.wikipedia.org/wiki/Index_of_dispersion">coefficient of dispersion</a>:</p>
-<div class="cell">
-<details>
+<div id="42ee4305-73b5-4af3-a44d-29b77850e998" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2235,12 +2268,12 @@ Name: driver_points, dtype: float64</code></pre>
 </div>
 <p>Given that, we will pick the <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html">Negative Binomial</a> as our likelihood, since it handles overdispersion better<sup>1</sup>.</p>
 </section>
-<section id="choosing-the-priors" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="choosing-the-priors"><span class="header-section-number">4.2</span> Choosing the priors</h3>
+<section id="choosing-the-priors" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="choosing-the-priors"><span class="header-section-number">1.4.2</span> Choosing the priors</h3>
 <p>A <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html">Negative Binomial</a> likelihood is defined by two parameters - its mean μ, and a shape parameter α. We’ll need to set priors on both.</p>
 <p>The mean is restricted to be positive only. The standard way of defining a negative binomial linear model is to set a Normal prior on the mean and use the exponentiation as the inverse link function to make it positive and usable for parameterizing the likelihood. For the actual prior parameters it would be reasonable to go with a fairly uninformative prior, such as <code>Normal(mu=0, sigma=1)</code>; in this case, prior knowledge and the ruleset gives us a hunch that we can reasonably expect most drivers’ mean points per race to be somewhere between 5 (backmarker, occasionally beats their teammate, maybe gains a place) and 30 (top driver &amp; team, consistently getting and winning from pole position).</p>
 <p>To come up with parameter values for this, we use the <a href="https://preliz.readthedocs.io/en/latest/">PreliZ</a> library to find a maximum entropy <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Normal.html">Normal</a> distribution with 90% of its mass between 5 and 30 (we take the natural log of those, given the exponential inverse link):</p>
-<div class="cell">
+<div id="cell-fig-mu-prior" class="cell">
 <div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">mu_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Normal()</span>
@@ -2254,17 +2287,21 @@ font-style: inherit;">0.90</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-mu-prior" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-mu-prior-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;6: PDF of the prior chosen for μ</figcaption>
+<div id="fig-mu-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mu-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-mu-prior-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mu-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: PDF of the prior chosen for μ
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>The shape parameter α is also strictly positive. Its effect on the likelihood can be best understood by plotting a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html">Negative Binomial</a> for a few different values, while keeping the mean fixed:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-nb-shape" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1">f, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2395,16 +2432,20 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-nb-shape" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-nb-shape-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;7: Negative binomial distributions with a fixed mean at different shape parameters</figcaption>
+<div id="fig-nb-shape" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-nb-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-nb-shape-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-nb-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Negative binomial distributions with a fixed mean at different shape parameters
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>As α increases, the tails shrink. We don’t want very high values, as that will restrict the tails too much, but very small values result in absurdly long tails. To handle that, we use a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Gamma.html">Gamma</a> distribution, with mass strongly concentrated between 1 and 20:</p>
-<div class="cell">
+<div id="cell-fig-alpha-prior" class="cell">
 <div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">alpha_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Gamma()</span>
@@ -2418,16 +2459,20 @@ font-style: inherit;">.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-alpha-prior" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-alpha-prior-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;8: PDF of the prior chosen for α</figcaption>
+<div id="fig-alpha-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-alpha-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-alpha-prior-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-alpha-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: PDF of the prior chosen for α
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>Finally, we prepare the data for use within the model. We factorize the <code>driver</code> column into labels and an index:</p>
-<div class="cell">
+<div id="349ca646-0714-4338-8613-c4ac870344e7" class="cell">
 <div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">idx, labels <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.factorize(data_df[<span class="st" style="color: #20794D;
@@ -2439,7 +2484,7 @@ background-color: null;
 font-style: inherit;">True</span>)</span></code></pre></div>
 </div>
 <p><code>labels</code> is a categorical variable over the driver names:</p>
-<div class="cell">
+<div id="f23862b3-e0f7-437b-8ba9-60af46f10a99" class="cell">
 <div class="cell-output cell-output-display">
 <pre><code>CategoricalIndex(['ALB', 'ALO', 'BOT', 'DEV', 'GAS', 'HAM', 'HUL', 'LEC',
                   'MAG', 'NOR', 'OCO', 'PER', 'PIA', 'RIC', 'RUS', 'SAI',
@@ -2448,7 +2493,7 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 </div>
 </div>
 <p><code>idx</code> is the flattened (race number, driver) index into the observed race result rows:</p>
-<div class="cell">
+<div id="8d421513-9417-41d4-a222-42b0858a3d4f" class="cell">
 <div class="cell-output cell-output-display">
 <pre><code>array([19, 11,  1, 15,  5, 17, 14,  2,  4,  0, 18, 16,  8,  3,  6, 20,  9,
        10,  7, 12, 11, 19,  1, 14,  5, 15,  7, 10,  4,  8, 18,  6, 20,  3,
@@ -2470,7 +2515,7 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 </div>
 </div>
 <p>We also extract the observed points:</p>
-<div class="cell">
+<div id="eb0cc275-0ef0-40b1-aba1-66303e1de1ee" class="cell">
 <div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">driver_points <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> data_df[<span class="st" style="color: #20794D;
@@ -2493,11 +2538,11 @@ Name: driver_points, Length: 280, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="model-definition" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="model-definition"><span class="header-section-number">4.3</span> Model definition</h3>
+<section id="model-definition" class="level3" data-number="1.4.3">
+<h3 data-number="1.4.3" class="anchored" data-anchor-id="model-definition"><span class="header-section-number">1.4.3</span> Model definition</h3>
 <p>Next, we define the model with <a href="https://www.pymc.io/">PyMC</a>. As discussed previously, we think that the process that generates points can be seen as a Negative Binomial distribution, so that is set as the likelihood. The mean (μ) аnd shape (α) are the parameters that we want to infer from the data. Finally, the prior guesses for these parameters are set from the <code>mu_dist</code> and <code>alpha_dist</code> objects we computed previously.</p>
 <p>This translates to:</p>
-<div class="cell">
+<div id="02920709-0edb-4f55-a500-22a7ea3cb7cf" class="cell">
 <div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> pm.Model(coords<span class="op" style="color: #5E5E5E;
@@ -2557,10 +2602,10 @@ font-style: inherit;">"idx"</span></span>
 <span id="cb35-9">    )</span></code></pre></div>
 </div>
 </section>
-<section id="prior-predictive-checks" class="level3" data-number="4.4">
-<h3 data-number="4.4" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">4.4</span> Prior predictive checks</h3>
+<section id="prior-predictive-checks" class="level3" data-number="1.4.4">
+<h3 data-number="1.4.4" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">1.4.4</span> Prior predictive checks</h3>
 <p>To see if the choice for priors is acceptable, we sample from the prior predictive and plot the results:</p>
-<div class="cell">
+<div id="ed158fc1-3308-4467-b16a-8e37c18b2272" class="cell">
 <div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> unpooled_negb:</span>
@@ -2575,7 +2620,7 @@ font-style: inherit;">1000</span>)</span></code></pre></div>
 <pre><code>Sampling: [y, α, μ]</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-unpooled-prior-predictive" class="cell">
 <div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1">az.plot_ppc(unpooled_prior_samples, group<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -2590,20 +2635,24 @@ font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-prior-predictive" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-prior-predictive-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;9: Prior predictive distribution of the unpooled model</figcaption>
+<div id="fig-unpooled-prior-predictive" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-prior-predictive-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Prior predictive distribution of the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>The prior predictive is quite wide, with a very long and somewhat fat tail, but overall the data could be plausibly seen as coming from it.</p>
 </section>
-<section id="inference-and-diagnostics" class="level3" data-number="4.5">
-<h3 data-number="4.5" class="anchored" data-anchor-id="inference-and-diagnostics"><span class="header-section-number">4.5</span> Inference and diagnostics</h3>
+<section id="inference-and-diagnostics" class="level3" data-number="1.4.5">
+<h3 data-number="1.4.5" class="anchored" data-anchor-id="inference-and-diagnostics"><span class="header-section-number">1.4.5</span> Inference and diagnostics</h3>
 <p>Next, we perform the actual inference step - we sample from the posterior and the posterior predictive distribution:</p>
-<div class="cell">
+<div id="0ee4f78c-b89f-49b9-9f02-e7a014ea61b2" class="cell">
 <div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> unpooled_negb:</span>
@@ -2688,7 +2737,7 @@ Sampling: [y]</code></pre>
 </div>
 <p>There are no divergences detected, which is a good first sign that the model has converged.</p>
 <p>To check the sampling process we plot the traces for the μ parameter. What we are looking for is similar densities on the left (indicating that the chains have converged to the same posterior distribution), and noisy/patternless trace plots on the right (which would indicate that the sampler was able to efficiently run through the sample space)<sup>2</sup>:</p>
-<div class="cell">
+<div id="cell-fig-unpooled-traceplots" class="cell">
 <div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1">az.plot_trace(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -2701,18 +2750,22 @@ font-style: inherit;">False</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-traceplots" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-traceplots-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;10: Traceplots of the inferred parameter μ for the unpooled model</figcaption>
+<div id="fig-unpooled-traceplots" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-traceplots-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Traceplots of the inferred parameter μ for the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>There are a few kinks here and there (see RIC), but overall these look good.</p>
 <p>Next we plot the <a href="https://python.arviz.org/en/latest/api/generated/arviz.plot_energy.html#r74895e2d4323-1">energy plot</a> and <a href="https://python.arviz.org/en/latest/api/generated/arviz.bfmi.html#arviz.bfmi">BFMI</a>. Ideally the marginal energy and energy transition distributions should overlap as much as possible, and BFMI should be to be above .3:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-unpooled-energy" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">ax <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2724,10 +2777,14 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-energy" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-energy-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;11: Energy plot for the unpooled model</figcaption>
+<div id="fig-unpooled-energy" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-energy-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Energy plot for the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
@@ -2738,13 +2795,14 @@ font-style: inherit;">;</span></span></code></pre></div>
 <li><code>r_hat</code> should ideally equal 1, with values over 1.01 convergence issues <sup>4</sup></li>
 <li><code>mcse_{mean, sd}</code> is the Monte Carlo Standard Error, or the error introduced by approximating the posterior with a finite number of samples; lower = better <sup>5</sup></li>
 </ul>
-<div class="cell">
+<div id="ad237f09-d7b1-41fe-acf7-05cb178d0446" class="cell">
 <div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">az.summary(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -3022,18 +3080,19 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </div>
 </div>
 </div>
+</div>
 <p>All of the sampling diagnistics look good, which means the model has converged and we can move on to posterior predictive checks and model evaluation.</p>
 </section>
-<section id="posterior-predictive-checks" class="level3" data-number="4.6">
-<h3 data-number="4.6" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">4.6</span> Posterior predictive checks</h3>
+<section id="posterior-predictive-checks" class="level3" data-number="1.4.6">
+<h3 data-number="1.4.6" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">1.4.6</span> Posterior predictive checks</h3>
 <p>Next we examine the posterior predictive distribution, which will help validate that the predictions the model is making make sense given the data. Below we plot several posterior graphs (from top to bottom, left to right):</p>
 <ul>
 <li>the (grouped) posterior predictive distribution should closely replicate the pattern seen in the observed data <sup>6</sup></li>
 <li>the Bayesian p-value is the probability of the predicted data being equal to or less than the observed data. The ideal/expected outcome is represented by the dashed line (0.5), with the solid line being the KDE of the predicted data; the u-value represents the same idea as the p-value, but per observation - it should be roughly uniform <sup>7</sup></li>
 <li>LOO-PIT is the probability integral transform checed with LOO-CV; this should be close to uniform; difference between LOO-PIT empirical cumulative distribution function and the uniform cdf <sup>8</sup></li>
 </ul>
-<div class="cell">
-<details>
+<div id="2d860ab9-1bb9-4e29-a2aa-8733103ddf61" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><span class="kw" style="color: #003B4F;
 background-color: null;
@@ -3159,15 +3218,19 @@ background-color: null;
 font-style: inherit;">return</span> (ax_ppc, ax_bpv, ax_uv, ax_loo_pit_ecdf, ax_loo_pit)</span></code></pre></div>
 </details>
 </div>
-<div class="cell">
+<div id="cell-fig-unpooled-ppc" class="cell">
 <div class="sourceCode cell-code" id="cb45" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1">plot_posterior_predictive_checks(unpooled_idata)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-ppc" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;12: Posterior predictive checks, u/p-value, and LOO for the unpooled model</figcaption>
+<div id="fig-unpooled-ppc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Posterior predictive checks, u/p-value, and LOO for the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
@@ -3179,8 +3242,8 @@ font-style: inherit;">;</span></span></code></pre></div>
 <li>LOO-PIT shows the model is likely biased, which agrees with the p/u-value plots.</li>
 </ul>
 <p>Lastly, let’s plot the posterior predictive distributions for a few individual drivers:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-unpooled-ppc-individual" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb46" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1">fig, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3283,19 +3346,23 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-ppc-individual" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-individual-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;13: Posterior predictive plots of individual drivers for the unpooled model</figcaption>
+<div id="fig-unpooled-ppc-individual" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-ppc-individual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-individual-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-ppc-individual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Posterior predictive plots of individual drivers for the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="posterior-evaluation" class="level3" data-number="4.7">
-<h3 data-number="4.7" class="anchored" data-anchor-id="posterior-evaluation"><span class="header-section-number">4.7</span> Posterior evaluation</h3>
+<section id="posterior-evaluation" class="level3" data-number="1.4.7">
+<h3 data-number="1.4.7" class="anchored" data-anchor-id="posterior-evaluation"><span class="header-section-number">1.4.7</span> Posterior evaluation</h3>
 <p>We are reasonably confident that the model has converged and that there were no issues during sampling. Predictions seem to be somewhat biased, but still reasonable for our purposes. Now it’s time to check the posterior distributions of the estimated parameter μ:</p>
-<div class="cell">
+<div id="cell-fig-unpooled-posterior-mean" class="cell">
 <div class="sourceCode cell-code" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1">az.plot_posterior(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -3304,16 +3371,20 @@ font-style: inherit;">"μ"</span>])<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-posterior-mean" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-mean-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;14: Posterior distributions of the μ parameter for the unpooled model</figcaption>
+<div id="fig-unpooled-posterior-mean" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-posterior-mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-mean-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-posterior-mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Posterior distributions of the μ parameter for the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>The estimates look well formed; to make comparing the parameter value between drivers easier, we plot a forest of the 94% HDI <sup>10</sup>:</p>
-<div class="cell">
+<div id="cell-fig-unpooled-posterior-forest-log" class="cell">
 <div class="sourceCode cell-code" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">az.plot_forest(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -3332,17 +3403,21 @@ font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-posterior-forest-log" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-log-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;15: Forest of the posterior distributions of μ for the unpooled model (log scale)</figcaption>
+<div id="fig-unpooled-posterior-forest-log" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-posterior-forest-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-log-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-posterior-forest-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Forest of the posterior distributions of μ for the unpooled model (log scale)
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>The probability distributions for the means broadly agree with our informal observations throughout the season - VER is scoring high above the rest, in an extremely consistent range, with HAM, ALO, and PER close to eachother for second place, a mixed, variable set of results for the midfield, and a few clear backmarker drivers.</p>
 <p>To translate the estimated parameter values to points, we can plot the transformed μ_ value (remember that this is just the exponentiated μ):</p>
-<div class="cell">
+<div id="cell-fig-unpooled-posterior-forest" class="cell">
 <div class="sourceCode cell-code" id="cb49" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1">az.plot_forest(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -3361,19 +3436,23 @@ font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-posterior-forest" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;16: Forest of the posterior distributions of μ for the unpooled model</figcaption>
+<div id="fig-unpooled-posterior-forest" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-unpooled-posterior-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-unpooled-posterior-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Forest of the posterior distributions of μ for the unpooled model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="model-evaluation" class="level3" data-number="4.8">
-<h3 data-number="4.8" class="anchored" data-anchor-id="model-evaluation"><span class="header-section-number">4.8</span> Model evaluation</h3>
+<section id="model-evaluation" class="level3" data-number="1.4.8">
+<h3 data-number="1.4.8" class="anchored" data-anchor-id="model-evaluation"><span class="header-section-number">1.4.8</span> Model evaluation</h3>
 <p>Finally, we inspect <a href="https://python.arviz.org/en/stable/api/generated/arviz.loo.html">PSIS-LOO-CV</a> to get an idea of the performance of the model:</p>
-<div class="cell">
+<div id="24b54d3e-43ef-4870-b6d0-a189d424a40b" class="cell">
 <div class="sourceCode cell-code" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1">az.loo(unpooled_idata)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>Computed from 4000 posterior samples and 280 observations log-likelihood matrix.
@@ -3396,13 +3475,13 @@ Pareto k diagnostic values:
 <p><code>elpd_loo</code> <sup>11</sup> will be more useful when comparing this baseline model to other, more complicated ones, but the fact that Pareto k values are all significantly below 0.7 is a good sign that the model can generalize decently.</p>
 </section>
 </section>
-<section id="zero-inflated-unpooled-model" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="zero-inflated-unpooled-model"><span class="header-section-number">5</span> Zero-inflated unpooled model</h2>
+<section id="zero-inflated-unpooled-model" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="zero-inflated-unpooled-model"><span class="header-section-number">1.5</span> Zero-inflated unpooled model</h2>
 <p>One of the common issues with both <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Poisson.html#pymc.Poisson">Poisson</a> and <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html#pymc.NegativeBinomial">Negative Binomial</a> models is that they do not generate zeroes often enough. This can be alleviated by using a mixture model that inflates the number of zeroes, which <code>PyMC</code> already has an implementation of - the <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.ZeroInflatedNegativeBinomial.html">Zero Inflated Negative Binomial likelihood</a>.</p>
 <p>To test that extra zeroes might result in a better fit, we define a new model with the same priors as before, but using the mixture likelihood. One additional parameter, ψ, is needed, so we have to set a prior over that. ψ is the probability of a non-zero value, between 0 and 1. We will use a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Beta.html">Beta</a> as the prior distribution, and given the ruleset and reliability of modern F1 cars, our prior belief is that 0 point finishes aren’t all that likely. To express that, we take the maximum entropy Beta whose mass is concentrated between .8 and .99:</p>
-<section id="choosing-priors" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="choosing-priors"><span class="header-section-number">5.1</span> Choosing priors</h3>
-<div class="cell">
+<section id="choosing-priors" class="level3" data-number="1.5.1">
+<h3 data-number="1.5.1" class="anchored" data-anchor-id="choosing-priors"><span class="header-section-number">1.5.1</span> Choosing priors</h3>
+<div id="cell-fig-zi-psi-prior" class="cell">
 <div class="sourceCode cell-code" id="cb52" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1">psi_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Beta()</span>
@@ -3416,19 +3495,23 @@ font-style: inherit;">0.75</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-psi-prior" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-psi-prior-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;17: Prior distribution for the ψ parameter (probability of a non-zero value)</figcaption>
+<div id="fig-zi-psi-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-psi-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-psi-prior-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-psi-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: Prior distribution for the ψ parameter (probability of a non-zero value)
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="model-definition-1" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="model-definition-1"><span class="header-section-number">5.2</span> Model definition</h3>
+<section id="model-definition-1" class="level3" data-number="1.5.2">
+<h3 data-number="1.5.2" class="anchored" data-anchor-id="model-definition-1"><span class="header-section-number">1.5.2</span> Model definition</h3>
 <p>The new model is trivial to define:</p>
-<div class="cell">
+<div id="902dfe17-151d-46cc-864d-36147dc7029b" class="cell">
 <div class="sourceCode cell-code" id="cb53" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> pm.Model(coords<span class="op" style="color: #5E5E5E;
@@ -3505,10 +3588,10 @@ font-style: inherit;">"idx"</span>,</span>
 <span id="cb53-16">    )</span></code></pre></div>
 </div>
 </section>
-<section id="prior-evaluation" class="level3" data-number="5.3">
-<h3 data-number="5.3" class="anchored" data-anchor-id="prior-evaluation"><span class="header-section-number">5.3</span> Prior evaluation</h3>
+<section id="prior-evaluation" class="level3" data-number="1.5.3">
+<h3 data-number="1.5.3" class="anchored" data-anchor-id="prior-evaluation"><span class="header-section-number">1.5.3</span> Prior evaluation</h3>
 <p>We perform the same prior predictive check:</p>
-<div class="cell">
+<div id="c8aab7d7-fe18-4601-9080-6395780ca1b5" class="cell">
 <div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> zi_unpooled_negb:</span>
@@ -3523,7 +3606,7 @@ font-style: inherit;">1000</span>)</span></code></pre></div>
 <pre><code>Sampling: [y, α, μ, ψ]</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-zi-prior-predictive" class="cell">
 <div class="sourceCode cell-code" id="cb56" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1">az.plot_ppc(zi_unpooled_prior_samples, group<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -3532,19 +3615,23 @@ font-style: inherit;">"prior"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-prior-predictive" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-prior-predictive-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;18: Prior predictive distribution for the zero-inflated model</figcaption>
+<div id="fig-zi-prior-predictive" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-prior-predictive-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Prior predictive distribution for the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="inference-and-diagnostics-1" class="level3" data-number="5.4">
-<h3 data-number="5.4" class="anchored" data-anchor-id="inference-and-diagnostics-1"><span class="header-section-number">5.4</span> Inference and diagnostics</h3>
+<section id="inference-and-diagnostics-1" class="level3" data-number="1.5.4">
+<h3 data-number="1.5.4" class="anchored" data-anchor-id="inference-and-diagnostics-1"><span class="header-section-number">1.5.4</span> Inference and diagnostics</h3>
 <p>Sample:</p>
-<div class="cell">
+<div id="035e7f1e-1d50-4e92-9014-1f41d95f9dce" class="cell">
 <div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> zi_unpooled_negb:</span>
@@ -3630,7 +3717,7 @@ Sampling: [y]</code></pre>
 </div>
 </div>
 <p>The traceplots look about as good as before:</p>
-<div class="cell">
+<div id="cell-fig-zi-traceplots" class="cell">
 <div class="sourceCode cell-code" id="cb59" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1">az.plot_trace(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -3643,17 +3730,21 @@ font-style: inherit;">False</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-traceplots" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-traceplots-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;19: Traceplots of the μ parameter for the zero-inflated model</figcaption>
+<div id="fig-zi-traceplots" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-traceplots-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19: Traceplots of the μ parameter for the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>BFMI and energy are reasonable:</p>
-<div class="cell">
-<details>
+<div id="cell-fig-zi-energy" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb60" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1">ax <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3665,22 +3756,27 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-energy" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-energy-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;20: Energy plot for the zero-inflated model</figcaption>
+<div id="fig-zi-energy" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-energy-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20: Energy plot for the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p><code>r_hat</code> and ESS look good as well:</p>
-<div class="cell">
+<div id="4b34e573-eba8-4077-ba7f-97d022ac38cb" class="cell">
 <div class="sourceCode cell-code" id="cb61" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1">az.summary(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -3958,9 +4054,10 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </div>
 </div>
 </div>
+</div>
 </section>
-<section id="posterior-predictive-checks-1" class="level3" data-number="5.5">
-<h3 data-number="5.5" class="anchored" data-anchor-id="posterior-predictive-checks-1"><span class="header-section-number">5.5</span> Posterior predictive checks</h3>
+<section id="posterior-predictive-checks-1" class="level3" data-number="1.5.5">
+<h3 data-number="1.5.5" class="anchored" data-anchor-id="posterior-predictive-checks-1"><span class="header-section-number">1.5.5</span> Posterior predictive checks</h3>
 <p>Posterior predictive checks look somewhat better:</p>
 <ul>
 <li>the posterior predictive fits about as well, with a slightly thinner tail</li>
@@ -3968,24 +4065,28 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <li>u-value is much closer to uniform</li>
 <li>LOO-PIT still suggests bias, but it looks slightly better overall; the right tail of the posterior predictive still looks too fat and goes well above the maximum points possible in the ruleset, likely causing the bias and shifted predictions.</li>
 </ul>
-<div class="cell">
+<div id="cell-fig-zi-ppc" class="cell">
 <div class="sourceCode cell-code" id="cb62" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1">plot_posterior_predictive_checks(zi_unpooled_idata)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-ppc" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-ppc-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;21: Posterior predictive checks, p/u-value, and LOO for the zero-inflated model</figcaption>
+<div id="fig-zi-ppc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-ppc-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21: Posterior predictive checks, p/u-value, and LOO for the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="posterior-evaluation-1" class="level3" data-number="5.6">
-<h3 data-number="5.6" class="anchored" data-anchor-id="posterior-evaluation-1"><span class="header-section-number">5.6</span> Posterior evaluation</h3>
+<section id="posterior-evaluation-1" class="level3" data-number="1.5.6">
+<h3 data-number="1.5.6" class="anchored" data-anchor-id="posterior-evaluation-1"><span class="header-section-number">1.5.6</span> Posterior evaluation</h3>
 <p>We plot just the forest of transformed means:</p>
-<div class="cell">
+<div id="cell-fig-zi-mu-forest" class="cell">
 <div class="sourceCode cell-code" id="cb63" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1">az.plot_forest(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -4004,21 +4105,25 @@ font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-mu-forest" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-mu-forest-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;22: Forest plot of the posterior distribution of the exponentiated μ parameter for the zero-inflated model</figcaption>
+<div id="fig-zi-mu-forest" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-mu-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-mu-forest-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-mu-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22: Forest plot of the posterior distribution of the exponentiated μ parameter for the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>As expected, compared to the basic model, the means have been pulled towards zero slightly and the HDIs have shrunk.</p>
 </section>
-<section id="model-comparison" class="level3" data-number="5.7">
-<h3 data-number="5.7" class="anchored" data-anchor-id="model-comparison"><span class="header-section-number">5.7</span> Model comparison</h3>
+<section id="model-comparison" class="level3" data-number="1.5.7">
+<h3 data-number="1.5.7" class="anchored" data-anchor-id="model-comparison"><span class="header-section-number">1.5.7</span> Model comparison</h3>
 <p>Now that we have two models it’s worth running a comparison to see which performs better <sup>12</sup>:</p>
-<div class="cell">
-<details>
+<div id="6c9966ab-1a72-4370-a4c5-7245c53eab08" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb64" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1">comparison <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4032,6 +4137,7 @@ font-style: inherit;">"zero inflated unpooled"</span>: zi_unpooled_idata}</span>
 <span id="cb64-4">comparison</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
+<div>
 <div>
 
 
@@ -4081,15 +4187,20 @@ font-style: inherit;">"zero inflated unpooled"</span>: zi_unpooled_idata}</span>
 </div>
 </div>
 </div>
-<div class="cell">
+</div>
+<div id="cell-fig-zi-comparison" class="cell">
 <div class="sourceCode cell-code" id="cb65" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1">az.plot_compare(comparison)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-comparison" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-comparison-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;23: Comparison of the performance of the unpooled and zero-inflated models</figcaption>
+<div id="fig-zi-comparison" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zi-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-comparison-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zi-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;23: Comparison of the performance of the unpooled and zero-inflated models
+</figcaption>
 </figure>
 </div>
 </div>
@@ -4097,8 +4208,8 @@ font-style: inherit;">;</span></span></code></pre></div>
 <p>The zero-inflated model clearly seems to perform better <sup>13</sup>.</p>
 </section>
 </section>
-<section id="driver-estimates" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="driver-estimates"><span class="header-section-number">6</span> Driver estimates</h2>
+<section id="driver-estimates" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="driver-estimates"><span class="header-section-number">1.6</span> Driver estimates</h2>
 <p>We have a reasonable looking, if a bit biased model for driver points, which we’ll now use to inform fantasy team construction.</p>
 <p>When picking drivers, we consider the following:</p>
 <ul>
@@ -4121,7 +4232,7 @@ Caution
 <p>The plot below isn’t symmetric over the right diagonal - we are strictly comparing the driver on the X axis to the driver on the Y axis.</p>
 </div>
 </div>
-<div class="cell">
+<div id="835259e7-89ee-473b-bfe0-dcfb00c493db" class="cell">
 <div class="sourceCode cell-code" id="cb66" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">def</span> make_comparison(idata, idx, groups, size<span class="op" style="color: #5E5E5E;
@@ -4208,13 +4319,13 @@ font-style: inherit;">bool</span>))</span>
 background-color: null;
 font-style: inherit;">return</span> comparison_df, mask</span></code></pre></div>
 </div>
-<div class="cell">
+<div id="f3121ac4-27ee-4a41-bce6-e3a0a216f27a" class="cell">
 <div class="sourceCode cell-code" id="cb67" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1">comparison_df, mask <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> make_comparison(zi_unpooled_idata, idx, labels)</span></code></pre></div>
 </div>
-<div class="cell">
-<details>
+<div id="cell-fig-drivers-comparison" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb68" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4299,20 +4410,24 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-drivers-comparison" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-drivers-comparison-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;24: Expected points earned by driver x over driver y using the zero-inflated model</figcaption>
+<div id="fig-drivers-comparison" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-drivers-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-drivers-comparison-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-drivers-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24: Expected points earned by driver x over driver y using the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="constructor-estimates" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="constructor-estimates"><span class="header-section-number">7</span> Constructor estimates</h2>
+<section id="constructor-estimates" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="constructor-estimates"><span class="header-section-number">1.7</span> Constructor estimates</h2>
 <p>We’ll run the same loop for the constructor comparison - first we define a slightly modified zero inflated model, then we sample, validate convergence, and finally use the posterior and posterior predictive to evaluate constructor peformance.</p>
 <p>Data preparation is identical - we factorize the constructors and take the points</p>
-<div class="cell">
+<div id="469a38ca-57c1-453a-93a1-7304af9bc8b6" class="cell">
 <div class="sourceCode cell-code" id="cb69" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1">const_idx, const_labels <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.factorize(const_data_df[<span class="st" style="color: #20794D;
@@ -4329,7 +4444,7 @@ background-color: null;
 font-style: inherit;">"constructor_points"</span>]</span></code></pre></div>
 </div>
 <p>We adjust the priors slightly, to account for differences in the constructors scoring system:</p>
-<div class="cell">
+<div id="cell-fig-constructors-mu-prior" class="cell">
 <div class="sourceCode cell-code" id="cb70" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1">mu_const_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Normal()</span>
@@ -4343,15 +4458,19 @@ font-style: inherit;">0.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-mu-prior" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-mu-prior-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;25: Prior for the μ parameter for fitting the zero inflated model to the constructor data</figcaption>
+<div id="fig-constructors-mu-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-mu-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-mu-prior-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-mu-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;25: Prior for the μ parameter for fitting the zero inflated model to the constructor data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-constructors-alpha-prior" class="cell">
 <div class="sourceCode cell-code" id="cb71" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1">alpha_const_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Gamma()</span>
@@ -4365,15 +4484,19 @@ font-style: inherit;">.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-alpha-prior" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-alpha-prior-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;26: Prior for the α parameter for fitting the zero inflated model to the constructor data</figcaption>
+<div id="fig-constructors-alpha-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-alpha-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-alpha-prior-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-alpha-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26: Prior for the α parameter for fitting the zero inflated model to the constructor data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-constructors-psi-prior" class="cell">
 <div class="sourceCode cell-code" id="cb72" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1">psi_const_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Beta()</span>
@@ -4387,15 +4510,19 @@ font-style: inherit;">.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-psi-prior" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-psi-prior-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;27: Prior for the ψ parameter for fitting the zero inflated model to the constructor data</figcaption>
+<div id="fig-constructors-psi-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-psi-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-psi-prior-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-psi-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27: Prior for the ψ parameter for fitting the zero inflated model to the constructor data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="df2fe1ee-dbe4-4090-a7fd-5058fff461dc" class="cell">
 <div class="sourceCode cell-code" id="cb73" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> pm.Model(</span>
@@ -4473,7 +4600,7 @@ background-color: null;
 font-style: inherit;">"idx"</span>,</span>
 <span id="cb73-18">    )</span></code></pre></div>
 </div>
-<div class="cell">
+<div id="0d9e2ff7-fcce-4cc3-b236-b3ef538737b4" class="cell">
 <div class="sourceCode cell-code" id="cb74" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> const_zi_unpooled_model:</span>
@@ -4488,7 +4615,7 @@ font-style: inherit;">1000</span>)</span></code></pre></div>
 <pre><code>Sampling: [y, α, μ, ψ]</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-constructors-prior-predictive" class="cell">
 <div class="sourceCode cell-code" id="cb76" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1">az.plot_ppc(const_prior_pred, group<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -4503,15 +4630,19 @@ font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-prior-predictive" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-prior-predictive-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;28: Prior predictive distribution for the zero-inflated model when fitted to the constructors data</figcaption>
+<div id="fig-constructors-prior-predictive" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-prior-predictive-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;28: Prior predictive distribution for the zero-inflated model when fitted to the constructors data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="e3a5ab14-84c6-41ea-8e87-3b9bea14e17e" class="cell">
 <div class="sourceCode cell-code" id="cb77" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">with</span> const_zi_unpooled_model:</span>
@@ -4594,7 +4725,7 @@ Sampling: [y]</code></pre>
     
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-constructors-traceplots" class="cell">
 <div class="sourceCode cell-code" id="cb79" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1">az.plot_trace(const_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -4607,28 +4738,36 @@ font-style: inherit;">False</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-traceplots" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-traceplots-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;29: Traceplots of the μ parameter for the zero-inflated model when fitted to the constructors data</figcaption>
+<div id="fig-constructors-traceplots" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-traceplots-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;29: Traceplots of the μ parameter for the zero-inflated model when fitted to the constructors data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-constructors-ppc" class="cell">
 <div class="sourceCode cell-code" id="cb80" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1">plot_posterior_predictive_checks(const_idata)<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-ppc" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-ppc-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;30: Posterior predictive checks, p/u-value, and LOO for the zero-inflated model when fitted to the constructors data</figcaption>
+<div id="fig-constructors-ppc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-ppc-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;30: Posterior predictive checks, p/u-value, and LOO for the zero-inflated model when fitted to the constructors data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="974d9dbf-ebc4-4169-a482-baf08e9bd07f" class="cell">
 <div class="sourceCode cell-code" id="cb81" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1">az.loo(const_idata)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <pre><code>Computed from 4000 posterior samples and 140 observations log-likelihood matrix.
@@ -4646,7 +4785,7 @@ Pareto k diagnostic values:
    (1, Inf)   (very bad)    0    0.0%</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-fig-constructors-forest-mu" class="cell">
 <div class="sourceCode cell-code" id="cb83" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1">az.plot_forest(const_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
@@ -4665,16 +4804,20 @@ font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-forest-mu" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-forest-mu-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;31: Forest of the posterior distribution of the μ parameter for the zero-inflated model when fitted to the constructors data</figcaption>
+<div id="fig-constructors-forest-mu" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-forest-mu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-forest-mu-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-forest-mu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;31: Forest of the posterior distribution of the μ parameter for the zero-inflated model when fitted to the constructors data
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<details>
+<div id="cell-fig-constructors-comparison" class="cell">
+<details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb84" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4763,19 +4906,23 @@ background-color: null;
 font-style: inherit;">;</span></span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-comparison" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-comparison-output-1.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figure&nbsp;32: Expected points earned by constructor x over constructor y using the zero-inflated model</figcaption>
+<div id="fig-constructors-comparison" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-constructors-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-comparison-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-constructors-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;32: Expected points earned by constructor x over constructor y using the zero-inflated model
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="conclusion" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">8</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="1.8">
+<h2 data-number="1.8" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">1.8</span> Conclusion</h2>
 <p>None of the results here are that surprising, but it’s nonetheless useful to confirm our intuition for who’s a good pick and who isn’t. That said, the estimates should be taken with more than a grain of salt - the model we used is quite rudimentary (for one, it doesn’t account for performance trends as the season progresses), and modeling the summed fantasy points directly leads to a lot of detail getting obscured and left out.</p>
-<div class="cell">
+<div id="bb6fbca7-9d86-4193-95c7-2e5d0c726072" class="cell">
 <div class="sourceCode cell-code" id="cb85" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>load_ext watermark</span>
@@ -4817,6 +4964,7 @@ seaborn   : 0.12.2
 
 
 </section>
+</section>
 
 
 <div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
@@ -4846,8 +4994,9 @@ seaborn   : 0.12.2
 <item>
   <title>Pointer tagging with multiple tags</title>
   <dc:creator>Kiril Zvezdarov</dc:creator>
-  <link>https://kirilzvezdarov.com/posts/pointer-tagging/index.html</link>
+  <link>https://kirilzvezdarov.com/posts/pointer-tagging/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -5017,7 +5166,7 @@ font-style: inherit;">}</span></span></code></pre></div>
 
  ]]></description>
   <category>rust</category>
-  <guid>https://kirilzvezdarov.com/posts/pointer-tagging/index.html</guid>
+  <guid>https://kirilzvezdarov.com/posts/pointer-tagging/</guid>
   <pubDate>Sun, 18 Dec 2016 05:00:00 GMT</pubDate>
 </item>
 </channel>
