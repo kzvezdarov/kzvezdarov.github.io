@@ -9,7 +9,7 @@
 <link>https://kirilzvezdarov.com/</link>
 <atom:link href="https://kirilzvezdarov.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Kiril Zvezdarov&#39;s Blog</description>
-<generator>quarto-1.4.550</generator>
+<generator>quarto-1.4.551</generator>
 <lastBuildDate>Thu, 31 Aug 2023 04:00:00 GMT</lastBuildDate>
 <item>
   <title>Modeling Formula 1 Fantasy GP points with PyMC</title>
@@ -21,8 +21,6 @@
 
 
 
-<section id="modeling-formula-1-fantasy-gp-points-with-pymc" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Modeling Formula 1 Fantasy GP points with PyMC</h1>
 <div id="11dd86a5-e957-4822-af94-42309cfdb83d" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -177,8 +175,8 @@ Disclaimer
 <p>I have a fairly limited knowledge of Bayesian statistics and modeling; this notebook shouldn’t be considered authoritative of prescriptive in any way. It is mostly a collection of notes, reflecting ongoing learning.</p>
 </div>
 </div>
-<section id="data-acquisition" class="level2" data-number="1.1">
-<h2 data-number="1.1" class="anchored" data-anchor-id="data-acquisition"><span class="header-section-number">1.1</span> Data acquisition</h2>
+<section id="data-acquisition" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="data-acquisition"><span class="header-section-number">1</span> Data acquisition</h2>
 <p>We start by acquiring data for the 2023 season. The <a href="http://ergast.com/mrd/">Ergast API</a> hosts statistics for Formula 1 races from the 1950s to the present day and exposes convenient endpoints for querying both <a href="http://ergast.com/mrd/methods/qualifying/">qualifying</a> and <a href="http://ergast.com/mrd/methods/results/">grand prix results</a>.</p>
 <p>First, we define some convenience functions to query the raw json data:</p>
 <div id="0bd7f0a2-e72f-4dad-bec6-1df50ad66617" class="cell">
@@ -1052,8 +1050,8 @@ font-style: inherit;">"RIC"</span>}</span>
 </div>
 </div>
 </section>
-<section id="fantasy-points" class="level2" data-number="1.2">
-<h2 data-number="1.2" class="anchored" data-anchor-id="fantasy-points"><span class="header-section-number">1.2</span> Fantasy points</h2>
+<section id="fantasy-points" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="fantasy-points"><span class="header-section-number">2</span> Fantasy points</h2>
 <p>Fantasy GP points per team/driver are <a href="https://fantasygp.com/about/guide/">calculated in the following way</a>:</p>
 <ul>
 <li>drivers earn the points scored during the grand prix, 10pts for taking pole position, 2pts per position gained on Sunday, and 5 points each for beating their teammate during qualifying and the race itself.</li>
@@ -1723,8 +1721,8 @@ Note
 </div>
 </div>
 </section>
-<section id="data-exploration" class="level2" data-number="1.3">
-<h2 data-number="1.3" class="anchored" data-anchor-id="data-exploration"><span class="header-section-number">1.3</span> Data exploration</h2>
+<section id="data-exploration" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="data-exploration"><span class="header-section-number">3</span> Data exploration</h2>
 <p>Now we visualize the data to get a better idea of its properties. First, some basic box plots for each driver/constructor:</p>
 <div id="cell-fig-driver-points" class="cell">
 <details class="code-fold">
@@ -2190,11 +2188,11 @@ Figure&nbsp;5: Grouped kernel density estimates for fantasy points by drivers/co
 </div>
 <p>Given that the point distributions between drivers and constructors appear very similar, we’ll focus on constructing models of the driver points, which we can later fit to the constructor data with minor adjustments.</p>
 </section>
-<section id="unpooled-model" class="level2" data-number="1.4">
-<h2 data-number="1.4" class="anchored" data-anchor-id="unpooled-model"><span class="header-section-number">1.4</span> Unpooled model</h2>
+<section id="unpooled-model" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="unpooled-model"><span class="header-section-number">4</span> Unpooled model</h2>
 <p>Our first model will be the simplest possible - we just directly estimate the mean points for each driver individually (an intercept-only, unpooled linear model).</p>
-<section id="picking-the-likelihood" class="level3" data-number="1.4.1">
-<h3 data-number="1.4.1" class="anchored" data-anchor-id="picking-the-likelihood"><span class="header-section-number">1.4.1</span> Picking the likelihood</h3>
+<section id="picking-the-likelihood" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="picking-the-likelihood"><span class="header-section-number">4.1</span> Picking the likelihood</h3>
 <p>The points data has several properties that stem from the Fantasy GP ruleset:</p>
 <ul>
 <li>points are discrete</li>
@@ -2268,8 +2266,8 @@ Name: driver_points, dtype: float64</code></pre>
 </div>
 <p>Given that, we will pick the <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html">Negative Binomial</a> as our likelihood, since it handles overdispersion better<sup>1</sup>.</p>
 </section>
-<section id="choosing-the-priors" class="level3" data-number="1.4.2">
-<h3 data-number="1.4.2" class="anchored" data-anchor-id="choosing-the-priors"><span class="header-section-number">1.4.2</span> Choosing the priors</h3>
+<section id="choosing-the-priors" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="choosing-the-priors"><span class="header-section-number">4.2</span> Choosing the priors</h3>
 <p>A <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html">Negative Binomial</a> likelihood is defined by two parameters - its mean μ, and a shape parameter α. We’ll need to set priors on both.</p>
 <p>The mean is restricted to be positive only. The standard way of defining a negative binomial linear model is to set a Normal prior on the mean and use the exponentiation as the inverse link function to make it positive and usable for parameterizing the likelihood. For the actual prior parameters it would be reasonable to go with a fairly uninformative prior, such as <code>Normal(mu=0, sigma=1)</code>; in this case, prior knowledge and the ruleset gives us a hunch that we can reasonably expect most drivers’ mean points per race to be somewhere between 5 (backmarker, occasionally beats their teammate, maybe gains a place) and 30 (top driver &amp; team, consistently getting and winning from pole position).</p>
 <p>To come up with parameter values for this, we use the <a href="https://preliz.readthedocs.io/en/latest/">PreliZ</a> library to find a maximum entropy <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Normal.html">Normal</a> distribution with 90% of its mass between 5 and 30 (we take the natural log of those, given the exponential inverse link):</p>
@@ -2538,8 +2536,8 @@ Name: driver_points, Length: 280, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="model-definition" class="level3" data-number="1.4.3">
-<h3 data-number="1.4.3" class="anchored" data-anchor-id="model-definition"><span class="header-section-number">1.4.3</span> Model definition</h3>
+<section id="model-definition" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="model-definition"><span class="header-section-number">4.3</span> Model definition</h3>
 <p>Next, we define the model with <a href="https://www.pymc.io/">PyMC</a>. As discussed previously, we think that the process that generates points can be seen as a Negative Binomial distribution, so that is set as the likelihood. The mean (μ) аnd shape (α) are the parameters that we want to infer from the data. Finally, the prior guesses for these parameters are set from the <code>mu_dist</code> and <code>alpha_dist</code> objects we computed previously.</p>
 <p>This translates to:</p>
 <div id="02920709-0edb-4f55-a500-22a7ea3cb7cf" class="cell">
@@ -2602,8 +2600,8 @@ font-style: inherit;">"idx"</span></span>
 <span id="cb35-9">    )</span></code></pre></div>
 </div>
 </section>
-<section id="prior-predictive-checks" class="level3" data-number="1.4.4">
-<h3 data-number="1.4.4" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">1.4.4</span> Prior predictive checks</h3>
+<section id="prior-predictive-checks" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">4.4</span> Prior predictive checks</h3>
 <p>To see if the choice for priors is acceptable, we sample from the prior predictive and plot the results:</p>
 <div id="ed158fc1-3308-4467-b16a-8e37c18b2272" class="cell">
 <div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><span class="cf" style="color: #003B4F;
@@ -2649,8 +2647,8 @@ Figure&nbsp;9: Prior predictive distribution of the unpooled model
 </div>
 <p>The prior predictive is quite wide, with a very long and somewhat fat tail, but overall the data could be plausibly seen as coming from it.</p>
 </section>
-<section id="inference-and-diagnostics" class="level3" data-number="1.4.5">
-<h3 data-number="1.4.5" class="anchored" data-anchor-id="inference-and-diagnostics"><span class="header-section-number">1.4.5</span> Inference and diagnostics</h3>
+<section id="inference-and-diagnostics" class="level3" data-number="4.5">
+<h3 data-number="4.5" class="anchored" data-anchor-id="inference-and-diagnostics"><span class="header-section-number">4.5</span> Inference and diagnostics</h3>
 <p>Next, we perform the actual inference step - we sample from the posterior and the posterior predictive distribution:</p>
 <div id="0ee4f78c-b89f-49b9-9f02-e7a014ea61b2" class="cell">
 <div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><span class="cf" style="color: #003B4F;
@@ -3083,8 +3081,8 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </div>
 <p>All of the sampling diagnistics look good, which means the model has converged and we can move on to posterior predictive checks and model evaluation.</p>
 </section>
-<section id="posterior-predictive-checks" class="level3" data-number="1.4.6">
-<h3 data-number="1.4.6" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">1.4.6</span> Posterior predictive checks</h3>
+<section id="posterior-predictive-checks" class="level3" data-number="4.6">
+<h3 data-number="4.6" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">4.6</span> Posterior predictive checks</h3>
 <p>Next we examine the posterior predictive distribution, which will help validate that the predictions the model is making make sense given the data. Below we plot several posterior graphs (from top to bottom, left to right):</p>
 <ul>
 <li>the (grouped) posterior predictive distribution should closely replicate the pattern seen in the observed data <sup>6</sup></li>
@@ -3359,8 +3357,8 @@ Figure&nbsp;13: Posterior predictive plots of individual drivers for the unpoole
 </div>
 </div>
 </section>
-<section id="posterior-evaluation" class="level3" data-number="1.4.7">
-<h3 data-number="1.4.7" class="anchored" data-anchor-id="posterior-evaluation"><span class="header-section-number">1.4.7</span> Posterior evaluation</h3>
+<section id="posterior-evaluation" class="level3" data-number="4.7">
+<h3 data-number="4.7" class="anchored" data-anchor-id="posterior-evaluation"><span class="header-section-number">4.7</span> Posterior evaluation</h3>
 <p>We are reasonably confident that the model has converged and that there were no issues during sampling. Predictions seem to be somewhat biased, but still reasonable for our purposes. Now it’s time to check the posterior distributions of the estimated parameter μ:</p>
 <div id="cell-fig-unpooled-posterior-mean" class="cell">
 <div class="sourceCode cell-code" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1">az.plot_posterior(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
@@ -3449,8 +3447,8 @@ Figure&nbsp;16: Forest of the posterior distributions of μ for the unpooled mod
 </div>
 </div>
 </section>
-<section id="model-evaluation" class="level3" data-number="1.4.8">
-<h3 data-number="1.4.8" class="anchored" data-anchor-id="model-evaluation"><span class="header-section-number">1.4.8</span> Model evaluation</h3>
+<section id="model-evaluation" class="level3" data-number="4.8">
+<h3 data-number="4.8" class="anchored" data-anchor-id="model-evaluation"><span class="header-section-number">4.8</span> Model evaluation</h3>
 <p>Finally, we inspect <a href="https://python.arviz.org/en/stable/api/generated/arviz.loo.html">PSIS-LOO-CV</a> to get an idea of the performance of the model:</p>
 <div id="24b54d3e-43ef-4870-b6d0-a189d424a40b" class="cell">
 <div class="sourceCode cell-code" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1">az.loo(unpooled_idata)</span></code></pre></div>
@@ -3475,12 +3473,12 @@ Pareto k diagnostic values:
 <p><code>elpd_loo</code> <sup>11</sup> will be more useful when comparing this baseline model to other, more complicated ones, but the fact that Pareto k values are all significantly below 0.7 is a good sign that the model can generalize decently.</p>
 </section>
 </section>
-<section id="zero-inflated-unpooled-model" class="level2" data-number="1.5">
-<h2 data-number="1.5" class="anchored" data-anchor-id="zero-inflated-unpooled-model"><span class="header-section-number">1.5</span> Zero-inflated unpooled model</h2>
+<section id="zero-inflated-unpooled-model" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="zero-inflated-unpooled-model"><span class="header-section-number">5</span> Zero-inflated unpooled model</h2>
 <p>One of the common issues with both <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Poisson.html#pymc.Poisson">Poisson</a> and <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.NegativeBinomial.html#pymc.NegativeBinomial">Negative Binomial</a> models is that they do not generate zeroes often enough. This can be alleviated by using a mixture model that inflates the number of zeroes, which <code>PyMC</code> already has an implementation of - the <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.ZeroInflatedNegativeBinomial.html">Zero Inflated Negative Binomial likelihood</a>.</p>
 <p>To test that extra zeroes might result in a better fit, we define a new model with the same priors as before, but using the mixture likelihood. One additional parameter, ψ, is needed, so we have to set a prior over that. ψ is the probability of a non-zero value, between 0 and 1. We will use a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Beta.html">Beta</a> as the prior distribution, and given the ruleset and reliability of modern F1 cars, our prior belief is that 0 point finishes aren’t all that likely. To express that, we take the maximum entropy Beta whose mass is concentrated between .8 and .99:</p>
-<section id="choosing-priors" class="level3" data-number="1.5.1">
-<h3 data-number="1.5.1" class="anchored" data-anchor-id="choosing-priors"><span class="header-section-number">1.5.1</span> Choosing priors</h3>
+<section id="choosing-priors" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="choosing-priors"><span class="header-section-number">5.1</span> Choosing priors</h3>
 <div id="cell-fig-zi-psi-prior" class="cell">
 <div class="sourceCode cell-code" id="cb52" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1">psi_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3508,8 +3506,8 @@ Figure&nbsp;17: Prior distribution for the ψ parameter (probability of a non-ze
 </div>
 </div>
 </section>
-<section id="model-definition-1" class="level3" data-number="1.5.2">
-<h3 data-number="1.5.2" class="anchored" data-anchor-id="model-definition-1"><span class="header-section-number">1.5.2</span> Model definition</h3>
+<section id="model-definition-1" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="model-definition-1"><span class="header-section-number">5.2</span> Model definition</h3>
 <p>The new model is trivial to define:</p>
 <div id="902dfe17-151d-46cc-864d-36147dc7029b" class="cell">
 <div class="sourceCode cell-code" id="cb53" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><span class="cf" style="color: #003B4F;
@@ -3588,8 +3586,8 @@ font-style: inherit;">"idx"</span>,</span>
 <span id="cb53-16">    )</span></code></pre></div>
 </div>
 </section>
-<section id="prior-evaluation" class="level3" data-number="1.5.3">
-<h3 data-number="1.5.3" class="anchored" data-anchor-id="prior-evaluation"><span class="header-section-number">1.5.3</span> Prior evaluation</h3>
+<section id="prior-evaluation" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="prior-evaluation"><span class="header-section-number">5.3</span> Prior evaluation</h3>
 <p>We perform the same prior predictive check:</p>
 <div id="c8aab7d7-fe18-4601-9080-6395780ca1b5" class="cell">
 <div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><span class="cf" style="color: #003B4F;
@@ -3628,8 +3626,8 @@ Figure&nbsp;18: Prior predictive distribution for the zero-inflated model
 </div>
 </div>
 </section>
-<section id="inference-and-diagnostics-1" class="level3" data-number="1.5.4">
-<h3 data-number="1.5.4" class="anchored" data-anchor-id="inference-and-diagnostics-1"><span class="header-section-number">1.5.4</span> Inference and diagnostics</h3>
+<section id="inference-and-diagnostics-1" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="inference-and-diagnostics-1"><span class="header-section-number">5.4</span> Inference and diagnostics</h3>
 <p>Sample:</p>
 <div id="035e7f1e-1d50-4e92-9014-1f41d95f9dce" class="cell">
 <div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><span class="cf" style="color: #003B4F;
@@ -4056,8 +4054,8 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </div>
 </div>
 </section>
-<section id="posterior-predictive-checks-1" class="level3" data-number="1.5.5">
-<h3 data-number="1.5.5" class="anchored" data-anchor-id="posterior-predictive-checks-1"><span class="header-section-number">1.5.5</span> Posterior predictive checks</h3>
+<section id="posterior-predictive-checks-1" class="level3" data-number="5.5">
+<h3 data-number="5.5" class="anchored" data-anchor-id="posterior-predictive-checks-1"><span class="header-section-number">5.5</span> Posterior predictive checks</h3>
 <p>Posterior predictive checks look somewhat better:</p>
 <ul>
 <li>the posterior predictive fits about as well, with a slightly thinner tail</li>
@@ -4083,8 +4081,8 @@ Figure&nbsp;21: Posterior predictive checks, p/u-value, and LOO for the zero-inf
 </div>
 </div>
 </section>
-<section id="posterior-evaluation-1" class="level3" data-number="1.5.6">
-<h3 data-number="1.5.6" class="anchored" data-anchor-id="posterior-evaluation-1"><span class="header-section-number">1.5.6</span> Posterior evaluation</h3>
+<section id="posterior-evaluation-1" class="level3" data-number="5.6">
+<h3 data-number="5.6" class="anchored" data-anchor-id="posterior-evaluation-1"><span class="header-section-number">5.6</span> Posterior evaluation</h3>
 <p>We plot just the forest of transformed means:</p>
 <div id="cell-fig-zi-mu-forest" class="cell">
 <div class="sourceCode cell-code" id="cb63" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1">az.plot_forest(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
@@ -4119,8 +4117,8 @@ Figure&nbsp;22: Forest plot of the posterior distribution of the exponentiated �
 </div>
 <p>As expected, compared to the basic model, the means have been pulled towards zero slightly and the HDIs have shrunk.</p>
 </section>
-<section id="model-comparison" class="level3" data-number="1.5.7">
-<h3 data-number="1.5.7" class="anchored" data-anchor-id="model-comparison"><span class="header-section-number">1.5.7</span> Model comparison</h3>
+<section id="model-comparison" class="level3" data-number="5.7">
+<h3 data-number="5.7" class="anchored" data-anchor-id="model-comparison"><span class="header-section-number">5.7</span> Model comparison</h3>
 <p>Now that we have two models it’s worth running a comparison to see which performs better <sup>12</sup>:</p>
 <div id="6c9966ab-1a72-4370-a4c5-7245c53eab08" class="cell">
 <details class="code-fold">
@@ -4208,8 +4206,8 @@ Figure&nbsp;23: Comparison of the performance of the unpooled and zero-inflated 
 <p>The zero-inflated model clearly seems to perform better <sup>13</sup>.</p>
 </section>
 </section>
-<section id="driver-estimates" class="level2" data-number="1.6">
-<h2 data-number="1.6" class="anchored" data-anchor-id="driver-estimates"><span class="header-section-number">1.6</span> Driver estimates</h2>
+<section id="driver-estimates" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="driver-estimates"><span class="header-section-number">6</span> Driver estimates</h2>
 <p>We have a reasonable looking, if a bit biased model for driver points, which we’ll now use to inform fantasy team construction.</p>
 <p>When picking drivers, we consider the following:</p>
 <ul>
@@ -4423,8 +4421,8 @@ Figure&nbsp;24: Expected points earned by driver x over driver y using the zero-
 </div>
 </div>
 </section>
-<section id="constructor-estimates" class="level2" data-number="1.7">
-<h2 data-number="1.7" class="anchored" data-anchor-id="constructor-estimates"><span class="header-section-number">1.7</span> Constructor estimates</h2>
+<section id="constructor-estimates" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="constructor-estimates"><span class="header-section-number">7</span> Constructor estimates</h2>
 <p>We’ll run the same loop for the constructor comparison - first we define a slightly modified zero inflated model, then we sample, validate convergence, and finally use the posterior and posterior predictive to evaluate constructor peformance.</p>
 <p>Data preparation is identical - we factorize the constructors and take the points</p>
 <div id="469a38ca-57c1-453a-93a1-7304af9bc8b6" class="cell">
@@ -4919,8 +4917,8 @@ Figure&nbsp;32: Expected points earned by constructor x over constructor y using
 </div>
 </div>
 </section>
-<section id="conclusion" class="level2" data-number="1.8">
-<h2 data-number="1.8" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">1.8</span> Conclusion</h2>
+<section id="conclusion" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">8</span> Conclusion</h2>
 <p>None of the results here are that surprising, but it’s nonetheless useful to confirm our intuition for who’s a good pick and who isn’t. That said, the estimates should be taken with more than a grain of salt - the model we used is quite rudimentary (for one, it doesn’t account for performance trends as the season progresses), and modeling the summed fantasy points directly leads to a lot of detail getting obscured and left out.</p>
 <div id="bb6fbca7-9d86-4193-95c7-2e5d0c726072" class="cell">
 <div class="sourceCode cell-code" id="cb85" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><span class="op" style="color: #5E5E5E;
@@ -4963,7 +4961,6 @@ seaborn   : 0.12.2
 </div>
 
 
-</section>
 </section>
 
 
