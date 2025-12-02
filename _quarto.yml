@@ -13,8 +13,6 @@ website:
         href: https://github.com/kzvezdarov
       - icon: rss
         href: index.xml
-    left:
-      - fantasygp_dashboard.ipynb
 format:
   html:
     theme: simplex
