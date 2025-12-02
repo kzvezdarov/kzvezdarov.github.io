@@ -12,10 +12,9 @@ arrow==1.3.0
     # via isoduration
 arviz==0.17.1
     # via
+    #   -r requirements.in
     #   preliz
     #   pymc
-astroid==3.1.0
-    # via pylint
 asttokens==2.4.1
     # via
     #   nbdev
@@ -28,30 +27,18 @@ attrs==23.2.0
     # via
     #   cattrs
     #   jsonschema
-    #   lsprotocol
     #   referencing
     #   requests-cache
-autopep8==2.1.0
-    # via nbqa
 babel==2.14.0
     # via jupyterlab-server
 beautifulsoup4==4.12.3
     # via nbconvert
-black==24.3.0
-    # via
-    #   blacken-docs
-    #   nbqa
-blacken-docs==1.16.0
-    # via nbqa
 bleach==6.1.0
     # via nbconvert
 cachetools==5.3.3
     # via pymc
 cattrs==23.2.3
-    # via
-    #   lsprotocol
-    #   python-lsp-ruff
-    #   requests-cache
+    # via requests-cache
 certifi==2024.2.2
     # via
     #   httpcore
@@ -61,8 +48,6 @@ cffi==1.16.0
     # via argon2-cffi-bindings
 charset-normalizer==3.3.2
     # via requests
-click==8.1.7
-    # via black
 cloudpickle==3.0.0
     # via pymc
 comm==0.2.2
@@ -82,10 +67,6 @@ decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
-dill==0.3.8
-    # via pylint
-docstring-to-markdown==0.15
-    # via python-lsp-server
 etuples==0.3.9
     # via
     #   minikanren
@@ -100,14 +81,13 @@ fastcore==1.5.29
     #   ghapi
     #   nbdev
 fastf1==3.3.2
+    # via -r requirements.in
 fastjsonschema==2.19.1
     # via nbformat
 fastprogress==1.0.3
     # via pymc
 filelock==3.13.1
     # via pytensor
-flake8==7.0.0
-    # via nbqa
 fonttools==4.50.0
     # via matplotlib
 fqdn==1.5.1
@@ -140,20 +120,14 @@ ipython==8.22.2
     #   ipykernel
     #   ipywidgets
     #   itables
-    #   nbqa
 ipywidgets==8.0.4
     # via nbdev
 isoduration==20.11.0
     # via jsonschema
-isort==5.13.2
-    # via
-    #   nbqa
-    #   pylint
 itables==2.0.0
+    # via -r requirements.in
 jedi==0.19.1
-    # via
-    #   ipython
-    #   python-lsp-server
+    # via ipython
 jinja2==3.1.3
     # via
     #   jupyter-server
@@ -202,16 +176,17 @@ jupyter-server==2.13.0
 jupyter-server-terminals==0.5.3
     # via jupyter-server
 jupyterlab==4.1.5
-    # via jupyterlab-lsp
+    # via
+    #   -r requirements.in
+    #   jupyterlab-lsp
 jupyterlab-lsp==5.1.0
+    # via -r requirements.in
 jupyterlab-pygments==0.3.0
     # via nbconvert
 jupyterlab-server==2.25.4
     # via jupyterlab
 jupyterlab-widgets==3.0.10
     # via ipywidgets
-jupytext==1.16.1
-    # via nbqa
 kiwisolver==1.4.5
     # via matplotlib
 llvmlite==0.42.0
@@ -221,12 +196,6 @@ logical-unification==0.4.6
     #   cons
     #   minikanren
     #   pytensor
-lsprotocol==2023.0.1
-    # via python-lsp-ruff
-markdown-it-py==3.0.0
-    # via
-    #   jupytext
-    #   mdit-py-plugins
 markupsafe==2.1.5
     # via
     #   jinja2
@@ -242,14 +211,6 @@ matplotlib-inline==0.1.6
     # via
     #   ipykernel
     #   ipython
-mccabe==0.7.0
-    # via
-    #   flake8
-    #   pylint
-mdit-py-plugins==0.4.0
-    # via jupytext
-mdurl==0.1.2
-    # via markdown-it-py
 minikanren==1.0.3
     # via pytensor
 mistune==3.0.2
@@ -259,24 +220,17 @@ multipledispatch==1.0.0
     #   etuples
     #   logical-unification
     #   minikanren
-mypy==1.9.0
-    # via nbqa
-mypy-extensions==1.0.0
-    # via
-    #   black
-    #   mypy
 nbclient==0.10.0
     # via nbconvert
 nbconvert==7.16.3
     # via jupyter-server
 nbdev==2.3.13
+    # via -r requirements.in
 nbformat==5.10.3
     # via
     #   jupyter-server
-    #   jupytext
     #   nbclient
     #   nbconvert
-nbqa==1.8.5
 nest-asyncio==1.6.0
     # via ipykernel
 notebook-shim==0.2.4
@@ -285,6 +239,7 @@ numba==0.59.1
     # via preliz
 numpy==1.26.4
     # via
+    #   -r requirements.in
     #   arviz
     #   contourpy
     #   fastf1
@@ -307,7 +262,6 @@ overrides==7.7.0
 packaging==24.0
     # via
     #   arviz
-    #   black
     #   fastcore
     #   ghapi
     #   h5netcdf
@@ -315,12 +269,12 @@ packaging==24.0
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
-    #   jupytext
     #   matplotlib
     #   nbconvert
     #   xarray
 pandas==2.2.1
     # via
+    #   -r requirements.in
     #   arviz
     #   fastf1
     #   itables
@@ -331,8 +285,6 @@ pandocfilters==1.5.1
     # via nbconvert
 parso==0.8.3
     # via jedi
-pathspec==0.12.1
-    # via black
 pexpect==4.9.0
     # via ipython
 pillow==10.2.0
@@ -343,14 +295,12 @@ pip==24.0
     #   ghapi
 platformdirs==4.2.0
     # via
-    #   black
     #   jupyter-core
-    #   pylint
     #   requests-cache
-pluggy==1.4.0
-    # via python-lsp-server
 polars==0.20.17
+    # via -r requirements.in
 preliz==0.4.1
+    # via -r requirements.in
 prometheus-client==0.20.0
     # via jupyter-server
 prompt-toolkit==3.0.43
@@ -363,21 +313,14 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
-pycodestyle==2.11.1
-    # via
-    #   autopep8
-    #   flake8
 pycparser==2.22
     # via cffi
-pyflakes==3.2.0
-    # via flake8
 pygments==2.17.2
     # via
     #   ipython
     #   nbconvert
-pylint==3.1.0
-    # via nbqa
 pymc==5.11.0
+    # via -r requirements.in
 pyparsing==3.1.2
     # via matplotlib
 pytensor==2.18.6
@@ -391,19 +334,11 @@ python-dateutil==2.9.0.post0
     #   pandas
 python-json-logger==2.0.7
     # via jupyter-events
-python-lsp-jsonrpc==1.1.2
-    # via python-lsp-server
-python-lsp-ruff==2.2.0
-python-lsp-server==1.11.0
-    # via python-lsp-ruff
 pytz==2024.1
     # via pandas
-pyupgrade==3.15.2
-    # via nbqa
 pyyaml==6.0.1
     # via
     #   jupyter-events
-    #   jupytext
     #   nbdev
 pyzmq==25.1.2
     # via
@@ -436,13 +371,13 @@ rpds-py==0.18.0
     # via
     #   jsonschema
     #   referencing
-ruff==0.3.4
-    # via
-    #   nbqa
-    #   python-lsp-ruff
+ruff==0.14.7
+    # via -r requirements.in
 scikit-learn==1.4.1.post1
+    # via -r requirements.in
 scipy==1.12.0
     # via
+    #   -r requirements.in
     #   arviz
     #   fastf1
     #   preliz
@@ -451,6 +386,7 @@ scipy==1.12.0
     #   scikit-learn
     #   xarray-einstats
 seaborn==0.13.2
+    # via -r requirements.in
 send2trash==1.8.2
     # via jupyter-server
 setuptools==69.2.0
@@ -485,16 +421,6 @@ timple==0.1.8
     # via fastf1
 tinycss2==1.2.1
     # via nbconvert
-tokenize-rt==5.2.0
-    # via
-    #   nbqa
-    #   pyupgrade
-toml==0.10.2
-    # via jupytext
-tomli==2.0.1
-    # via nbqa
-tomlkit==0.12.4
-    # via pylint
 toolz==0.12.1
     # via
     #   logical-unification
@@ -507,6 +433,7 @@ tornado==6.4
     #   jupyterlab
     #   terminado
 tqdm==4.66.2
+    # via -r requirements.in
 traitlets==5.14.2
     # via
     #   comm
@@ -527,15 +454,10 @@ types-python-dateutil==2.9.0.20240316
 typing-extensions==4.10.0
     # via
     #   arviz
-    #   mypy
     #   pymc
     #   pytensor
 tzdata==2024.1
     # via pandas
-ujson==5.9.0
-    # via
-    #   python-lsp-jsonrpc
-    #   python-lsp-server
 uri-template==1.3.0
     # via jsonschema
 url-normalize==1.4.3

@@ -4,3 +4,5 @@
 .virtual_documents
 
 /.quarto/
+
+**/*.quarto_ipynb

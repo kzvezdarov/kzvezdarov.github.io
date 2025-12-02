@@ -9,8 +9,19 @@
 <link>https://kirilzvezdarov.com/</link>
 <atom:link href="https://kirilzvezdarov.com/index.xml" rel="self" type="application/rss+xml"/>
 <description>Kiril Zvezdarov&#39;s Blog</description>
-<generator>quarto-1.4.551</generator>
-<lastBuildDate>Thu, 31 Aug 2023 04:00:00 GMT</lastBuildDate>
+<generator>quarto-1.8.26</generator>
+<lastBuildDate>Tue, 26 Mar 2024 04:00:00 GMT</lastBuildDate>
+<item>
+  <title></title>
+  <dc:creator>Kiril Zvezdarov</dc:creator>
+  <link>https://kirilzvezdarov.com/posts/f1-bradley-terry/f1-bradley-terry.html</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>python</category>
+  <category>pymc</category>
+  <category>formula1</category>
+  <guid>https://kirilzvezdarov.com/posts/f1-bradley-terry/f1-bradley-terry.html</guid>
+  <pubDate>Tue, 26 Mar 2024 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Modeling Formula 1 Fantasy GP points with PyMC</title>
   <dc:creator>Kiril Zvezdarov</dc:creator>
@@ -24,7 +35,7 @@
 <div id="11dd86a5-e957-4822-af94-42309cfdb83d" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>matplotlib inline</span>
 <span id="cb1-2"></span>
@@ -153,7 +164,7 @@ font-style: inherit;">7</span>]</span>
 <span id="cb1-29"></span>
 <span id="cb1-30">az.style.use(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"arviz-docgrid"</span>)</span></code></pre></div>
+font-style: inherit;">"arviz-docgrid"</span>)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING (pytensor.tensor.blas): Using NumPy C-API based implementation for BLAS functions.</code></pre>
@@ -168,7 +179,7 @@ font-style: inherit;">"arviz-docgrid"</span>)</span></code></pre></div>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Disclaimer
+<span class="screen-reader-only">Caution</span>Disclaimer
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -180,16 +191,16 @@ Disclaimer
 <p>We start by acquiring data for the 2023 season. The <a href="http://ergast.com/mrd/">Ergast API</a> hosts statistics for Formula 1 races from the 1950s to the present day and exposes convenient endpoints for querying both <a href="http://ergast.com/mrd/methods/qualifying/">qualifying</a> and <a href="http://ergast.com/mrd/methods/results/">grand prix results</a>.</p>
 <p>First, we define some convenience functions to query the raw json data:</p>
 <div id="0bd7f0a2-e72f-4dad-bec6-1df50ad66617" class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">API <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">API <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"http://ergast.com/api/f1"</span></span></code></pre></div>
+font-style: inherit;">"http://ergast.com/api/f1"</span></span></code></pre></div></div>
 </div>
 <div id="96e95017-4888-4cf2-b9bd-6fdfed9d8b97" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">DATASET_PATH <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">DATASET_PATH <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {<span class="st" style="color: #20794D;
 background-color: null;
@@ -204,6 +215,7 @@ font-style: inherit;">"qualifying"</span>}</span>
 <span id="cb4-3"></span>
 <span id="cb4-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> get_dataset(dataset: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>, year: <span class="bu" style="color: null;
@@ -259,11 +271,13 @@ font-style: inherit;">=</span> requests.get(url)</span>
 <span id="cb4-10"></span>
 <span id="cb4-11">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> response.json()</span>
 <span id="cb4-12"></span>
 <span id="cb4-13"></span>
 <span id="cb4-14"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> load_dataset(dataset: <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>, year: <span class="bu" style="color: null;
@@ -293,9 +307,11 @@ font-style: inherit;">_results.json"</span>)</span>
 <span id="cb4-16"></span>
 <span id="cb4-17">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> results_path.exists():</span>
 <span id="cb4-18">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> results_path.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">open</span>() <span class="im" style="color: #00769E;
@@ -306,6 +322,7 @@ background-color: null;
 font-style: inherit;">=</span> json.loads(f.read())</span>
 <span id="cb4-20">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
 <span id="cb4-21">        results <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -313,8 +330,10 @@ font-style: inherit;">=</span> get_dataset(dataset, year)</span>
 <span id="cb4-22"></span>
 <span id="cb4-23">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">not</span> os.path.isdir(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">".data"</span>):</span>
@@ -324,6 +343,7 @@ font-style: inherit;">".data"</span>)</span>
 <span id="cb4-25"></span>
 <span id="cb4-26">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> results_path.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">open</span>(<span class="st" style="color: #20794D;
@@ -335,11 +355,12 @@ font-style: inherit;">as</span> f:</span>
 <span id="cb4-28"></span>
 <span id="cb4-29">    <span class="cf" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">return</span> results</span></code></pre></div>
+font-weight: bold;
+font-style: inherit;">return</span> results</span></code></pre></div></div>
 </details>
 </div>
 <div id="3ae984ed-297a-400b-944a-2b27b9038953" class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">gp_data <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">gp_data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> load_dataset(<span class="st" style="color: #20794D;
 background-color: null;
@@ -352,22 +373,25 @@ font-style: inherit;">=</span> load_dataset(<span class="st" style="color: #2079
 background-color: null;
 font-style: inherit;">"quali"</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2023</span>)</span></code></pre></div>
+font-style: inherit;">2023</span>)</span></code></pre></div></div>
 </div>
 <p>Next, we unnest it into a row-wise format and load it as a Pandas dataframe for ease of use:</p>
 <div id="5713c8b1-22a6-4baf-ae55-9791515dce97" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> gp_results_to_dataframe(json_data):</span>
 <span id="cb6-2">    data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {}</span>
 <span id="cb6-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> gp <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> json_data[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"MRData"</span>][<span class="st" style="color: #20794D;
@@ -377,8 +401,10 @@ background-color: null;
 font-style: inherit;">"Races"</span>]:</span>
 <span id="cb6-4">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> result <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> gp[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Results"</span>]:</span>
@@ -443,6 +469,7 @@ font-style: inherit;">"status"</span>])</span>
 <span id="cb6-19"></span>
 <span id="cb6-20">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> (</span>
 <span id="cb6-21">        pd.DataFrame(data)</span>
 <span id="cb6-22">        .astype(</span>
@@ -504,14 +531,17 @@ font-style: inherit;">"driver"</span>])</span>
 <span id="cb6-38"></span>
 <span id="cb6-39"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> quali_results_to_dataframe(json_data):</span>
 <span id="cb6-40">    data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {}</span>
 <span id="cb6-41">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> quali <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> json_data[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"MRData"</span>][<span class="st" style="color: #20794D;
@@ -521,8 +551,10 @@ background-color: null;
 font-style: inherit;">"Races"</span>]:</span>
 <span id="cb6-42">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> result <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> quali[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"QualifyingResults"</span>]:</span>
@@ -563,6 +595,7 @@ font-style: inherit;">"position"</span>])</span>
 <span id="cb6-51"></span>
 <span id="cb6-52">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> (</span>
 <span id="cb6-53">        pd.DataFrame(data)</span>
 <span id="cb6-54">        .astype(</span>
@@ -599,20 +632,19 @@ background-color: null;
 font-style: inherit;">"circuit"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver"</span>])</span>
-<span id="cb6-64">    )</span></code></pre></div>
+<span id="cb6-64">    )</span></code></pre></div></div>
 </details>
 </div>
 <div id="5de8cadd-8494-4211-b405-cc36346375aa" class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">gp_df <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">gp_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
-<span id="cb7-2">gp_df</span></code></pre></div>
+<span id="cb7-2">gp_df</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -625,7 +657,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <th data-quarto-table-cell-role="th">fastest_lap</th>
 <th data-quarto-table-cell-role="th">status</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th data-quarto-table-cell-role="th">circuit</th>
 <th data-quarto-table-cell-role="th">driver</th>
 <th data-quarto-table-cell-role="th"></th>
@@ -639,8 +671,8 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 </thead>
 <tbody>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</td>
-<td data-quarto-table-cell-role="th">VER</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</th>
+<th data-quarto-table-cell-role="th">VER</th>
 <td>1</td>
 <td>red_bull</td>
 <td>1</td>
@@ -650,7 +682,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Finished</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">PER</td>
+<th data-quarto-table-cell-role="th">PER</th>
 <td>1</td>
 <td>red_bull</td>
 <td>2</td>
@@ -660,7 +692,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Finished</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">ALO</td>
+<th data-quarto-table-cell-role="th">ALO</th>
 <td>1</td>
 <td>aston_martin</td>
 <td>5</td>
@@ -670,7 +702,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Finished</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">SAI</td>
+<th data-quarto-table-cell-role="th">SAI</th>
 <td>1</td>
 <td>ferrari</td>
 <td>4</td>
@@ -680,7 +712,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Finished</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">HAM</td>
+<th data-quarto-table-cell-role="th">HAM</th>
 <td>1</td>
 <td>mercedes</td>
 <td>7</td>
@@ -690,8 +722,8 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Finished</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
@@ -701,8 +733,8 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</td>
-<td data-quarto-table-cell-role="th">STR</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</th>
+<th data-quarto-table-cell-role="th">STR</th>
 <td>14</td>
 <td>aston_martin</td>
 <td>20</td>
@@ -712,7 +744,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Finished</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">HUL</td>
+<th data-quarto-table-cell-role="th">HUL</th>
 <td>14</td>
 <td>haas</td>
 <td>13</td>
@@ -722,7 +754,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>+1 Lap</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">MAG</td>
+<th data-quarto-table-cell-role="th">MAG</th>
 <td>14</td>
 <td>haas</td>
 <td>19</td>
@@ -732,7 +764,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>+1 Lap</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">OCO</td>
+<th data-quarto-table-cell-role="th">OCO</th>
 <td>14</td>
 <td>alpine</td>
 <td>18</td>
@@ -742,7 +774,7 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 <td>Steering</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">TSU</td>
+<th data-quarto-table-cell-role="th">TSU</th>
 <td>14</td>
 <td>alphatauri</td>
 <td>11</td>
@@ -758,18 +790,16 @@ font-style: inherit;">=</span> gp_results_to_dataframe(gp_data)</span>
 </div>
 </div>
 </div>
-</div>
 <div id="eb2865ed-2cff-4dd9-a10b-93b7e6e90c39" class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">quali_df <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">quali_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> quali_results_to_dataframe(quali_data)</span>
-<span id="cb8-2">quali_df</span></code></pre></div>
+<span id="cb8-2">quali_df</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -778,7 +808,7 @@ font-style: inherit;">=</span> quali_results_to_dataframe(quali_data)</span>
 <th data-quarto-table-cell-role="th">constructor</th>
 <th data-quarto-table-cell-role="th">qualifying_position</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th data-quarto-table-cell-role="th">circuit</th>
 <th data-quarto-table-cell-role="th">driver</th>
 <th data-quarto-table-cell-role="th"></th>
@@ -788,70 +818,70 @@ font-style: inherit;">=</span> quali_results_to_dataframe(quali_data)</span>
 </thead>
 <tbody>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</td>
-<td data-quarto-table-cell-role="th">VER</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</th>
+<th data-quarto-table-cell-role="th">VER</th>
 <td>1</td>
 <td>red_bull</td>
 <td>1</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">PER</td>
+<th data-quarto-table-cell-role="th">PER</th>
 <td>1</td>
 <td>red_bull</td>
 <td>2</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">LEC</td>
+<th data-quarto-table-cell-role="th">LEC</th>
 <td>1</td>
 <td>ferrari</td>
 <td>3</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">SAI</td>
+<th data-quarto-table-cell-role="th">SAI</th>
 <td>1</td>
 <td>ferrari</td>
 <td>4</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">ALO</td>
+<th data-quarto-table-cell-role="th">ALO</th>
 <td>1</td>
 <td>aston_martin</td>
 <td>5</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</td>
-<td data-quarto-table-cell-role="th">ZHO</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</th>
+<th data-quarto-table-cell-role="th">ZHO</th>
 <td>14</td>
 <td>alfa</td>
 <td>16</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">GAS</td>
+<th data-quarto-table-cell-role="th">GAS</th>
 <td>14</td>
 <td>alpine</td>
 <td>17</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">OCO</td>
+<th data-quarto-table-cell-role="th">OCO</th>
 <td>14</td>
 <td>alpine</td>
 <td>18</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">MAG</td>
+<th data-quarto-table-cell-role="th">MAG</th>
 <td>14</td>
 <td>haas</td>
 <td>19</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">STR</td>
+<th data-quarto-table-cell-role="th">STR</th>
 <td>14</td>
 <td>aston_martin</td>
 <td>20</td>
@@ -863,10 +893,9 @@ font-style: inherit;">=</span> quali_results_to_dataframe(quali_data)</span>
 </div>
 </div>
 </div>
-</div>
 <p>Finally, we join the grand prix and qualifying dataframes together, forming the base dataset for our analysis; we also rename all entries credited to Liam Lawson (LAW) to Daniel Ricciardio (RIC), as Fantasy GP credits points from the temporary reserve driver to the driver they replace:</p>
 <div id="25a5d343-64c0-4d69-87c9-73dff02e0791" class="cell">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">data_df <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> gp_df.join(quali_df[[<span class="st" style="color: #20794D;
 background-color: null;
@@ -883,13 +912,12 @@ font-style: inherit;">"LAW"</span>: <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"RIC"</span>}</span>
 <span id="cb9-3">)</span>
-<span id="cb9-4">data_df</span></code></pre></div>
+<span id="cb9-4">data_df</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -903,7 +931,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <th data-quarto-table-cell-role="th">status</th>
 <th data-quarto-table-cell-role="th">qualifying_position</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th data-quarto-table-cell-role="th">circuit</th>
 <th data-quarto-table-cell-role="th">driver</th>
 <th data-quarto-table-cell-role="th"></th>
@@ -918,8 +946,8 @@ font-style: inherit;">"RIC"</span>}</span>
 </thead>
 <tbody>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</td>
-<td data-quarto-table-cell-role="th">VER</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</th>
+<th data-quarto-table-cell-role="th">VER</th>
 <td>1</td>
 <td>red_bull</td>
 <td>1</td>
@@ -930,7 +958,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>1</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">PER</td>
+<th data-quarto-table-cell-role="th">PER</th>
 <td>1</td>
 <td>red_bull</td>
 <td>2</td>
@@ -941,7 +969,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>2</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">ALO</td>
+<th data-quarto-table-cell-role="th">ALO</th>
 <td>1</td>
 <td>aston_martin</td>
 <td>5</td>
@@ -952,7 +980,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>5</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">SAI</td>
+<th data-quarto-table-cell-role="th">SAI</th>
 <td>1</td>
 <td>ferrari</td>
 <td>4</td>
@@ -963,7 +991,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>4</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">HAM</td>
+<th data-quarto-table-cell-role="th">HAM</th>
 <td>1</td>
 <td>mercedes</td>
 <td>7</td>
@@ -974,8 +1002,8 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>7</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
@@ -986,8 +1014,8 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</td>
-<td data-quarto-table-cell-role="th">STR</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</th>
+<th data-quarto-table-cell-role="th">STR</th>
 <td>14</td>
 <td>aston_martin</td>
 <td>20</td>
@@ -998,7 +1026,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>20</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">HUL</td>
+<th data-quarto-table-cell-role="th">HUL</th>
 <td>14</td>
 <td>haas</td>
 <td>13</td>
@@ -1009,7 +1037,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>13</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">MAG</td>
+<th data-quarto-table-cell-role="th">MAG</th>
 <td>14</td>
 <td>haas</td>
 <td>19</td>
@@ -1020,7 +1048,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>19</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">OCO</td>
+<th data-quarto-table-cell-role="th">OCO</th>
 <td>14</td>
 <td>alpine</td>
 <td>18</td>
@@ -1031,7 +1059,7 @@ font-style: inherit;">"RIC"</span>}</span>
 <td>18</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">TSU</td>
+<th data-quarto-table-cell-role="th">TSU</th>
 <td>14</td>
 <td>alphatauri</td>
 <td>11</td>
@@ -1048,7 +1076,6 @@ font-style: inherit;">"RIC"</span>}</span>
 </div>
 </div>
 </div>
-</div>
 </section>
 <section id="fantasy-points" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="fantasy-points"><span class="header-section-number">2</span> Fantasy points</h2>
@@ -1060,9 +1087,9 @@ font-style: inherit;">"RIC"</span>}</span>
 <p>To simplify the problem, we completely ignore sprint races (as should everyone).</p>
 <p>The race finish status classification has several detailed categories:</p>
 <div id="e0f66f62-f8c8-4d68-a172-8ab8515a759c" class="cell">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">data_df[<span class="st" style="color: #20794D;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">data_df[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"status"</span>].dtype</span></code></pre></div>
+font-style: inherit;">"status"</span>].dtype</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <pre><code>CategoricalDtype(categories=['+1 Lap', '+2 Laps', 'Accident', 'Brakes', 'Collision',
                   'Collision damage', 'Electrical', 'Engine', 'Finished',
@@ -1073,7 +1100,7 @@ font-style: inherit;">"status"</span>].dtype</span></code></pre></div>
 </div>
 <p>Fantasy GP scoring only cares whether a car finished or not, so we define the following set of categories to indiciate a finish:</p>
 <div id="ea99e41d-d5fe-4a26-bde7-856c4f54e256" class="cell">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">STATUS_FINISHED <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1">STATUS_FINISHED <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
 background-color: null;
@@ -1081,17 +1108,19 @@ font-style: inherit;">"Finished"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"+1 Lap"</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"+2 Laps"</span>]</span></code></pre></div>
+font-style: inherit;">"+2 Laps"</span>]</span></code></pre></div></div>
 </div>
 <p>While our dataset has the WDC points scored per driver/constructor already, positions gained and performance vs.&nbsp;teammate need to be added in:</p>
 <div id="b2acaa5d-151b-4a75-87ad-86f28f8c73c2" class="cell">
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> add_scoring_cols(df: pd.DataFrame) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> pd.DataFrame:</span>
 <span id="cb13-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> df.assign(</span>
 <span id="cb13-3">        <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -1103,6 +1132,7 @@ font-style: inherit;"># to simplify the check for who won out in qualifying.</sp
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"grid"</span>].where(x[<span class="st" style="color: #20794D;
@@ -1125,6 +1155,7 @@ font-style: inherit;"># care about positions lost, so we set anything below 0 to
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: np.maximum(x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"grid"</span>] <span class="op" style="color: #5E5E5E;
@@ -1141,6 +1172,7 @@ font-style: inherit;"># Whether the driver won pole position</span></span>
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"qualifying_position"</span>] <span class="op" style="color: #5E5E5E;
@@ -1155,6 +1187,7 @@ font-style: inherit;"># Whether the driver beat their teammate in qualifying</sp
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: x.groupby(</span>
 <span id="cb13-14">            <span class="co" style="color: #5E5E5E;
 background-color: null;
@@ -1183,10 +1216,10 @@ background-color: null;
 font-style: inherit;"># we create a cartesian product of the grid pos.)</span></span>
 <span id="cb13-21">            <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> g: g[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"grid"</span>]</span>
-<span id="cb13-22">            <span class="op" style="color: #5E5E5E;
+font-style: inherit;">"grid"</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span> g[<span class="st" style="color: #20794D;
 background-color: null;
@@ -1195,16 +1228,17 @@ background-color: null;
 font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>].values</span>
-<span id="cb13-23">        ),</span>
-<span id="cb13-24">        <span class="co" style="color: #5E5E5E;
+<span id="cb13-22">        ),</span>
+<span id="cb13-23">        <span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Same as the previous column, but for finishing position in the race.</span></span>
-<span id="cb13-25">        beat_teammate_race<span class="op" style="color: #5E5E5E;
+<span id="cb13-24">        beat_teammate_race<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: x.groupby(</span>
-<span id="cb13-26">            [<span class="st" style="color: #20794D;
+<span id="cb13-25">            [<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"circuit"</span>, <span class="st" style="color: #20794D;
 background-color: null;
@@ -1213,11 +1247,12 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span></span>
-<span id="cb13-27">        ).<span class="bu" style="color: null;
+<span id="cb13-26">        ).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">apply</span>(</span>
-<span id="cb13-28">            <span class="kw" style="color: #003B4F;
+<span id="cb13-27">            <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> g: (g[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"position"</span>] <span class="op" style="color: #5E5E5E;
@@ -1229,16 +1264,17 @@ background-color: null;
 font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>].values)</span>
-<span id="cb13-29">            <span class="op" style="color: #5E5E5E;
+<span id="cb13-28">            <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&amp;</span> g[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"status"</span>].isin(STATUS_FINISHED)</span>
-<span id="cb13-30">        ),</span>
-<span id="cb13-31">        has_fastest_lap<span class="op" style="color: #5E5E5E;
+<span id="cb13-29">        ),</span>
+<span id="cb13-30">        has_fastest_lap<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"fastest_lap"</span>] <span class="op" style="color: #5E5E5E;
@@ -1246,18 +1282,18 @@ background-color: null;
 font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>,</span>
-<span id="cb13-32">    )</span>
+<span id="cb13-31">    )</span>
+<span id="cb13-32"></span>
 <span id="cb13-33"></span>
-<span id="cb13-34"></span>
-<span id="cb13-35">data_df <span class="op" style="color: #5E5E5E;
+<span id="cb13-34">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span> add_scoring_cols(data_df)</span></code></pre></div>
+font-style: inherit;">=</span> add_scoring_cols(data_df)</span></code></pre></div></div>
 </div>
 <p>This leaves us with the following dataframe:</p>
 <div id="416d15a4-d6df-4852-914d-cdd246fcac6d" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">data_df[</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1">data_df[</span>
 <span id="cb14-2">    [</span>
 <span id="cb14-3">        <span class="st" style="color: #20794D;
 background-color: null;
@@ -1278,14 +1314,13 @@ font-style: inherit;">"has_pole"</span>,</span>
 background-color: null;
 font-style: inherit;">"has_fastest_lap"</span>,</span>
 <span id="cb14-9">    ]</span>
-<span id="cb14-10">]</span></code></pre></div>
+<span id="cb14-10">]</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1297,7 +1332,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <th data-quarto-table-cell-role="th">has_pole</th>
 <th data-quarto-table-cell-role="th">has_fastest_lap</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th data-quarto-table-cell-role="th">circuit</th>
 <th data-quarto-table-cell-role="th">driver</th>
 <th data-quarto-table-cell-role="th"></th>
@@ -1310,8 +1345,8 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 </thead>
 <tbody>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</td>
-<td data-quarto-table-cell-role="th">VER</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</th>
+<th data-quarto-table-cell-role="th">VER</th>
 <td>1</td>
 <td>0</td>
 <td>True</td>
@@ -1320,7 +1355,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">PER</td>
+<th data-quarto-table-cell-role="th">PER</th>
 <td>2</td>
 <td>0</td>
 <td>False</td>
@@ -1329,7 +1364,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">ALO</td>
+<th data-quarto-table-cell-role="th">ALO</th>
 <td>5</td>
 <td>2</td>
 <td>True</td>
@@ -1338,7 +1373,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">SAI</td>
+<th data-quarto-table-cell-role="th">SAI</th>
 <td>4</td>
 <td>0</td>
 <td>False</td>
@@ -1347,7 +1382,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">HAM</td>
+<th data-quarto-table-cell-role="th">HAM</th>
 <td>7</td>
 <td>2</td>
 <td>False</td>
@@ -1356,8 +1391,8 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 <td>...</td>
@@ -1366,8 +1401,8 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</td>
-<td data-quarto-table-cell-role="th">STR</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</th>
+<th data-quarto-table-cell-role="th">STR</th>
 <td>20</td>
 <td>4</td>
 <td>False</td>
@@ -1376,7 +1411,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">HUL</td>
+<th data-quarto-table-cell-role="th">HUL</th>
 <td>13</td>
 <td>0</td>
 <td>True</td>
@@ -1385,7 +1420,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">MAG</td>
+<th data-quarto-table-cell-role="th">MAG</th>
 <td>19</td>
 <td>1</td>
 <td>False</td>
@@ -1394,7 +1429,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">OCO</td>
+<th data-quarto-table-cell-role="th">OCO</th>
 <td>18</td>
 <td>0</td>
 <td>False</td>
@@ -1403,7 +1438,7 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 <td>False</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">TSU</td>
+<th data-quarto-table-cell-role="th">TSU</th>
 <td>11</td>
 <td>0</td>
 <td>True</td>
@@ -1418,7 +1453,6 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 </div>
 </div>
 </div>
-</div>
 <p>Finally, we can score the Fantasy GP points; we define the scoring function for the driver to be the sum of:</p>
 <ul>
 <li>WDC points</li>
@@ -1429,11 +1463,13 @@ font-style: inherit;">"has_fastest_lap"</span>,</span>
 </ul>
 <p>Note that a driver who did not finish the race on Sunday can still earn points from the qualifying session.</p>
 <div id="1ab83315-fec2-484d-9c8f-f108172f1c02" class="cell">
-<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> score_driver(x):</span>
 <span id="cb15-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> pd.Series(</span>
 <span id="cb15-3">        x[<span class="st" style="color: #20794D;
 background-color: null;
@@ -1481,13 +1517,11 @@ background-color: null;
 font-style: inherit;">=</span><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">float</span>,</span>
-<span id="cb15-7">    ).where(</span>
-<span id="cb15-8">        x[<span class="st" style="color: #20794D;
+<span id="cb15-7">    ).where(x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"status"</span>].isin(STATUS_FINISHED), <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span></span>
-<span id="cb15-9">    )</span></code></pre></div>
+font-style: inherit;">0</span>)</span></code></pre></div></div>
 </div>
 <p>Scoring for the constructors is defined as:</p>
 <ul>
@@ -1496,8 +1530,9 @@ font-style: inherit;">0</span></span>
 <li>1 point per position gained at the end of the race per car</li>
 </ul>
 <div id="27c01794-fd9f-478c-acc7-496e62044295" class="cell">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> score_constructor(x):</span>
 <span id="cb16-2">    finished <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1506,11 +1541,13 @@ background-color: null;
 font-style: inherit;">"status"</span>].isin(STATUS_FINISHED)</span>
 <span id="cb16-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">match</span> finished.<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">sum</span>():</span>
 <span id="cb16-4">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">case</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">2</span>:</span>
@@ -1521,6 +1558,7 @@ background-color: null;
 font-style: inherit;">5</span></span>
 <span id="cb16-6">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">case</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>:</span>
@@ -1531,6 +1569,7 @@ background-color: null;
 font-style: inherit;">2</span></span>
 <span id="cb16-8">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">case</span> _:</span>
 <span id="cb16-9">            finish_bonus <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1540,6 +1579,7 @@ font-style: inherit;">0</span></span>
 <span id="cb16-10"></span>
 <span id="cb16-11">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> x[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"points"</span>].<span class="bu" style="color: null;
@@ -1552,19 +1592,21 @@ font-style: inherit;">"positions_gained"</span>].<span class="bu" style="color: 
 background-color: null;
 font-style: inherit;">sum</span>() <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">+</span> finish_bonus</span></code></pre></div>
+font-style: inherit;">+</span> finish_bonus</span></code></pre></div></div>
 </div>
 <p>Just from the rules definition it is clear that drivers have a higher points earnign ceiling but much higher variance, whereas constructors are more consistent but earn fewer points.</p>
 <div id="b2a56557-1733-4346-b888-288543b4e375" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> score_fantasy_points(df: pd.DataFrame) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-&gt;</span> pd.DataFrame:</span>
 <span id="cb17-2">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> df.assign(</span>
 <span id="cb17-3">        driver_points<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1582,6 +1624,7 @@ font-style: inherit;"># the group has fewer rows and needs to be broadcast per g
 background-color: null;
 font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">lambda</span> x: x.join(</span>
 <span id="cb17-8">            x.groupby([<span class="st" style="color: #20794D;
 background-color: null;
@@ -1604,28 +1647,27 @@ font-style: inherit;">"constructor"</span>],</span>
 <span id="cb17-12">        )[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor_points"</span>],</span>
-<span id="cb17-13">    )</span></code></pre></div>
+<span id="cb17-13">    )</span></code></pre></div></div>
 </details>
 </div>
 <p>The scored dataframe looks like this:</p>
 <div id="a1ecc81b-1e0c-4949-9eac-4056687fb096" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">data_df <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> score_fantasy_points(data_df)</span>
 <span id="cb18-2">data_df[[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver_points"</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div>
+font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1633,7 +1675,7 @@ font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div>
 <th data-quarto-table-cell-role="th">driver_points</th>
 <th data-quarto-table-cell-role="th">constructor_points</th>
 </tr>
-<tr class="odd">
+<tr class="even">
 <th data-quarto-table-cell-role="th">circuit</th>
 <th data-quarto-table-cell-role="th">driver</th>
 <th data-quarto-table-cell-role="th"></th>
@@ -1642,60 +1684,60 @@ font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div>
 </thead>
 <tbody>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</td>
-<td data-quarto-table-cell-role="th">VER</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">bahrain</th>
+<th data-quarto-table-cell-role="th">VER</th>
 <td>45.0</td>
 <td>48.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">PER</td>
+<th data-quarto-table-cell-role="th">PER</th>
 <td>18.0</td>
 <td>48.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">ALO</td>
+<th data-quarto-table-cell-role="th">ALO</th>
 <td>29.0</td>
 <td>32.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">SAI</td>
+<th data-quarto-table-cell-role="th">SAI</th>
 <td>17.0</td>
 <td>14.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">HAM</td>
+<th data-quarto-table-cell-role="th">HAM</th>
 <td>19.0</td>
 <td>23.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">...</td>
-<td data-quarto-table-cell-role="th">...</td>
+<th data-quarto-table-cell-role="th">...</th>
+<th data-quarto-table-cell-role="th">...</th>
 <td>...</td>
 <td>...</td>
 </tr>
 <tr class="odd">
-<td rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</td>
-<td data-quarto-table-cell-role="th">STR</td>
+<th rowspan="5" data-quarto-table-cell-role="th" data-valign="top">monza</th>
+<th data-quarto-table-cell-role="th">STR</th>
 <td>8.0</td>
 <td>12.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">HUL</td>
+<th data-quarto-table-cell-role="th">HUL</th>
 <td>10.0</td>
 <td>6.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">MAG</td>
+<th data-quarto-table-cell-role="th">MAG</th>
 <td>2.0</td>
 <td>6.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">OCO</td>
+<th data-quarto-table-cell-role="th">OCO</th>
 <td>0.0</td>
 <td>4.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">TSU</td>
+<th data-quarto-table-cell-role="th">TSU</th>
 <td>5.0</td>
 <td>3.0</td>
 </tr>
@@ -1703,7 +1745,6 @@ font-style: inherit;">"constructor_points"</span>]]</span></code></pre></div>
 </table>
 
 <p>280 rows × 2 columns</p>
-</div>
 </div>
 </div>
 </div>
@@ -1727,7 +1768,7 @@ Note
 <div id="cell-fig-driver-points" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -1824,10 +1865,10 @@ font-style: inherit;">"points"</span>)</span>
 background-color: null;
 font-style: inherit;">"Driver Fantasy GP points 2023"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-driver-points" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-driver-points" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-driver-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-driver-points-output-1.png" class="img-fluid figure-img">
@@ -1841,18 +1882,18 @@ Figure&nbsp;1: Fantasy points earned by each driver in 2023
 </div>
 <p>For convenience, we create a constructor-specific dataframe by taking the first row for each constructor for each race. This gets rid of the duplicate data (as constructor points were duplicated across both drivers):</p>
 <div id="e9969bc2-6af1-45f3-9c68-4670505efe17" class="cell">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">const_data_df <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1">const_data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> data_df.groupby([<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"circuit"</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"constructor"</span>]).first().reset_index()</span></code></pre></div>
+font-style: inherit;">"constructor"</span>]).first().reset_index()</span></code></pre></div></div>
 </div>
 <div id="cell-fig-constructor-points" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -1949,10 +1990,10 @@ font-style: inherit;">"points"</span>)</span>
 background-color: null;
 font-style: inherit;">"Constructor Fantasy GP points 2023"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-constructor-points" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructor-points" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructor-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructor-points-output-1.png" class="img-fluid figure-img">
@@ -1969,7 +2010,7 @@ Figure&nbsp;2: Fantasy points earned by each constructor in 2023
 <div id="cell-fig-driver-points-kde" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">g <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1">g <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sns.displot(</span>
 <span id="cb22-2">    data_df.reset_index(),</span>
@@ -2010,10 +2051,10 @@ font-style: inherit;">"points"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"density"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-driver-points-kde" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-driver-points-kde" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-driver-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-driver-points-kde-output-1.png" class="img-fluid figure-img">
@@ -2028,7 +2069,7 @@ Figure&nbsp;3: Kernel density estimates for fantasy points earned by each driver
 <div id="cell-fig-constructor-points-kde" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">g <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1">g <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sns.displot(</span>
 <span id="cb23-2">    const_data_df.reset_index(),</span>
@@ -2076,10 +2117,10 @@ font-style: inherit;">"points"</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"density"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-constructor-points-kde" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructor-points-kde" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructor-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructor-points-kde-output-1.png" class="img-fluid figure-img">
@@ -2095,7 +2136,7 @@ Figure&nbsp;4: Kernel density estimates for fantasy points earned by each constr
 <div id="cell-fig-grouped-points-kde" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">f, axs <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1">f, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2171,10 +2212,10 @@ font-style: inherit;">"constructor points"</span>)</span>
 <span id="cb24-10"></span>
 <span id="cb24-11">f.tight_layout()<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-grouped-points-kde" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-grouped-points-kde" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-grouped-points-kde-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-grouped-points-kde-output-1.png" class="img-fluid figure-img">
@@ -2203,7 +2244,7 @@ Figure&nbsp;5: Grouped kernel density estimates for fantasy points by drivers/co
 <div id="42ee4305-73b5-4af3-a44d-29b77850e998" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">data_df <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1">data_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> data_df.reset_index().astype(</span>
 <span id="cb25-2">    {</span>
@@ -2236,7 +2277,7 @@ font-style: inherit;">"driver"</span>)[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver_points"</span>].mean()</span>
 <span id="cb25-11">)</span>
-<span id="cb25-12">dispersion</span></code></pre></div>
+<span id="cb25-12">dispersion</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
 <pre><code>driver
@@ -2272,7 +2313,7 @@ Name: driver_points, dtype: float64</code></pre>
 <p>The mean is restricted to be positive only. The standard way of defining a negative binomial linear model is to set a Normal prior on the mean and use the exponentiation as the inverse link function to make it positive and usable for parameterizing the likelihood. For the actual prior parameters it would be reasonable to go with a fairly uninformative prior, such as <code>Normal(mu=0, sigma=1)</code>; in this case, prior knowledge and the ruleset gives us a hunch that we can reasonably expect most drivers’ mean points per race to be somewhere between 5 (backmarker, occasionally beats their teammate, maybe gains a place) and 30 (top driver &amp; team, consistently getting and winning from pole position).</p>
 <p>To come up with parameter values for this, we use the <a href="https://preliz.readthedocs.io/en/latest/">PreliZ</a> library to find a maximum entropy <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Normal.html">Normal</a> distribution with 90% of its mass between 5 and 30 (we take the natural log of those, given the exponential inverse link):</p>
 <div id="cell-fig-mu-prior" class="cell">
-<div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">mu_dist <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1">mu_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Normal()</span>
 <span id="cb27-2">pz.maxent(mu_dist, np.log(<span class="dv" style="color: #AD0000;
@@ -2283,9 +2324,9 @@ font-style: inherit;">30</span>), <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.90</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-mu-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-mu-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mu-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-mu-prior-output-1.png" class="img-fluid figure-img">
@@ -2301,7 +2342,7 @@ Figure&nbsp;6: PDF of the prior chosen for μ
 <div id="cell-fig-nb-shape" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1">f, axs <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1">f, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2427,10 +2468,10 @@ font-style: inherit;">1</span>].set_title(<span class="ss" style="color: #20794D
 background-color: null;
 font-style: inherit;">f"Negative Binomial with μ: 15, α: 500"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-nb-shape" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-nb-shape" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-nb-shape-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-nb-shape-output-1.png" class="img-fluid figure-img">
@@ -2444,7 +2485,7 @@ Figure&nbsp;7: Negative binomial distributions with a fixed mean at different sh
 </div>
 <p>As α increases, the tails shrink. We don’t want very high values, as that will restrict the tails too much, but very small values result in absurdly long tails. To handle that, we use a <a href="https://www.pymc.io/projects/docs/en/stable/api/distributions/generated/pymc.Gamma.html">Gamma</a> distribution, with mass strongly concentrated between 1 and 20:</p>
 <div id="cell-fig-alpha-prior" class="cell">
-<div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">alpha_dist <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1">alpha_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Gamma()</span>
 <span id="cb29-2">pz.maxent(alpha_dist, <span class="dv" style="color: #AD0000;
@@ -2453,11 +2494,11 @@ font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">20</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">.9</span>)<span class="op" style="color: #5E5E5E;
+font-style: inherit;">0.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-alpha-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-alpha-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-alpha-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-alpha-prior-output-1.png" class="img-fluid figure-img">
@@ -2471,7 +2512,7 @@ Figure&nbsp;8: PDF of the prior chosen for α
 </div>
 <p>Finally, we prepare the data for use within the model. We factorize the <code>driver</code> column into labels and an index:</p>
 <div id="349ca646-0714-4338-8613-c4ac870344e7" class="cell">
-<div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">idx, labels <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1">idx, labels <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.factorize(data_df[<span class="st" style="color: #20794D;
 background-color: null;
@@ -2479,7 +2520,7 @@ font-style: inherit;">"driver"</span>], sort<span class="op" style="color: #5E5E
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">True</span>)</span></code></pre></div>
+font-style: inherit;">True</span>)</span></code></pre></div></div>
 </div>
 <p><code>labels</code> is a categorical variable over the driver names:</p>
 <div id="f23862b3-e0f7-437b-8ba9-60af46f10a99" class="cell">
@@ -2514,12 +2555,12 @@ font-style: inherit;">True</span>)</span></code></pre></div>
 </div>
 <p>We also extract the observed points:</p>
 <div id="eb0cc275-0ef0-40b1-aba1-66303e1de1ee" class="cell">
-<div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">driver_points <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1">driver_points <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> data_df[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver_points"</span>]</span>
-<span id="cb33-2">driver_points</span></code></pre></div>
+<span id="cb33-2">driver_points</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <pre><code>0      45.0
 1      18.0
@@ -2541,8 +2582,9 @@ Name: driver_points, Length: 280, dtype: float64</code></pre>
 <p>Next, we define the model with <a href="https://www.pymc.io/">PyMC</a>. As discussed previously, we think that the process that generates points can be seen as a Negative Binomial distribution, so that is set as the likelihood. The mean (μ) аnd shape (α) are the parameters that we want to infer from the data. Finally, the prior guesses for these parameters are set from the <code>mu_dist</code> and <code>alpha_dist</code> objects we computed previously.</p>
 <p>This translates to:</p>
 <div id="02920709-0edb-4f55-a500-22a7ea3cb7cf" class="cell">
-<div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> pm.Model(coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
@@ -2597,15 +2639,16 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"idx"</span></span>
-<span id="cb35-9">    )</span></code></pre></div>
+<span id="cb35-9">    )</span></code></pre></div></div>
 </div>
 </section>
 <section id="prior-predictive-checks" class="level3" data-number="4.4">
 <h3 data-number="4.4" class="anchored" data-anchor-id="prior-predictive-checks"><span class="header-section-number">4.4</span> Prior predictive checks</h3>
 <p>To see if the choice for priors is acceptable, we sample from the prior predictive and plot the results:</p>
 <div id="ed158fc1-3308-4467-b16a-8e37c18b2272" class="cell">
-<div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> unpooled_negb:</span>
 <span id="cb36-2">    unpooled_prior_samples <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2613,13 +2656,13 @@ font-style: inherit;">=</span> pm.sample_prior_predictive(samples<span class="op
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>)</span></code></pre></div>
+font-style: inherit;">1000</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Sampling: [y, α, μ]</code></pre>
 </div>
 </div>
 <div id="cell-fig-unpooled-prior-predictive" class="cell">
-<div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1">az.plot_ppc(unpooled_prior_samples, group<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1">az.plot_ppc(unpooled_prior_samples, group<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -2631,9 +2674,9 @@ font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-prior-predictive" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-prior-predictive" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-prior-predictive-output-1.png" class="img-fluid figure-img">
@@ -2651,8 +2694,9 @@ Figure&nbsp;9: Prior predictive distribution of the unpooled model
 <h3 data-number="4.5" class="anchored" data-anchor-id="inference-and-diagnostics"><span class="header-section-number">4.5</span> Inference and diagnostics</h3>
 <p>Next, we perform the actual inference step - we sample from the posterior and the posterior predictive distribution:</p>
 <div id="0ee4f78c-b89f-49b9-9f02-e7a014ea61b2" class="cell">
-<div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> unpooled_negb:</span>
 <span id="cb39-2">    unpooled_idata <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -2671,14 +2715,12 @@ font-style: inherit;">True</span>})</span>
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">True</span>)</span></code></pre></div>
+font-style: inherit;">True</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Auto-assigning NUTS sampler...
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
-NUTS: [μ, α]
-Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 5 seconds.
-Sampling: [y]</code></pre>
+NUTS: [μ, α]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 
@@ -2705,6 +2747,10 @@ Sampling: [y]</code></pre>
       100.00% [8000/8000 00:04&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 5 seconds.
+Sampling: [y]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 
@@ -2736,7 +2782,7 @@ Sampling: [y]</code></pre>
 <p>There are no divergences detected, which is a good first sign that the model has converged.</p>
 <p>To check the sampling process we plot the traces for the μ parameter. What we are looking for is similar densities on the left (indicating that the chains have converged to the same posterior distribution), and noisy/patternless trace plots on the right (which would indicate that the sampler was able to efficiently run through the sample space)<sup>2</sup>:</p>
 <div id="cell-fig-unpooled-traceplots" class="cell">
-<div class="sourceCode cell-code" id="cb41" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1">az.plot_trace(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">az.plot_trace(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -2746,9 +2792,9 @@ font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-traceplots" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-traceplots" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-traceplots-output-1.png" class="img-fluid figure-img">
@@ -2765,17 +2811,17 @@ Figure&nbsp;10: Traceplots of the inferred parameter μ for the unpooled model
 <div id="cell-fig-unpooled-energy" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1">ax <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> az.plot_energy(unpooled_idata)</span>
-<span id="cb42-2">ax.set_title(<span class="st" style="color: #20794D;
+<span id="cb43-2">ax.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Energy Plot"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-energy" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-energy" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-energy-output-1.png" class="img-fluid figure-img">
@@ -2794,17 +2840,16 @@ Figure&nbsp;11: Energy plot for the unpooled model
 <li><code>mcse_{mean, sd}</code> is the Monte Carlo Standard Error, or the error introduced by approximating the posterior with a finite number of samples; lower = better <sup>5</sup></li>
 </ul>
 <div id="ad237f09-d7b1-41fe-acf7-05cb178d0446" class="cell">
-<div class="sourceCode cell-code" id="cb43" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1">az.summary(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1">az.summary(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"μ"</span>])</span></code></pre></div>
+font-style: inherit;">"μ"</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -2821,7 +2866,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[ALB]</td>
+<th data-quarto-table-cell-role="th">μ[ALB]</th>
 <td>2.559</td>
 <td>0.113</td>
 <td>2.356</td>
@@ -2833,7 +2878,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[ALO]</td>
+<th data-quarto-table-cell-role="th">μ[ALO]</th>
 <td>3.124</td>
 <td>0.101</td>
 <td>2.925</td>
@@ -2845,7 +2890,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[BOT]</td>
+<th data-quarto-table-cell-role="th">μ[BOT]</th>
 <td>2.523</td>
 <td>0.190</td>
 <td>2.158</td>
@@ -2857,7 +2902,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[DEV]</td>
+<th data-quarto-table-cell-role="th">μ[DEV]</th>
 <td>1.766</td>
 <td>0.220</td>
 <td>1.350</td>
@@ -2869,7 +2914,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[GAS]</td>
+<th data-quarto-table-cell-role="th">μ[GAS]</th>
 <td>2.459</td>
 <td>0.221</td>
 <td>2.039</td>
@@ -2881,7 +2926,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[HAM]</td>
+<th data-quarto-table-cell-role="th">μ[HAM]</th>
 <td>3.085</td>
 <td>0.099</td>
 <td>2.907</td>
@@ -2893,7 +2938,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[HUL]</td>
+<th data-quarto-table-cell-role="th">μ[HUL]</th>
 <td>2.159</td>
 <td>0.151</td>
 <td>1.888</td>
@@ -2905,7 +2950,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[LEC]</td>
+<th data-quarto-table-cell-role="th">μ[LEC]</th>
 <td>2.723</td>
 <td>0.209</td>
 <td>2.311</td>
@@ -2917,7 +2962,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[MAG]</td>
+<th data-quarto-table-cell-role="th">μ[MAG]</th>
 <td>2.030</td>
 <td>0.258</td>
 <td>1.552</td>
@@ -2929,7 +2974,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[NOR]</td>
+<th data-quarto-table-cell-role="th">μ[NOR]</th>
 <td>2.695</td>
 <td>0.146</td>
 <td>2.416</td>
@@ -2941,7 +2986,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[OCO]</td>
+<th data-quarto-table-cell-role="th">μ[OCO]</th>
 <td>2.275</td>
 <td>0.280</td>
 <td>1.764</td>
@@ -2953,7 +2998,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[PER]</td>
+<th data-quarto-table-cell-role="th">μ[PER]</th>
 <td>3.283</td>
 <td>0.101</td>
 <td>3.086</td>
@@ -2965,7 +3010,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[PIA]</td>
+<th data-quarto-table-cell-role="th">μ[PIA]</th>
 <td>1.901</td>
 <td>0.276</td>
 <td>1.373</td>
@@ -2977,7 +3022,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[RIC]</td>
+<th data-quarto-table-cell-role="th">μ[RIC]</th>
 <td>2.338</td>
 <td>0.226</td>
 <td>1.948</td>
@@ -2989,7 +3034,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[RUS]</td>
+<th data-quarto-table-cell-role="th">μ[RUS]</th>
 <td>2.776</td>
 <td>0.165</td>
 <td>2.480</td>
@@ -3001,7 +3046,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[SAI]</td>
+<th data-quarto-table-cell-role="th">μ[SAI]</th>
 <td>2.661</td>
 <td>0.176</td>
 <td>2.338</td>
@@ -3013,7 +3058,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[SAR]</td>
+<th data-quarto-table-cell-role="th">μ[SAR]</th>
 <td>1.835</td>
 <td>0.451</td>
 <td>1.023</td>
@@ -3025,7 +3070,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[STR]</td>
+<th data-quarto-table-cell-role="th">μ[STR]</th>
 <td>2.182</td>
 <td>0.260</td>
 <td>1.709</td>
@@ -3037,7 +3082,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[TSU]</td>
+<th data-quarto-table-cell-role="th">μ[TSU]</th>
 <td>2.420</td>
 <td>0.122</td>
 <td>2.196</td>
@@ -3049,7 +3094,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[VER]</td>
+<th data-quarto-table-cell-role="th">μ[VER]</th>
 <td>3.742</td>
 <td>0.074</td>
 <td>3.607</td>
@@ -3061,7 +3106,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[ZHO]</td>
+<th data-quarto-table-cell-role="th">μ[ZHO]</th>
 <td>2.255</td>
 <td>0.237</td>
 <td>1.798</td>
@@ -3078,7 +3123,6 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 <p>All of the sampling diagnistics look good, which means the model has converged and we can move on to posterior predictive checks and model evaluation.</p>
 </section>
 <section id="posterior-predictive-checks" class="level3" data-number="4.6">
@@ -3092,10 +3136,11 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <div id="2d860ab9-1bb9-4e29-a2aa-8733103ddf61" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> plot_posterior_predictive_checks(idata):</span>
-<span id="cb44-2">    f <span class="op" style="color: #5E5E5E;
+<span id="cb45-2">    f <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.figure(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3104,8 +3149,8 @@ background-color: null;
 font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">12</span>))</span>
-<span id="cb44-3"></span>
-<span id="cb44-4">    ax_ppc <span class="op" style="color: #5E5E5E;
+<span id="cb45-3"></span>
+<span id="cb45-4">    ax_ppc <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> f.add_subplot(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3114,14 +3159,14 @@ background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>)</span>
-<span id="cb44-5">    az.plot_ppc(idata, ax<span class="op" style="color: #5E5E5E;
+<span id="cb45-5">    az.plot_ppc(idata, ax<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ax_ppc)</span>
-<span id="cb44-6">    ax_ppc.set_title(<span class="st" style="color: #20794D;
+<span id="cb45-6">    ax_ppc.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Posterior predictive checks"</span>)</span>
-<span id="cb44-7"></span>
-<span id="cb44-8">    ax_bpv <span class="op" style="color: #5E5E5E;
+<span id="cb45-7"></span>
+<span id="cb45-8">    ax_bpv <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> f.add_subplot(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3130,18 +3175,18 @@ background-color: null;
 font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">3</span>)</span>
-<span id="cb44-9">    az.plot_bpv(idata, kind<span class="op" style="color: #5E5E5E;
+<span id="cb45-9">    az.plot_bpv(idata, kind<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"p_value"</span>, ax<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ax_bpv)</span>
-<span id="cb44-10">    ax_bpv.set_title(<span class="st" style="color: #20794D;
+<span id="cb45-10">    ax_bpv.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Bayesian p_value"</span>)</span>
-<span id="cb44-11"></span>
-<span id="cb44-12">    ax_uv <span class="op" style="color: #5E5E5E;
+<span id="cb45-11"></span>
+<span id="cb45-12">    ax_uv <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> f.add_subplot(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3150,18 +3195,18 @@ background-color: null;
 font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">4</span>)</span>
-<span id="cb44-13">    az.plot_bpv(idata, kind<span class="op" style="color: #5E5E5E;
+<span id="cb45-13">    az.plot_bpv(idata, kind<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"u_value"</span>, ax<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ax_uv)</span>
-<span id="cb44-14">    ax_uv.set_title(<span class="st" style="color: #20794D;
+<span id="cb45-14">    ax_uv.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Marginal p_value"</span>)</span>
-<span id="cb44-15"></span>
-<span id="cb44-16">    ax_loo_pit_ecdf <span class="op" style="color: #5E5E5E;
+<span id="cb45-15"></span>
+<span id="cb45-16">    ax_loo_pit_ecdf <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> f.add_subplot(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3170,7 +3215,7 @@ background-color: null;
 font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>)</span>
-<span id="cb44-17">    az.plot_loo_pit(idata, y<span class="op" style="color: #5E5E5E;
+<span id="cb45-17">    az.plot_loo_pit(idata, y<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -3181,11 +3226,11 @@ background-color: null;
 font-style: inherit;">True</span>, ax<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ax_loo_pit_ecdf)</span>
-<span id="cb44-18">    ax_loo_pit_ecdf.set_title(<span class="st" style="color: #20794D;
+<span id="cb45-18">    ax_loo_pit_ecdf.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"LOO-PIT (ecdf=True)"</span>)</span>
-<span id="cb44-19"></span>
-<span id="cb44-20">    ax_loo_pit <span class="op" style="color: #5E5E5E;
+<span id="cb45-19"></span>
+<span id="cb45-20">    ax_loo_pit <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> f.add_subplot(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3194,7 +3239,7 @@ background-color: null;
 font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>)</span>
-<span id="cb44-21">    az.plot_loo_pit(idata, y<span class="op" style="color: #5E5E5E;
+<span id="cb45-21">    az.plot_loo_pit(idata, y<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -3205,23 +3250,24 @@ background-color: null;
 font-style: inherit;">False</span>, ax<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ax_loo_pit)</span>
-<span id="cb44-22">    ax_loo_pit.set_title(<span class="st" style="color: #20794D;
+<span id="cb45-22">    ax_loo_pit.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"LOO-PIT (ecdf=False)"</span>)</span>
-<span id="cb44-23"></span>
-<span id="cb44-24">    f.tight_layout()</span>
-<span id="cb44-25"></span>
-<span id="cb44-26">    <span class="cf" style="color: #003B4F;
+<span id="cb45-23"></span>
+<span id="cb45-24">    f.tight_layout()</span>
+<span id="cb45-25"></span>
+<span id="cb45-26">    <span class="cf" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">return</span> (ax_ppc, ax_bpv, ax_uv, ax_loo_pit_ecdf, ax_loo_pit)</span></code></pre></div>
+font-weight: bold;
+font-style: inherit;">return</span> (ax_ppc, ax_bpv, ax_uv, ax_loo_pit_ecdf, ax_loo_pit)</span></code></pre></div></div>
 </details>
 </div>
 <div id="cell-fig-unpooled-ppc" class="cell">
-<div class="sourceCode cell-code" id="cb45" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1">plot_posterior_predictive_checks(unpooled_idata)<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1">plot_posterior_predictive_checks(unpooled_idata)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-ppc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-output-1.png" class="img-fluid figure-img">
@@ -3243,7 +3289,7 @@ Figure&nbsp;12: Posterior predictive checks, u/p-value, and LOO for the unpooled
 <div id="cell-fig-unpooled-ppc-individual" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1">fig, axs <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1">fig, axs <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3256,16 +3302,16 @@ background-color: null;
 font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))</span>
-<span id="cb46-2"></span>
-<span id="cb46-3">DriverIdx <span class="op" style="color: #5E5E5E;
+<span id="cb47-2"></span>
+<span id="cb47-3">DriverIdx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> Enum(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Driver"</span>, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">zip</span>(labels.categories, labels.codes))</span>
-<span id="cb46-4"></span>
-<span id="cb46-5">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
+<span id="cb47-4"></span>
+<span id="cb47-5">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
@@ -3276,15 +3322,15 @@ background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>])</span>
-<span id="cb46-6">axs[<span class="dv" style="color: #AD0000;
+<span id="cb47-6">axs[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>].set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"VER"</span>)</span>
-<span id="cb46-7"></span>
-<span id="cb46-8">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
+<span id="cb47-7"></span>
+<span id="cb47-8">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
@@ -3295,15 +3341,15 @@ background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>])</span>
-<span id="cb46-9">axs[<span class="dv" style="color: #AD0000;
+<span id="cb47-9">axs[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>].set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"SAR"</span>)</span>
-<span id="cb46-10"></span>
-<span id="cb46-11">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
+<span id="cb47-10"></span>
+<span id="cb47-11">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
@@ -3314,15 +3360,15 @@ background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>])</span>
-<span id="cb46-12">axs[<span class="dv" style="color: #AD0000;
+<span id="cb47-12">axs[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>].set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"LEC"</span>)</span>
-<span id="cb46-13"></span>
-<span id="cb46-14">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
+<span id="cb47-13"></span>
+<span id="cb47-14">az.plot_ppc(unpooled_idata, coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
@@ -3333,7 +3379,7 @@ background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>])</span>
-<span id="cb46-15">axs[<span class="dv" style="color: #AD0000;
+<span id="cb47-15">axs[<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3341,10 +3387,10 @@ font-style: inherit;">1</span>].set_title(<span class="st" style="color: #20794D
 background-color: null;
 font-style: inherit;">"HAM"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-ppc-individual" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-ppc-individual" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-ppc-individual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-ppc-individual-output-1.png" class="img-fluid figure-img">
@@ -3361,15 +3407,15 @@ Figure&nbsp;13: Posterior predictive plots of individual drivers for the unpoole
 <h3 data-number="4.7" class="anchored" data-anchor-id="posterior-evaluation"><span class="header-section-number">4.7</span> Posterior evaluation</h3>
 <p>We are reasonably confident that the model has converged and that there were no issues during sampling. Predictions seem to be somewhat biased, but still reasonable for our purposes. Now it’s time to check the posterior distributions of the estimated parameter μ:</p>
 <div id="cell-fig-unpooled-posterior-mean" class="cell">
-<div class="sourceCode cell-code" id="cb47" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1">az.plot_posterior(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">az.plot_posterior(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"μ"</span>])<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-posterior-mean" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-posterior-mean" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-posterior-mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-mean-output-1.png" class="img-fluid figure-img">
@@ -3383,7 +3429,7 @@ Figure&nbsp;14: Posterior distributions of the μ parameter for the unpooled mod
 </div>
 <p>The estimates look well formed; to make comparing the parameter value between drivers easier, we plot a forest of the 94% HDI <sup>10</sup>:</p>
 <div id="cell-fig-unpooled-posterior-forest-log" class="cell">
-<div class="sourceCode cell-code" id="cb48" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1">az.plot_forest(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1">az.plot_forest(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -3399,9 +3445,9 @@ font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-posterior-forest-log" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-posterior-forest-log" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-posterior-forest-log-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-log-output-1.png" class="img-fluid figure-img">
@@ -3416,7 +3462,7 @@ Figure&nbsp;15: Forest of the posterior distributions of μ for the unpooled mod
 <p>The probability distributions for the means broadly agree with our informal observations throughout the season - VER is scoring high above the rest, in an extremely consistent range, with HAM, ALO, and PER close to eachother for second place, a mixed, variable set of results for the midfield, and a few clear backmarker drivers.</p>
 <p>To translate the estimated parameter values to points, we can plot the transformed μ_ value (remember that this is just the exponentiated μ):</p>
 <div id="cell-fig-unpooled-posterior-forest" class="cell">
-<div class="sourceCode cell-code" id="cb49" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1">az.plot_forest(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1">az.plot_forest(unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -3432,9 +3478,9 @@ font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-unpooled-posterior-forest" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-unpooled-posterior-forest" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-unpooled-posterior-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-unpooled-posterior-forest-output-1.png" class="img-fluid figure-img">
@@ -3451,7 +3497,7 @@ Figure&nbsp;16: Forest of the posterior distributions of μ for the unpooled mod
 <h3 data-number="4.8" class="anchored" data-anchor-id="model-evaluation"><span class="header-section-number">4.8</span> Model evaluation</h3>
 <p>Finally, we inspect <a href="https://python.arviz.org/en/stable/api/generated/arviz.loo.html">PSIS-LOO-CV</a> to get an idea of the performance of the model:</p>
 <div id="24b54d3e-43ef-4870-b6d0-a189d424a40b" class="cell">
-<div class="sourceCode cell-code" id="cb50" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1">az.loo(unpooled_idata)</span></code></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1">az.loo(unpooled_idata)</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <pre><code>Computed from 4000 posterior samples and 280 observations log-likelihood matrix.
 
@@ -3480,10 +3526,10 @@ Pareto k diagnostic values:
 <section id="choosing-priors" class="level3" data-number="5.1">
 <h3 data-number="5.1" class="anchored" data-anchor-id="choosing-priors"><span class="header-section-number">5.1</span> Choosing priors</h3>
 <div id="cell-fig-zi-psi-prior" class="cell">
-<div class="sourceCode cell-code" id="cb52" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1">psi_dist <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1">psi_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Beta()</span>
-<span id="cb52-2">pz.maxent(psi_dist, <span class="fl" style="color: #AD0000;
+<span id="cb53-2">pz.maxent(psi_dist, <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.7</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
@@ -3491,9 +3537,9 @@ font-style: inherit;">0.99</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.75</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-psi-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-psi-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-psi-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-psi-prior-output-1.png" class="img-fluid figure-img">
@@ -3510,8 +3556,9 @@ Figure&nbsp;17: Prior distribution for the ψ parameter (probability of a non-ze
 <h3 data-number="5.2" class="anchored" data-anchor-id="model-definition-1"><span class="header-section-number">5.2</span> Model definition</h3>
 <p>The new model is trivial to define:</p>
 <div id="902dfe17-151d-46cc-864d-36147dc7029b" class="cell">
-<div class="sourceCode cell-code" id="cb53" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> pm.Model(coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
@@ -3521,7 +3568,7 @@ background-color: null;
 font-style: inherit;">"idx"</span>: idx}) <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> zi_unpooled_negb:</span>
-<span id="cb53-2">    μ <span class="op" style="color: #5E5E5E;
+<span id="cb54-2">    μ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Normal(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3530,7 +3577,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver"</span>)</span>
-<span id="cb53-3">    μ_ <span class="op" style="color: #5E5E5E;
+<span id="cb54-3">    μ_ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Deterministic(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3539,8 +3586,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver"</span>)</span>
-<span id="cb53-4"></span>
-<span id="cb53-5">    α <span class="op" style="color: #5E5E5E;
+<span id="cb54-4"></span>
+<span id="cb54-5">    α <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Gamma(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3549,8 +3596,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver"</span>)</span>
-<span id="cb53-6"></span>
-<span id="cb53-7">    ψ <span class="op" style="color: #5E5E5E;
+<span id="cb54-6"></span>
+<span id="cb54-7">    ψ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Beta(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3559,61 +3606,62 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"driver"</span>)</span>
-<span id="cb53-8"></span>
-<span id="cb53-9">    y <span class="op" style="color: #5E5E5E;
+<span id="cb54-8"></span>
+<span id="cb54-9">    y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.ZeroInflatedNegativeBinomial(</span>
-<span id="cb53-10">        <span class="st" style="color: #20794D;
+<span id="cb54-10">        <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"y"</span>,</span>
-<span id="cb53-11">        psi<span class="op" style="color: #5E5E5E;
+<span id="cb54-11">        psi<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ψ[idx],</span>
-<span id="cb53-12">        alpha<span class="op" style="color: #5E5E5E;
+<span id="cb54-12">        alpha<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>α[idx],</span>
-<span id="cb53-13">        mu<span class="op" style="color: #5E5E5E;
+<span id="cb54-13">        mu<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>μ_[idx],</span>
-<span id="cb53-14">        observed<span class="op" style="color: #5E5E5E;
+<span id="cb54-14">        observed<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>driver_points,</span>
-<span id="cb53-15">        dims<span class="op" style="color: #5E5E5E;
+<span id="cb54-15">        dims<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"idx"</span>,</span>
-<span id="cb53-16">    )</span></code></pre></div>
+<span id="cb54-16">    )</span></code></pre></div></div>
 </div>
 </section>
 <section id="prior-evaluation" class="level3" data-number="5.3">
 <h3 data-number="5.3" class="anchored" data-anchor-id="prior-evaluation"><span class="header-section-number">5.3</span> Prior evaluation</h3>
 <p>We perform the same prior predictive check:</p>
 <div id="c8aab7d7-fe18-4601-9080-6395780ca1b5" class="cell">
-<div class="sourceCode cell-code" id="cb54" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> zi_unpooled_negb:</span>
-<span id="cb54-2">    zi_unpooled_prior_samples <span class="op" style="color: #5E5E5E;
+<span id="cb55-2">    zi_unpooled_prior_samples <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.sample_prior_predictive(samples<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>)</span></code></pre></div>
+font-style: inherit;">1000</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Sampling: [y, α, μ, ψ]</code></pre>
 </div>
 </div>
 <div id="cell-fig-zi-prior-predictive" class="cell">
-<div class="sourceCode cell-code" id="cb56" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1">az.plot_ppc(zi_unpooled_prior_samples, group<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1">az.plot_ppc(zi_unpooled_prior_samples, group<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"prior"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-prior-predictive" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-prior-predictive" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-prior-predictive-output-1.png" class="img-fluid figure-img">
@@ -3630,13 +3678,14 @@ Figure&nbsp;18: Prior predictive distribution for the zero-inflated model
 <h3 data-number="5.4" class="anchored" data-anchor-id="inference-and-diagnostics-1"><span class="header-section-number">5.4</span> Inference and diagnostics</h3>
 <p>Sample:</p>
 <div id="035e7f1e-1d50-4e92-9014-1f41d95f9dce" class="cell">
-<div class="sourceCode cell-code" id="cb57" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> zi_unpooled_negb:</span>
-<span id="cb57-2">    zi_unpooled_idata <span class="op" style="color: #5E5E5E;
+<span id="cb58-2">    zi_unpooled_idata <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.sample(</span>
-<span id="cb57-3">        target_accept<span class="op" style="color: #5E5E5E;
+<span id="cb58-3">        target_accept<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
@@ -3647,19 +3696,17 @@ background-color: null;
 font-style: inherit;">"log_likelihood"</span>: <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>}</span>
-<span id="cb57-4">    )</span>
-<span id="cb57-5">    pm.sample_posterior_predictive(zi_unpooled_idata, extend_inferencedata<span class="op" style="color: #5E5E5E;
+<span id="cb58-4">    )</span>
+<span id="cb58-5">    pm.sample_posterior_predictive(zi_unpooled_idata, extend_inferencedata<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">True</span>)</span></code></pre></div>
+font-style: inherit;">True</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Auto-assigning NUTS sampler...
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
-NUTS: [μ, α, ψ]
-Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 10 seconds.
-Sampling: [y]</code></pre>
+NUTS: [μ, α, ψ]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 
@@ -3686,6 +3733,10 @@ Sampling: [y]</code></pre>
       100.00% [8000/8000 00:09&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 10 seconds.
+Sampling: [y]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 
@@ -3716,7 +3767,7 @@ Sampling: [y]</code></pre>
 </div>
 <p>The traceplots look about as good as before:</p>
 <div id="cell-fig-zi-traceplots" class="cell">
-<div class="sourceCode cell-code" id="cb59" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1">az.plot_trace(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1">az.plot_trace(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -3726,9 +3777,9 @@ font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-traceplots" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-traceplots" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-traceplots-output-1.png" class="img-fluid figure-img">
@@ -3744,17 +3795,17 @@ Figure&nbsp;19: Traceplots of the μ parameter for the zero-inflated model
 <div id="cell-fig-zi-energy" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb60" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1">ax <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1">ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> az.plot_energy(zi_unpooled_idata)</span>
-<span id="cb60-2">ax.set_title(<span class="st" style="color: #20794D;
+<span id="cb62-2">ax.set_title(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Energy Plot"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-energy" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-energy" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-energy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-energy-output-1.png" class="img-fluid figure-img">
@@ -3768,17 +3819,16 @@ Figure&nbsp;20: Energy plot for the zero-inflated model
 </div>
 <p><code>r_hat</code> and ESS look good as well:</p>
 <div id="4b34e573-eba8-4077-ba7f-97d022ac38cb" class="cell">
-<div class="sourceCode cell-code" id="cb61" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1">az.summary(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1">az.summary(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"μ"</span>])</span></code></pre></div>
+font-style: inherit;">"μ"</span>])</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -3795,7 +3845,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[ALB]</td>
+<th data-quarto-table-cell-role="th">μ[ALB]</th>
 <td>2.558</td>
 <td>0.111</td>
 <td>2.343</td>
@@ -3807,7 +3857,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[ALO]</td>
+<th data-quarto-table-cell-role="th">μ[ALO]</th>
 <td>3.123</td>
 <td>0.100</td>
 <td>2.942</td>
@@ -3819,7 +3869,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[BOT]</td>
+<th data-quarto-table-cell-role="th">μ[BOT]</th>
 <td>2.655</td>
 <td>0.128</td>
 <td>2.417</td>
@@ -3831,7 +3881,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[DEV]</td>
+<th data-quarto-table-cell-role="th">μ[DEV]</th>
 <td>1.907</td>
 <td>0.183</td>
 <td>1.581</td>
@@ -3843,7 +3893,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[GAS]</td>
+<th data-quarto-table-cell-role="th">μ[GAS]</th>
 <td>2.499</td>
 <td>0.208</td>
 <td>2.115</td>
@@ -3855,7 +3905,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[HAM]</td>
+<th data-quarto-table-cell-role="th">μ[HAM]</th>
 <td>3.082</td>
 <td>0.097</td>
 <td>2.898</td>
@@ -3867,7 +3917,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[HUL]</td>
+<th data-quarto-table-cell-role="th">μ[HUL]</th>
 <td>2.222</td>
 <td>0.139</td>
 <td>1.965</td>
@@ -3879,7 +3929,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[LEC]</td>
+<th data-quarto-table-cell-role="th">μ[LEC]</th>
 <td>2.876</td>
 <td>0.143</td>
 <td>2.590</td>
@@ -3891,7 +3941,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[MAG]</td>
+<th data-quarto-table-cell-role="th">μ[MAG]</th>
 <td>2.237</td>
 <td>0.149</td>
 <td>1.947</td>
@@ -3903,7 +3953,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[NOR]</td>
+<th data-quarto-table-cell-role="th">μ[NOR]</th>
 <td>2.700</td>
 <td>0.144</td>
 <td>2.436</td>
@@ -3915,7 +3965,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[OCO]</td>
+<th data-quarto-table-cell-role="th">μ[OCO]</th>
 <td>2.511</td>
 <td>0.166</td>
 <td>2.197</td>
@@ -3927,7 +3977,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[PER]</td>
+<th data-quarto-table-cell-role="th">μ[PER]</th>
 <td>3.282</td>
 <td>0.105</td>
 <td>3.080</td>
@@ -3939,7 +3989,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[PIA]</td>
+<th data-quarto-table-cell-role="th">μ[PIA]</th>
 <td>2.078</td>
 <td>0.183</td>
 <td>1.698</td>
@@ -3951,7 +4001,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[RIC]</td>
+<th data-quarto-table-cell-role="th">μ[RIC]</th>
 <td>2.335</td>
 <td>0.216</td>
 <td>1.906</td>
@@ -3963,7 +4013,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[RUS]</td>
+<th data-quarto-table-cell-role="th">μ[RUS]</th>
 <td>2.850</td>
 <td>0.135</td>
 <td>2.612</td>
@@ -3975,7 +4025,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[SAI]</td>
+<th data-quarto-table-cell-role="th">μ[SAI]</th>
 <td>2.728</td>
 <td>0.154</td>
 <td>2.448</td>
@@ -3987,7 +4037,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[SAR]</td>
+<th data-quarto-table-cell-role="th">μ[SAR]</th>
 <td>2.036</td>
 <td>0.213</td>
 <td>1.672</td>
@@ -3999,7 +4049,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[STR]</td>
+<th data-quarto-table-cell-role="th">μ[STR]</th>
 <td>2.420</td>
 <td>0.135</td>
 <td>2.167</td>
@@ -4011,7 +4061,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[TSU]</td>
+<th data-quarto-table-cell-role="th">μ[TSU]</th>
 <td>2.417</td>
 <td>0.123</td>
 <td>2.177</td>
@@ -4023,7 +4073,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">μ[VER]</td>
+<th data-quarto-table-cell-role="th">μ[VER]</th>
 <td>3.742</td>
 <td>0.074</td>
 <td>3.609</td>
@@ -4035,7 +4085,7 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <td>1.0</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">μ[ZHO]</td>
+<th data-quarto-table-cell-role="th">μ[ZHO]</th>
 <td>2.424</td>
 <td>0.161</td>
 <td>2.105</td>
@@ -4052,7 +4102,6 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 </section>
 <section id="posterior-predictive-checks-1" class="level3" data-number="5.5">
 <h3 data-number="5.5" class="anchored" data-anchor-id="posterior-predictive-checks-1"><span class="header-section-number">5.5</span> Posterior predictive checks</h3>
@@ -4064,11 +4113,11 @@ font-style: inherit;">"μ"</span>])</span></code></pre></div>
 <li>LOO-PIT still suggests bias, but it looks slightly better overall; the right tail of the posterior predictive still looks too fat and goes well above the maximum points possible in the ruleset, likely causing the bias and shifted predictions.</li>
 </ul>
 <div id="cell-fig-zi-ppc" class="cell">
-<div class="sourceCode cell-code" id="cb62" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1">plot_posterior_predictive_checks(zi_unpooled_idata)<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1">plot_posterior_predictive_checks(zi_unpooled_idata)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-ppc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-ppc-output-1.png" class="img-fluid figure-img">
@@ -4085,7 +4134,7 @@ Figure&nbsp;21: Posterior predictive checks, p/u-value, and LOO for the zero-inf
 <h3 data-number="5.6" class="anchored" data-anchor-id="posterior-evaluation-1"><span class="header-section-number">5.6</span> Posterior evaluation</h3>
 <p>We plot just the forest of transformed means:</p>
 <div id="cell-fig-zi-mu-forest" class="cell">
-<div class="sourceCode cell-code" id="cb63" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1">az.plot_forest(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1">az.plot_forest(zi_unpooled_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -4101,9 +4150,9 @@ font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-mu-forest" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-mu-forest" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-mu-forest-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-mu-forest-output-1.png" class="img-fluid figure-img">
@@ -4123,23 +4172,22 @@ Figure&nbsp;22: Forest plot of the posterior distribution of the exponentiated �
 <div id="6c9966ab-1a72-4370-a4c5-7245c53eab08" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb64" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1">comparison <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1">comparison <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> az.compare(</span>
-<span id="cb64-2">    {<span class="st" style="color: #20794D;
+<span id="cb66-2">    {<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"unpooled"</span>: unpooled_idata, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"zero inflated unpooled"</span>: zi_unpooled_idata}</span>
-<span id="cb64-3">)</span>
-<span id="cb64-4">comparison</span></code></pre></div>
+<span id="cb66-3">)</span>
+<span id="cb66-4">comparison</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -4156,7 +4204,7 @@ font-style: inherit;">"zero inflated unpooled"</span>: zi_unpooled_idata}</span>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">zero inflated unpooled</td>
+<th data-quarto-table-cell-role="th">zero inflated unpooled</th>
 <td>0</td>
 <td>-922.394375</td>
 <td>40.951957</td>
@@ -4168,7 +4216,7 @@ font-style: inherit;">"zero inflated unpooled"</span>: zi_unpooled_idata}</span>
 <td>log</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">unpooled</td>
+<th data-quarto-table-cell-role="th">unpooled</th>
 <td>1</td>
 <td>-954.778337</td>
 <td>44.522890</td>
@@ -4185,13 +4233,12 @@ font-style: inherit;">"zero inflated unpooled"</span>: zi_unpooled_idata}</span>
 </div>
 </div>
 </div>
-</div>
 <div id="cell-fig-zi-comparison" class="cell">
-<div class="sourceCode cell-code" id="cb65" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1">az.plot_compare(comparison)<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1">az.plot_compare(comparison)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-zi-comparison" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-zi-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-zi-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-zi-comparison-output-1.png" class="img-fluid figure-img">
@@ -4231,107 +4278,115 @@ Caution
 </div>
 </div>
 <div id="835259e7-89ee-473b-bfe0-dcfb00c493db" class="cell">
-<div class="sourceCode cell-code" id="cb66" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">def</span> make_comparison(idata, idx, groups, size<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1000</span>):</span>
-<span id="cb66-2">    columns <span class="op" style="color: #5E5E5E;
+<span id="cb68-2">    columns <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {}</span>
-<span id="cb66-3">    <span class="cf" style="color: #003B4F;
+<span id="cb68-3">    <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> idx_a, name_a <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(groups):</span>
-<span id="cb66-4">        <span class="cf" style="color: #003B4F;
+<span id="cb68-4">        <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">for</span> idx_b, name_b <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">in</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">enumerate</span>(groups):</span>
-<span id="cb66-5">            pp_a <span class="op" style="color: #5E5E5E;
+<span id="cb68-5">            pp_a <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> idata.posterior_predictive[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"y"</span>][:, :, idx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> idx_a].values.flatten()</span>
-<span id="cb66-6">            pp_b <span class="op" style="color: #5E5E5E;
+<span id="cb68-6">            pp_b <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> idata.posterior_predictive[<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"y"</span>][:, :, idx <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">==</span> idx_b].values.flatten()</span>
-<span id="cb66-7"></span>
-<span id="cb66-8">            samples_a <span class="op" style="color: #5E5E5E;
+<span id="cb68-7"></span>
+<span id="cb68-8">            samples_a <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.random.choice(pp_a, size<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>size)</span>
-<span id="cb66-9">            samples_b <span class="op" style="color: #5E5E5E;
+<span id="cb68-9">            samples_b <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.random.choice(pp_b, size<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>size)</span>
-<span id="cb66-10"></span>
-<span id="cb66-11">            <span class="cf" style="color: #003B4F;
+<span id="cb68-10"></span>
+<span id="cb68-11">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">if</span> idx_a <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!=</span> idx_b:</span>
-<span id="cb66-12">                points_over <span class="op" style="color: #5E5E5E;
+<span id="cb68-12">                points_over <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> (samples_a <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span> samples_b).mean()</span>
-<span id="cb66-13">            <span class="cf" style="color: #003B4F;
+<span id="cb68-13">            <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">else</span>:</span>
-<span id="cb66-14">                points_over <span class="op" style="color: #5E5E5E;
+<span id="cb68-14">                points_over <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span></span>
-<span id="cb66-15"></span>
-<span id="cb66-16">            columns.setdefault(name_a, []).append(points_over)</span>
-<span id="cb66-17"></span>
-<span id="cb66-18">    comparison_df <span class="op" style="color: #5E5E5E;
+<span id="cb68-15"></span>
+<span id="cb68-16">            columns.setdefault(name_a, []).append(points_over)</span>
+<span id="cb68-17"></span>
+<span id="cb68-18">    comparison_df <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.DataFrame.from_dict(columns).set_index(groups)</span>
-<span id="cb66-19">    mask <span class="op" style="color: #5E5E5E;
+<span id="cb68-19">    mask <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> np.triu(np.ones_like(comparison_df, dtype<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">bool</span>))</span>
-<span id="cb66-20"></span>
-<span id="cb66-21">    <span class="cf" style="color: #003B4F;
+<span id="cb68-20"></span>
+<span id="cb68-21">    <span class="cf" style="color: #003B4F;
 background-color: null;
-font-style: inherit;">return</span> comparison_df, mask</span></code></pre></div>
+font-weight: bold;
+font-style: inherit;">return</span> comparison_df, mask</span></code></pre></div></div>
 </div>
 <div id="f3121ac4-27ee-4a41-bce6-e3a0a216f27a" class="cell">
-<div class="sourceCode cell-code" id="cb67" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1">comparison_df, mask <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1">comparison_df, mask <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">=</span> make_comparison(zi_unpooled_idata, idx, labels)</span></code></pre></div>
+font-style: inherit;">=</span> make_comparison(zi_unpooled_idata, idx, labels)</span></code></pre></div></div>
 </div>
 <div id="cell-fig-drivers-comparison" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb68" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"white"</span>)</span>
-<span id="cb68-2"></span>
-<span id="cb68-3">cmap <span class="op" style="color: #5E5E5E;
+<span id="cb70-2"></span>
+<span id="cb70-3">cmap <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sns.diverging_palette(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -4342,8 +4397,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb68-4"></span>
-<span id="cb68-5">f, ax <span class="op" style="color: #5E5E5E;
+<span id="cb70-4"></span>
+<span id="cb70-5">f, ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4352,52 +4407,52 @@ background-color: null;
 font-style: inherit;">11</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">9</span>))</span>
-<span id="cb68-6"></span>
-<span id="cb68-7">ax <span class="op" style="color: #5E5E5E;
+<span id="cb70-6"></span>
+<span id="cb70-7">ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sns.heatmap(</span>
-<span id="cb68-8">    comparison_df,</span>
-<span id="cb68-9">    cmap<span class="op" style="color: #5E5E5E;
+<span id="cb70-8">    comparison_df,</span>
+<span id="cb70-9">    cmap<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>cmap,</span>
-<span id="cb68-10">    mask<span class="op" style="color: #5E5E5E;
+<span id="cb70-10">    mask<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>mask,</span>
-<span id="cb68-11">    annot<span class="op" style="color: #5E5E5E;
+<span id="cb70-11">    annot<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>,</span>
-<span id="cb68-12">    center<span class="op" style="color: #5E5E5E;
+<span id="cb70-12">    center<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>,</span>
-<span id="cb68-13">    square<span class="op" style="color: #5E5E5E;
+<span id="cb70-13">    square<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>,</span>
-<span id="cb68-14">    linewidths<span class="op" style="color: #5E5E5E;
+<span id="cb70-14">    linewidths<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.5</span>,</span>
-<span id="cb68-15">    cbar_kws<span class="op" style="color: #5E5E5E;
+<span id="cb70-15">    cbar_kws<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"shrink"</span>: <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.5</span>},</span>
-<span id="cb68-16">    annot_kws<span class="op" style="color: #5E5E5E;
+<span id="cb70-16">    annot_kws<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"fontsize"</span>: <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">8</span>},</span>
-<span id="cb68-17">).<span class="bu" style="color: null;
+<span id="cb70-17">).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">set</span>(title<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4405,10 +4460,10 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Driver points expected over rival"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-drivers-comparison" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-drivers-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-drivers-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-drivers-comparison-output-1.png" class="img-fluid figure-img">
@@ -4426,7 +4481,7 @@ Figure&nbsp;24: Expected points earned by driver x over driver y using the zero-
 <p>We’ll run the same loop for the constructor comparison - first we define a slightly modified zero inflated model, then we sample, validate convergence, and finally use the posterior and posterior predictive to evaluate constructor peformance.</p>
 <p>Data preparation is identical - we factorize the constructors and take the points</p>
 <div id="469a38ca-57c1-453a-93a1-7304af9bc8b6" class="cell">
-<div class="sourceCode cell-code" id="cb69" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1">const_idx, const_labels <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1">const_idx, const_labels <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pd.factorize(const_data_df[<span class="st" style="color: #20794D;
 background-color: null;
@@ -4435,18 +4490,18 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb69-2">const_points <span class="op" style="color: #5E5E5E;
+<span id="cb71-2">const_points <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> const_data_df[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"constructor_points"</span>]</span></code></pre></div>
+font-style: inherit;">"constructor_points"</span>]</span></code></pre></div></div>
 </div>
 <p>We adjust the priors slightly, to account for differences in the constructors scoring system:</p>
 <div id="cell-fig-constructors-mu-prior" class="cell">
-<div class="sourceCode cell-code" id="cb70" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1">mu_const_dist <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1">mu_const_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Normal()</span>
-<span id="cb70-2">pz.maxent(mu_const_dist, np.log(<span class="dv" style="color: #AD0000;
+<span id="cb72-2">pz.maxent(mu_const_dist, np.log(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>), np.log(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -4454,9 +4509,9 @@ font-style: inherit;">30</span>), <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-mu-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-mu-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-mu-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-mu-prior-output-1.png" class="img-fluid figure-img">
@@ -4469,20 +4524,20 @@ Figure&nbsp;25: Prior for the μ parameter for fitting the zero inflated model t
 </div>
 </div>
 <div id="cell-fig-constructors-alpha-prior" class="cell">
-<div class="sourceCode cell-code" id="cb71" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1">alpha_const_dist <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1">alpha_const_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Gamma()</span>
-<span id="cb71-2">pz.maxent(alpha_const_dist, <span class="dv" style="color: #AD0000;
+<span id="cb73-2">pz.maxent(alpha_const_dist, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">10</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">.9</span>)<span class="op" style="color: #5E5E5E;
+font-style: inherit;">0.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-alpha-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-alpha-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-alpha-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-alpha-prior-output-1.png" class="img-fluid figure-img">
@@ -4495,20 +4550,20 @@ Figure&nbsp;26: Prior for the α parameter for fitting the zero inflated model t
 </div>
 </div>
 <div id="cell-fig-constructors-psi-prior" class="cell">
-<div class="sourceCode cell-code" id="cb72" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1">psi_const_dist <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1">psi_const_dist <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pz.Beta()</span>
-<span id="cb72-2">pz.maxent(psi_const_dist, <span class="fl" style="color: #AD0000;
+<span id="cb74-2">pz.maxent(psi_const_dist, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">.9</span>, <span class="fl" style="color: #AD0000;
+font-style: inherit;">0.9</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">.99</span>, <span class="fl" style="color: #AD0000;
+font-style: inherit;">0.99</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">.9</span>)<span class="op" style="color: #5E5E5E;
+font-style: inherit;">0.9</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-psi-prior" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-psi-prior" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-psi-prior-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-psi-prior-output-1.png" class="img-fluid figure-img">
@@ -4521,20 +4576,21 @@ Figure&nbsp;27: Prior for the ψ parameter for fitting the zero inflated model t
 </div>
 </div>
 <div id="df2fe1ee-dbe4-4090-a7fd-5058fff461dc" class="cell">
-<div class="sourceCode cell-code" id="cb73" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> pm.Model(</span>
-<span id="cb73-2">    coords<span class="op" style="color: #5E5E5E;
+<span id="cb75-2">    coords<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor"</span>: const_labels, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"idx"</span>: const_idx}</span>
-<span id="cb73-3">) <span class="im" style="color: #00769E;
+<span id="cb75-3">) <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">as</span> const_zi_unpooled_model:</span>
-<span id="cb73-4">    μ <span class="op" style="color: #5E5E5E;
+<span id="cb75-4">    μ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Normal(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4543,7 +4599,7 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor"</span>)</span>
-<span id="cb73-5">    μ_ <span class="op" style="color: #5E5E5E;
+<span id="cb75-5">    μ_ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Deterministic(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4552,8 +4608,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor"</span>)</span>
-<span id="cb73-6"></span>
-<span id="cb73-7">    α <span class="op" style="color: #5E5E5E;
+<span id="cb75-6"></span>
+<span id="cb75-7">    α <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Gamma(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4562,8 +4618,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor"</span>)</span>
-<span id="cb73-8"></span>
-<span id="cb73-9">    ψ <span class="op" style="color: #5E5E5E;
+<span id="cb75-8"></span>
+<span id="cb75-9">    ψ <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.Beta(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4572,49 +4628,50 @@ background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"constructor"</span>)</span>
-<span id="cb73-10"></span>
-<span id="cb73-11">    y <span class="op" style="color: #5E5E5E;
+<span id="cb75-10"></span>
+<span id="cb75-11">    y <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.ZeroInflatedNegativeBinomial(</span>
-<span id="cb73-12">        <span class="st" style="color: #20794D;
+<span id="cb75-12">        <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"y"</span>,</span>
-<span id="cb73-13">        psi<span class="op" style="color: #5E5E5E;
+<span id="cb75-13">        psi<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>ψ[const_idx],</span>
-<span id="cb73-14">        alpha<span class="op" style="color: #5E5E5E;
+<span id="cb75-14">        alpha<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>α[const_idx],</span>
-<span id="cb73-15">        mu<span class="op" style="color: #5E5E5E;
+<span id="cb75-15">        mu<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>μ_[const_idx],</span>
-<span id="cb73-16">        observed<span class="op" style="color: #5E5E5E;
+<span id="cb75-16">        observed<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>const_points,</span>
-<span id="cb73-17">        dims<span class="op" style="color: #5E5E5E;
+<span id="cb75-17">        dims<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"idx"</span>,</span>
-<span id="cb73-18">    )</span></code></pre></div>
+<span id="cb75-18">    )</span></code></pre></div></div>
 </div>
 <div id="0d9e2ff7-fcce-4cc3-b236-b3ef538737b4" class="cell">
-<div class="sourceCode cell-code" id="cb74" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> const_zi_unpooled_model:</span>
-<span id="cb74-2">    const_prior_pred <span class="op" style="color: #5E5E5E;
+<span id="cb76-2">    const_prior_pred <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.sample_prior_predictive(samples<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1000</span>)</span></code></pre></div>
+font-style: inherit;">1000</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Sampling: [y, α, μ, ψ]</code></pre>
 </div>
 </div>
 <div id="cell-fig-constructors-prior-predictive" class="cell">
-<div class="sourceCode cell-code" id="cb76" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1">az.plot_ppc(const_prior_pred, group<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1">az.plot_ppc(const_prior_pred, group<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
@@ -4626,9 +4683,9 @@ font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-prior-predictive" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-prior-predictive" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-prior-predictive-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-prior-predictive-output-1.png" class="img-fluid figure-img">
@@ -4641,10 +4698,11 @@ Figure&nbsp;28: Prior predictive distribution for the zero-inflated model when f
 </div>
 </div>
 <div id="e3a5ab14-84c6-41ea-8e87-3b9bea14e17e" class="cell">
-<div class="sourceCode cell-code" id="cb77" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">with</span> const_zi_unpooled_model:</span>
-<span id="cb77-2">    const_idata <span class="op" style="color: #5E5E5E;
+<span id="cb79-2">    const_idata <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> pm.sample(target_accept<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4657,18 +4715,16 @@ background-color: null;
 font-style: inherit;">"log_likelihood"</span>: <span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>})</span>
-<span id="cb77-3">    pm.sample_posterior_predictive(const_idata, extend_inferencedata<span class="op" style="color: #5E5E5E;
+<span id="cb79-3">    pm.sample_posterior_predictive(const_idata, extend_inferencedata<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">True</span>)</span></code></pre></div>
+font-style: inherit;">True</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Auto-assigning NUTS sampler...
 Initializing NUTS using jitter+adapt_diag...
 Multiprocess sampling (4 chains in 4 jobs)
-NUTS: [μ, α, ψ]
-Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 6 seconds.
-Sampling: [y]</code></pre>
+NUTS: [μ, α, ψ]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 
@@ -4695,6 +4751,10 @@ Sampling: [y]</code></pre>
       100.00% [8000/8000 00:05&lt;00:00 Sampling 4 chains, 0 divergences]
     </div>
     
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Sampling 4 chains for 1_000 tune and 1_000 draw iterations (4_000 + 4_000 draws total) took 6 seconds.
+Sampling: [y]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 
@@ -4724,7 +4784,7 @@ Sampling: [y]</code></pre>
 </div>
 </div>
 <div id="cell-fig-constructors-traceplots" class="cell">
-<div class="sourceCode cell-code" id="cb79" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1">az.plot_trace(const_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1">az.plot_trace(const_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -4734,9 +4794,9 @@ font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">False</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-traceplots" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-traceplots" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-traceplots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-traceplots-output-1.png" class="img-fluid figure-img">
@@ -4749,11 +4809,11 @@ Figure&nbsp;29: Traceplots of the μ parameter for the zero-inflated model when 
 </div>
 </div>
 <div id="cell-fig-constructors-ppc" class="cell">
-<div class="sourceCode cell-code" id="cb80" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1">plot_posterior_predictive_checks(const_idata)<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1">plot_posterior_predictive_checks(const_idata)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-ppc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-ppc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-ppc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-ppc-output-1.png" class="img-fluid figure-img">
@@ -4766,7 +4826,7 @@ Figure&nbsp;30: Posterior predictive checks, p/u-value, and LOO for the zero-inf
 </div>
 </div>
 <div id="974d9dbf-ebc4-4169-a482-baf08e9bd07f" class="cell">
-<div class="sourceCode cell-code" id="cb81" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1">az.loo(const_idata)</span></code></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1">az.loo(const_idata)</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <pre><code>Computed from 4000 posterior samples and 140 observations log-likelihood matrix.
 
@@ -4784,7 +4844,7 @@ Pareto k diagnostic values:
 </div>
 </div>
 <div id="cell-fig-constructors-forest-mu" class="cell">
-<div class="sourceCode cell-code" id="cb83" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1">az.plot_forest(const_idata, var_names<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1">az.plot_forest(const_idata, var_names<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
 background-color: null;
@@ -4800,9 +4860,9 @@ font-style: inherit;">12</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">6</span>))<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-forest-mu" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-forest-mu" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-forest-mu-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-forest-mu-output-1.png" class="img-fluid figure-img">
@@ -4817,13 +4877,13 @@ Figure&nbsp;31: Forest of the posterior distribution of the μ parameter for the
 <div id="cell-fig-constructors-comparison" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb84" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1">sns.set_theme(style<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"white"</span>)</span>
-<span id="cb84-2"></span>
-<span id="cb84-3">cmap <span class="op" style="color: #5E5E5E;
+<span id="cb87-2"></span>
+<span id="cb87-3">cmap <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sns.diverging_palette(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -4834,8 +4894,8 @@ background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>)</span>
-<span id="cb84-4"></span>
-<span id="cb84-5">f, ax <span class="op" style="color: #5E5E5E;
+<span id="cb87-4"></span>
+<span id="cb87-5">f, ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> plt.subplots(figsize<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4844,56 +4904,56 @@ background-color: null;
 font-style: inherit;">11</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">9</span>))</span>
-<span id="cb84-6"></span>
-<span id="cb84-7">comparison_df, mask <span class="op" style="color: #5E5E5E;
+<span id="cb87-6"></span>
+<span id="cb87-7">comparison_df, mask <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> make_comparison(const_idata, const_idx, const_labels)</span>
-<span id="cb84-8"></span>
-<span id="cb84-9">ax <span class="op" style="color: #5E5E5E;
+<span id="cb87-8"></span>
+<span id="cb87-9">ax <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> sns.heatmap(</span>
-<span id="cb84-10">    comparison_df,</span>
-<span id="cb84-11">    cmap<span class="op" style="color: #5E5E5E;
+<span id="cb87-10">    comparison_df,</span>
+<span id="cb87-11">    cmap<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>cmap,</span>
-<span id="cb84-12">    mask<span class="op" style="color: #5E5E5E;
+<span id="cb87-12">    mask<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>mask,</span>
-<span id="cb84-13">    annot<span class="op" style="color: #5E5E5E;
+<span id="cb87-13">    annot<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>,</span>
-<span id="cb84-14">    center<span class="op" style="color: #5E5E5E;
+<span id="cb87-14">    center<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>,</span>
-<span id="cb84-15">    square<span class="op" style="color: #5E5E5E;
+<span id="cb87-15">    square<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">True</span>,</span>
-<span id="cb84-16">    linewidths<span class="op" style="color: #5E5E5E;
+<span id="cb87-16">    linewidths<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.5</span>,</span>
-<span id="cb84-17">    cbar_kws<span class="op" style="color: #5E5E5E;
+<span id="cb87-17">    cbar_kws<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"shrink"</span>: <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.5</span>},</span>
-<span id="cb84-18">    annot_kws<span class="op" style="color: #5E5E5E;
+<span id="cb87-18">    annot_kws<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span>{<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"fontsize"</span>: <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">8</span>},</span>
-<span id="cb84-19">).<span class="bu" style="color: null;
+<span id="cb87-19">).<span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">set</span>(title<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4901,10 +4961,10 @@ font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"Constructor points expected over rival"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">;</span></span></code></pre></div>
+font-style: inherit;">;</span></span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-display">
-<div id="fig-constructors-comparison" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-constructors-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-constructors-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://kirilzvezdarov.com/posts/fantasy-gp-mcmc/fantasy-gp-mcmc_files/figure-html/fig-constructors-comparison-output-1.png" class="img-fluid figure-img">
@@ -4921,10 +4981,10 @@ Figure&nbsp;32: Expected points earned by constructor x over constructor y using
 <h2 data-number="8" class="anchored" data-anchor-id="conclusion"><span class="header-section-number">8</span> Conclusion</h2>
 <p>None of the results here are that surprising, but it’s nonetheless useful to confirm our intuition for who’s a good pick and who isn’t. That said, the estimates should be taken with more than a grain of salt - the model we used is quite rudimentary (for one, it doesn’t account for performance trends as the season progresses), and modeling the summed fantasy points directly leads to a lot of detail getting obscured and left out.</p>
 <div id="bb6fbca7-9d86-4193-95c7-2e5d0c726072" class="cell">
-<div class="sourceCode cell-code" id="cb85" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>load_ext watermark</span>
-<span id="cb85-2"><span class="op" style="color: #5E5E5E;
+<span id="cb88-2"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>watermark <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4934,7 +4994,7 @@ font-style: inherit;">-</span>u <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>v <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-</span>iv</span></code></pre></div>
+font-style: inherit;">-</span>iv</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The watermark extension is already loaded. To reload it, use:
   %reload_ext watermark
@@ -5001,8 +5061,9 @@ seaborn   : 0.12.2
 <p>This is a short overview of <a href="https://en.wikipedia.org/wiki/Tagged_pointer">pointer tagging</a> in situations where more than one tags or multibit tags are needed. The implementation is in <a href="https://www.rust-lang.org/">Rust</a>, but it should be easy to understand even without knowledge of the language.</p>
 <p>The snippet below is part of my attempt to implement a lockfree linked list, as described by <a href="https://timharris.uk/papers/2001-disc.pdf">Harris</a>, with the additional optimizations by <a href="http://www.cse.yorku.ca/~ruppert/papers/lfll.pdf">Fomitchev, Ruppert</a>. The original Harris algorithm uses the least significant bit of the “successor” pointer in each node of the linked list as a deletion mark, to achieve a two phase removal - first, a node is logically deleted by tagging its successor pointer with the mark, and at a later point it is unlinked completely. The optimizations by Fomitchev and Ruppert add a second possible tag at the next least significant bit, as well as a backlink to a previous node, in order to shorten the length and amount of traversals of the linked list a process has to make. The new tag “flags” that the node after the current one is being deleted, and that the flagged node should not be marked until after the deletion of its successor is fully completed.</p>
 <p>The two tags need to be manipulated individually when the algorithm is setting the metadata of a node, and (for convenience) as one chunk for when the actual pointer, clear of tags, is needed:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> MARK_BIT<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
@@ -5021,6 +5082,7 @@ font-style: inherit;">;</span></span>
 <span id="cb1-2"></span>
 <span id="cb1-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> FLAG_BIT<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
@@ -5039,6 +5101,7 @@ font-style: inherit;">;</span></span>
 <span id="cb1-4"></span>
 <span id="cb1-5"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> ALL_TAGS<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="dt" style="color: #AD0000;
@@ -5053,6 +5116,7 @@ font-style: inherit;">;</span></span>
 <span id="cb1-6"></span>
 <span id="cb1-7"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fn</span> tag_at<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>T<span class="op" style="color: #5E5E5E;
@@ -5063,6 +5127,7 @@ font-style: inherit;">:</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> T<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> tag<span class="op" style="color: #5E5E5E;
@@ -5081,11 +5146,13 @@ font-style: inherit;">-&gt;</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> T <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">{</span></span>
 <span id="cb1-8">    (ptr <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">as</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">usize</span> <span class="op" style="color: #5E5E5E;
@@ -5098,14 +5165,17 @@ font-style: inherit;">|</span> (tag <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> value <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">as</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">usize</span>)) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">as</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> T</span>
 <span id="cb1-9"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -5113,6 +5183,7 @@ font-style: inherit;">}</span></span>
 <span id="cb1-10"></span>
 <span id="cb1-11"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">fn</span> is_tagged<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;</span>T<span class="op" style="color: #5E5E5E;
@@ -5123,6 +5194,7 @@ font-style: inherit;">:</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> T<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">,</span> tag<span class="op" style="color: #5E5E5E;
@@ -5138,6 +5210,7 @@ background-color: null;
 font-style: inherit;">{</span></span>
 <span id="cb1-12">    (ptr <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">as</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">usize</span> <span class="op" style="color: #5E5E5E;
@@ -5147,7 +5220,7 @@ background-color: null;
 font-style: inherit;">==</span> tag</span>
 <span id="cb1-13"><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>The constants define the tag locations for the mark and flag, as well as the “mask” (for a lack of a better term) which covers all tags, so that they can be cleared in one go. The mask is just the sum of the tags that it needs to cover - since each tag bit is just an integer with only one of the bits set, e.g.&nbsp;<code>0b01c</code>= for the least significant and <code>0b10</code> for the next least significant, their sum produces an integer whose set bits correspond to the location of all tags. This can be used for things more interesting than clearing the pointer - for example, it allows for multibit tags or storing (small) integer values, all in one function call.</p>
 <p>The tagging logic is only slightly different from how it is usually implemented. First, the pointer and the inverse of the tag bit are <code>and</code>-ed, which results in an integer whose tag bit is unset. This in a sense isolates that specific tag, as the integer now is in a “clean” state with respect to it. The result is <code>or</code>-ed with the tag bit value, which will either set the tag bit or keep it unset (the tag value is just the tag bit or 0).</p>
 <p>To illustrate, here is a contrived example:</p>

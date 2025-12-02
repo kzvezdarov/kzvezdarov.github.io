@@ -4,15 +4,12 @@ itables==2.0.0
 jupyterlab==4.1.5
 jupyterlab-lsp==5.1.0
 nbdev==2.3.13
-nbqa[toolchain]==1.8.5
 numpy==1.26.4
 pandas==2.2.1
 polars==0.20.17
 preliz==0.4.1
 pymc==5.11.0
-python-lsp-server==1.11.0
-python-lsp-ruff==2.2.0
-ruff==0.3.4
+ruff==0.14.7
 scipy==1.12.0
 scikit-learn==1.4.1.post1
 seaborn==0.13.2
